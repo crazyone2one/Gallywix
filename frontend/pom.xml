@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>cn.master</groupId>
+    <artifactId>frontend</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <description>Gallywix</description>
+
+    <build>
+        <plugins>
+            <plugin>
+                <!--                https://github.com/eirslett/frontend-maven-plugin-->
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.13.4</version>
+                <executions>
+                    <execution>
+                        <!-- optional: you don't really need execution ids, but it looks nice in your build log. -->
+                        <id>install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <!-- optional: default phase is "generate-resources" -->
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <nodeVersion>v18.18.2</nodeVersion>
+                            <!-- optional: with node version greater than 4.0.0 will use npm provided by node distribution -->
+                            <!--                            <npmVersion>18.18.2</npmVersion>-->
+                            <!-- optional: where to download node and npm from. Defaults to https://nodejs.org/dist/ -->
+                            <!--                            <downloadRoot>http://myproxy.example.org/nodejs/</downloadRoot>-->
+                        </configuration>
+                    </execution>
+                    <!-- Install all project dependencies -->
+                    <execution>
+                        <id>npm install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <!-- optional: default phase is "generate-resources" -->
+                        <phase>generate-resources</phase>
+                        <!-- Optional configuration which provides for running any npm command -->
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+                    <!-- Build and minify static files -->
+                    <execution>
+                        <id>npm run build</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
