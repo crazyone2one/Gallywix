@@ -1,6 +1,5 @@
 package cn.master.gallywix.auth.config;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,7 +8,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,22 +30,16 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        try {
-            val accessToken = jwtProvider.resolveToken(request);
-            if (Objects.isNull(accessToken)) {
-                filterChain.doFilter(request, response);
-                return;
-            }
-            val claims = jwtProvider.resolveClaims(request);
-            if (claims != null & jwtProvider.validateClaims(claims)) {
-                String username = claims.getSubject();
-                Authentication authentication = new UsernamePasswordAuthenticationToken(username, "", new ArrayList<>());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-        } catch (ExpiredJwtException e) {
-            log.error("Expired JWT token.", e);
-            //HANDLE IT HERE::::: wrap ExpiredJwtException in AuthenticationException and rethrow Exception
-            throw new CredentialsExpiredException("Expired jwt credentials ", e);
+        val accessToken = jwtProvider.resolveToken(request);
+        if (Objects.isNull(accessToken)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        val claims = jwtProvider.resolveClaims(request);
+        if (claims != null & jwtProvider.validateClaims(claims)) {
+            String username = claims.getSubject();
+            Authentication authentication = new UsernamePasswordAuthenticationToken(username, "", new ArrayList<>());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
     }
