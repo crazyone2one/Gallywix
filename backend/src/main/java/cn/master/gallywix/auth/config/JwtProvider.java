@@ -1,19 +1,23 @@
 package cn.master.gallywix.auth.config;
 
 import cn.master.gallywix.entity.SystemUser;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author 11's papa
  * @since 10/31/2023
  **/
+@Slf4j
 @Component
 public class JwtProvider {
     @Value("${application.security.jwt.secret-key}")
@@ -39,6 +43,7 @@ public class JwtProvider {
             }
             return null;
         } catch (ExpiredJwtException ex) {
+            log.error("Utils :: validateToke :: token Exception -> expired!");
             request.setAttribute("expired", ex.getMessage());
             throw ex;
         } catch (Exception ex) {
@@ -75,8 +80,10 @@ public class JwtProvider {
 
     private String buildToken(SystemUser user, long expiration) {
         Claims claims = Jwts.claims().setSubject(user.getUsername());
-        Date tokenCreateTime = new Date();
-        Date tokenValidity = new Date(tokenCreateTime.getTime() + TimeUnit.MINUTES.toMillis(expiration));
-        return Jwts.builder().setClaims(claims).setExpiration(tokenValidity).signWith(SignatureAlgorithm.HS256, secretKey).compact();
+        Date tokenCreateTime = new Date(System.currentTimeMillis());
+        Date tokenValidity = new Date(tokenCreateTime.getTime() + expiration);
+        return Jwts.builder().setClaims(claims)
+                .setIssuedAt(tokenCreateTime)
+                .setExpiration(tokenValidity).signWith(SignatureAlgorithm.HS256, secretKey).compact();
     }
 }

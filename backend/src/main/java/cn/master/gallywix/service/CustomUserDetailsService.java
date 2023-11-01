@@ -35,7 +35,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .username(systemUser.getUsername())
                 .password(systemUser.getPassword())
                 .roles(roles.toArray(new String[0]))
-                .disabled(systemUser.getStatus())
                 .build();
     }
 }

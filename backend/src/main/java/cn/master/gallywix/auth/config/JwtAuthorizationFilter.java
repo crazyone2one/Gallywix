@@ -1,6 +1,6 @@
 package cn.master.gallywix.auth.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,8 +9,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,8 +18,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -35,29 +32,22 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        Map<String, Object> errorDetails = new LinkedHashMap<>();
         try {
             val accessToken = jwtProvider.resolveToken(request);
             if (Objects.isNull(accessToken)) {
                 filterChain.doFilter(request, response);
                 return;
             }
-            log.info("token : " + accessToken);
             val claims = jwtProvider.resolveClaims(request);
             if (claims != null & jwtProvider.validateClaims(claims)) {
                 String username = claims.getSubject();
-                log.info("username : " + username);
                 Authentication authentication = new UsernamePasswordAuthenticationToken(username, "", new ArrayList<>());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-
-        } catch (Exception e) {
-            errorDetails.put("message", "Authentication Error");
-            errorDetails.put("details", e.getMessage());
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(response.getWriter(), errorDetails);
+        } catch (ExpiredJwtException e) {
+            log.error("Expired JWT token.", e);
+            //HANDLE IT HERE::::: wrap ExpiredJwtException in AuthenticationException and rethrow Exception
+            throw new CredentialsExpiredException("Expired jwt credentials ", e);
         }
         filterChain.doFilter(request, response);
     }
