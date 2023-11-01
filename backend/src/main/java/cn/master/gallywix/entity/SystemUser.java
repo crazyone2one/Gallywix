@@ -52,7 +52,7 @@ public class SystemUser implements Serializable {
     /**
      * 帐号状态（0正常 1停用）
      */
-    private Integer status;
+    private Boolean status;
 
     /**
      * 创建者
