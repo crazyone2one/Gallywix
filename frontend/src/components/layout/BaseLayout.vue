@@ -5,9 +5,13 @@ import {
   NLayoutSider,
   NLayoutFooter,
   NH2,
-} from "naive-ui";
-import { useClientHeight } from "/@/composables/client";
-const { height } = useClientHeight();
+  NButton,
+} from "naive-ui"
+import { useClientHeight } from "/@/composables/client"
+const { height } = useClientHeight()
+const handleTest = () => {
+  window.$message.info("test")
+}
 </script>
 
 <template>
@@ -19,8 +23,7 @@ const { height } = useClientHeight();
       <n-layout-sider
         content-style="padding: 24px;"
         :native-scrollbar="false"
-        bordered
-      >
+        bordered>
         <n-h2>海淀桥</n-h2>
         <n-h2>海淀桥</n-h2>
         <n-h2>海淀桥</n-h2>
@@ -57,9 +60,8 @@ const { height } = useClientHeight();
     <n-layout-footer
       position="absolute"
       style="height: 64px; padding: 24px"
-      bordered
-    >
-      城府路
+      bordered>
+      <n-button size="small" @click="handleTest">城府路</n-button>
     </n-layout-footer>
   </n-layout>
 </template>

@@ -1,7 +1,36 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import {
+  darkTheme,
+  useOsTheme,
+  zhCN,
+  dateZhCN,
+  NConfigProvider,
+  NGlobalStyle,
+  NLoadingBarProvider,
+  NDialogProvider,
+  NNotificationProvider,
+  NMessageProvider,
+} from "naive-ui"
+import TheView from "./components/TheView.vue"
+import { computed } from "vue"
+const osTheme = useOsTheme()
+const theme = computed(() => (osTheme.value === "dark" ? darkTheme : null))
+</script>
 
 <template>
-  <router-view />
+  <n-config-provider :theme="theme" :locale="zhCN" :date-locale="dateZhCN">
+    <n-global-style />
+    <n-loading-bar-provider>
+      <n-dialog-provider>
+        <n-notification-provider>
+          <n-message-provider>
+            <the-view />
+            <slot />
+          </n-message-provider>
+        </n-notification-provider>
+      </n-dialog-provider>
+    </n-loading-bar-provider>
+  </n-config-provider>
 </template>
 
 <style scoped>
