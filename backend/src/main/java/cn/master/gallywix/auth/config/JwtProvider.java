@@ -1,10 +1,7 @@
 package cn.master.gallywix.auth.config;
 
 import cn.master.gallywix.entity.SystemUser;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,9 +39,11 @@ public class JwtProvider {
                 return parseJwtClaims(token);
             }
             return null;
-        } catch (ExpiredJwtException ex) {
-            log.error("Utils :: validateToke :: token Exception -> expired!");
-            request.setAttribute("expired", ex.getMessage());
+        } catch (ExpiredJwtException e) {
+            log.error("JWT token is expired: {}", e.getMessage());;
+            throw e;
+        } catch (UnsupportedJwtException ex) {
+            log.info("Unsupported JWT token.");
             throw ex;
         } catch (Exception ex) {
             request.setAttribute("invalid", ex.getMessage());
@@ -53,21 +52,17 @@ public class JwtProvider {
     }
 
     public String resolveToken(HttpServletRequest request) {
-        String TOKEN_HEADER = "Authorization";
-        String bearerToken = request.getHeader(TOKEN_HEADER);
-        String TOKEN_PREFIX = "Bearer ";
-        if (bearerToken != null && bearerToken.startsWith(TOKEN_PREFIX)) {
-            return bearerToken.substring(TOKEN_PREFIX.length());
+        String tokenHeader = "Authorization";
+        String bearerToken = request.getHeader(tokenHeader);
+        String tokenPrefix = "Bearer ";
+        if (bearerToken != null && bearerToken.startsWith(tokenPrefix)) {
+            return bearerToken.substring(tokenPrefix.length());
         }
         return null;
     }
 
     public boolean validateClaims(Claims claims) throws AuthenticationException {
-        try {
-            return claims.getExpiration().after(new Date());
-        } catch (Exception e) {
-            throw e;
-        }
+        return claims.getExpiration().after(new Date());
     }
 
     public String getUserName(Claims claims) {

@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,9 +38,9 @@ public class SecurityConfig {
                         .authorizeHttpRequests(request -> request
                                 // 配置不需要认证的请求
                                 .requestMatchers("/auth/authenticate", "/auth/refresh-token").permitAll()
-                                // .requestMatchers("/api/v1/management/**").hasAnyRole(ADMIN.name(), MANAGER.name())
+//                                .requestMatchers("/auth/demo1").hasAuthority("ADMIN")
                                 .anyRequest().authenticated())
-                        //       不通过session获取security context
+                        // 不通过session获取security context
                         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                         // .authenticationProvider(authenticationProvider)
                         .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
