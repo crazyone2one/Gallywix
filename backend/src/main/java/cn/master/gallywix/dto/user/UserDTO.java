@@ -1,9 +1,18 @@
 package cn.master.gallywix.dto.user;
 
+import cn.master.gallywix.entity.SystemRole;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author 11's papa
  * @since 11/02/2023
  **/
+@Setter
+@Getter
 public class UserDTO {
     private String id;
 
@@ -19,5 +28,5 @@ public class UserDTO {
 
     private Long updateTime;
 
-//    private List<Role> roles = new ArrayList<>();
+    private List<SystemRole> roles = new ArrayList<>();
 }
