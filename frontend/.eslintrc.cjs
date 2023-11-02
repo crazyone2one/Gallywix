@@ -33,5 +33,18 @@ module.exports = {
         "vue"
     ],
     "rules": {
-    }
+        "vue/singleline-html-element-content-newline": ["error", {
+          "ignoreWhenNoAttributes": true,
+          "ignoreWhenEmpty": true,
+          "ignores": ["pre", "textarea", ...INLINE_ELEMENTS]
+        }],
+        "vue/max-attributes-per-line": ["error", {
+            "singleline": {
+              "max": 4
+            },      
+            "multiline": {
+              "max": 1
+            }
+          }]
+      }
 }
