@@ -1,5 +1,6 @@
 package cn.master.gallywix.service;
 
+import cn.master.gallywix.dto.user.UserDTO;
 import com.mybatisflex.core.service.IService;
 import cn.master.gallywix.entity.SystemUser;
 
@@ -11,4 +12,5 @@ import cn.master.gallywix.entity.SystemUser;
  */
 public interface ISystemUserService extends IService<SystemUser> {
 
+    UserDTO saveUser(SystemUser systemUser);
 }

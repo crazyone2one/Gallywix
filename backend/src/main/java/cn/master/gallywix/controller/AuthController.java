@@ -5,6 +5,7 @@ import cn.master.gallywix.auth.module.AuthenticationRequest;
 import cn.master.gallywix.auth.module.AuthenticationResponse;
 import cn.master.gallywix.common.result.ResponseResult;
 import cn.master.gallywix.entity.SystemUser;
+import cn.master.gallywix.utils.SessionUtils;
 import com.mybatisflex.core.query.QueryChain;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -13,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -58,6 +60,7 @@ public class AuthController {
     @GetMapping("demo1")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseResult<String> demo() {
-        return ResponseResult.success("demo1");
+        UserDetails userDetails = SessionUtils.sessionUser();
+        return ResponseResult.success("current user: " + userDetails.getUsername());
     }
 }

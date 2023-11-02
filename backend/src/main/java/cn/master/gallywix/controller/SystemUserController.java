@@ -1,5 +1,7 @@
 package cn.master.gallywix.controller;
 
+import cn.master.gallywix.common.result.ResponseResult;
+import cn.master.gallywix.dto.user.UserDTO;
 import cn.master.gallywix.entity.SystemUser;
 import cn.master.gallywix.service.ISystemUserService;
 import com.mybatisflex.core.paginate.Page;
@@ -29,8 +31,8 @@ public class SystemUserController {
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
-    public boolean save(@RequestBody SystemUser systemUser) {
-        return iSystemUserService.save(systemUser);
+    public ResponseResult<UserDTO> save(@RequestBody SystemUser systemUser) {
+        return ResponseResult.success(iSystemUserService.saveUser(systemUser));
     }
 
     /**

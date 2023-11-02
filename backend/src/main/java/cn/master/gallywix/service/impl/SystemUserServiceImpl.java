@@ -1,5 +1,6 @@
 package cn.master.gallywix.service.impl;
 
+import cn.master.gallywix.dto.user.UserDTO;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import cn.master.gallywix.entity.SystemUser;
 import cn.master.gallywix.mapper.SystemUserMapper;
@@ -15,4 +16,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemUser> implements ISystemUserService {
 
+    @Override
+    public UserDTO saveUser(SystemUser systemUser) {
+        return null;
+    }
 }
