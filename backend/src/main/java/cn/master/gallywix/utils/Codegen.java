@@ -42,7 +42,7 @@ public class Codegen {
         idConfig.setKeyValue(KeyGenerators.flexId);
 
         TableConfig tableConfig = new TableConfig();
-        tableConfig.setTableName("tb_user_role");
+        tableConfig.setTableName("tb_system_workspace");
         tableConfig.setColumnConfig(logicDeleteColumn);
         tableConfig.setColumnConfig(idConfig);
 
