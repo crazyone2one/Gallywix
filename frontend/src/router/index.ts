@@ -2,7 +2,22 @@ import { RouteRecordRaw, createRouter, createWebHashHistory } from "vue-router"
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
+    redirect: "/dashboard",
     component: () => import(`/@/components/layout/BaseLayout.vue`),
+    children: [
+      {
+        path: "/dashboard",
+        name: "dashboard",
+        component: () => import(`/@/views/home/HomeView.vue`),
+        meta: { title: "首页", requiresAuth: true },
+      },
+      {
+        path: "/workspace",
+        name: "workspace",
+        component: () => import(`/@/views/setting/workspace/WorkspaceView.vue`),
+        meta: { title: "工作空间管理", requiresAuth: true },
+      },
+    ],
   },
   {
     path: "/login",

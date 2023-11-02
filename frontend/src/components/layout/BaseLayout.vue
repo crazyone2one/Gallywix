@@ -1,13 +1,8 @@
 <script setup lang="ts">
-import {
-  NLayout,
-  NLayoutHeader,
-  NLayoutSider,
-  NLayoutFooter,
-  NH2,
-  NButton,
-} from "naive-ui"
+import { NLayout, NLayoutFooter, NButton } from "naive-ui"
 import { useClientHeight } from "/@/composables/client"
+import TheHeader from "/@/components/layout/components/header/TheHeader.vue"
+import TheAside from "/@/components/layout/components/aside/TheAside.vue"
 const { height } = useClientHeight()
 const handleTest = () => {
   window.$message.info("test")
@@ -16,45 +11,11 @@ const handleTest = () => {
 
 <template>
   <n-layout :style="{ height: height + 'px' }">
-    <n-layout-header style="height: 64px; padding: 24px" bordered>
-      颐和园路
-    </n-layout-header>
+    <the-header />
     <n-layout position="absolute" style="top: 64px; bottom: 64px" has-sider>
-      <n-layout-sider
-        content-style="padding: 24px;"
-        :native-scrollbar="false"
-        bordered>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-        <n-h2>海淀桥</n-h2>
-      </n-layout-sider>
+      <the-aside />
       <n-layout content-style="padding: 24px;" :native-scrollbar="false">
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
+        <router-view />
       </n-layout>
     </n-layout>
     <n-layout-footer
