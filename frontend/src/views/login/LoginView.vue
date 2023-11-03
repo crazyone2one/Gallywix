@@ -4,11 +4,13 @@ import { NCard, NH1, NForm, NFormItemRow, NInput, NButton } from "naive-ui"
 import { ref, computed } from "vue"
 import { LOGIN, loginFunction } from "/@/apis/auth"
 import { useRoute, useRouter } from "vue-router"
+import { useAuthStore } from "/@/store/auth-store"
 
 const model = ref<LOGIN>({
   username: "",
   password: "",
 })
+const store = useAuthStore()
 const rules = {
   username: {
     required: true,
@@ -33,7 +35,9 @@ const handleLogin = () => {
   send()
 }
 onSuccess((resp) => {
-  console.log(resp)
+  const { access_token, refresh_token } = resp.data
+  store.accessToken = access_token
+  store.refreshToken = refresh_token
   // 路由跳转
   if (route.query?.redirect) {
     router.push({

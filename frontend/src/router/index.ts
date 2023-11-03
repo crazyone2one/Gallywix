@@ -1,4 +1,5 @@
 import { RouteRecordRaw, createRouter, createWebHashHistory } from "vue-router"
+import { useAuthStore } from "../store/auth-store"
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -39,4 +40,32 @@ const router = createRouter({
   },
 })
 
+router.beforeEach((to, _from, next) => {
+  const store = useAuthStore()
+  const isAuthenticated = store.accessToken != ""
+  if (to.path === "/login" && !isAuthenticated) {
+    next()
+  } else {
+    if (!isAuthenticated) {
+      store.restAuthStore()
+      next(
+        `/login?redirect=${to.path}&params=${JSON.stringify(
+          to.query ? to.query : to.params,
+        )}`,
+      )
+    } else if (isAuthenticated && to.path === "login") {
+      next("/")
+    } else {
+      next()
+    }
+  }
+})
+router.afterEach((to) => {
+  // TODO: title from sfc custom block?
+  // const current = to.matched[to.matched.length - 1].components.default
+  // const title = current.title ?? current.name
+  const items = [import.meta.env.VITE_APP_TITLE]
+  to.meta.title != null && items.unshift(to.meta.title)
+  document.title = items.join(" | ")
+})
 export default router

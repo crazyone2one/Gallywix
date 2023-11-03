@@ -1,8 +1,12 @@
 package cn.master.gallywix.utils;
 
+import cn.master.gallywix.entity.SystemUser;
+import com.mybatisflex.core.query.QueryChain;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import static cn.master.gallywix.entity.table.SystemUserTableDef.SYSTEM_USER;
 
 /**
  * @author 11's papa
@@ -12,5 +16,10 @@ public class SessionUtils {
     public static UserDetails sessionUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (UserDetails) authentication.getPrincipal();
+    }
+    public static SystemUser sessionUserInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return QueryChain.of(SystemUser.class).where(SYSTEM_USER.USERNAME.eq(principal.getUsername())).one();
     }
 }

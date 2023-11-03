@@ -14,7 +14,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -60,7 +59,7 @@ public class AuthController {
     @GetMapping("demo1")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseResult<String> demo() {
-        UserDetails userDetails = SessionUtils.sessionUser();
-        return ResponseResult.success("current user: " + userDetails.getUsername());
+        SystemUser user = SessionUtils.sessionUserInfo();
+        return ResponseResult.success("current user: {},{}" + user.getUsername() + user.getId());
     }
 }

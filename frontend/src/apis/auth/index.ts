@@ -4,10 +4,11 @@ export interface LOGIN {
   username: string
   password: string
 }
-export interface LoginResponse<
-  T = { access_token: string; refresh_token: string; user_id: number },
-> extends GenericResponse {
-  data: T
+export interface LoginResponse {
+  access_token: string
+  refresh_token: string
+  user_id: number
+  roles: Array<string>
 }
 /**
  * 登录

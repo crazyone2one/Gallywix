@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { NLayoutHeader, NMenu, MenuOption } from "naive-ui"
 import { ref } from "vue"
-import logo from "../../../../../public/387941.svg"
+import logo from "./../../../../assets/387941.svg"
 
 const activeKey = ref<string | null>(null)
 const menuOptions: MenuOption[] = [
