@@ -1,13 +1,47 @@
 <script setup lang="ts">
-import { NResult, NButton } from "naive-ui"
+import { NButton, NSkeleton, DataTableColumns, NDataTable } from "naive-ui"
 import BaseCard from "/@/components/BaseCard.vue"
 import WorkspaceEdit from "./components/WorkspaceEdit.vue"
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
+import { WORKSPACE, loadWorkspaceData } from "/@/apis/workspace"
+import { ITableDataInfo } from "/@/apis/interface"
+import { useRequest } from "alova"
 
 const workspaceEdit = ref<InstanceType<typeof WorkspaceEdit> | null>(null)
+const columns: DataTableColumns<WORKSPACE> = [
+  {
+    type: "selection",
+    align: "center",
+  },
+  {
+    title: "名称",
+    key: "name",
+    align: "center",
+  },
+  {
+    title: "描述",
+    key: "description",
+    align: "center",
+  },
+]
+const tableInfo = ref<ITableDataInfo<WORKSPACE[]>>({
+  data: [],
+  total: 0,
+})
+const rowKey = (row: WORKSPACE) => row.id as unknown as string
 const handleAdd = () => {
   workspaceEdit.value?.open()
 }
+const { loading, send, onSuccess } = useRequest(loadWorkspaceData(), {
+  immediate: false,
+})
+onMounted(() => {
+  send()
+})
+onSuccess((resp) => {
+  loading.value = false
+  tableInfo.value.data = resp.data.records
+})
 </script>
 <template>
   <base-card>
@@ -15,14 +49,12 @@ const handleAdd = () => {
       <n-button @click="handleAdd">workspace</n-button>
     </template>
     <template #content>
-      <n-result
-        status="403"
-        title="403 禁止访问"
-        description="总有些门是对你关闭的">
-        <template #footer>
-          <n-button>workspace</n-button>
-        </template>
-      </n-result>
+      <n-skeleton v-if="loading" :sharp="false" height="550px"> </n-skeleton>
+      <n-data-table
+        v-else
+        :columns="columns"
+        :data="tableInfo.data"
+        :row-key="rowKey" />
     </template>
   </base-card>
   <workspace-edit ref="workspaceEdit" />

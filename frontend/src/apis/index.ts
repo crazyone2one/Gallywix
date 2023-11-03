@@ -33,7 +33,6 @@ const alovaInstance = createAlova({
     onSuccess: async (response, method) => {
       logOnDev(`🚀 [API] ${method.url}  | Response ${response.status}`)
       const json = await response.json()
-
       if (json.code !== 200) {
         // 抛出错误或返回reject状态的Promise实例时，此请求将抛出错误
         throw new Error(json.message)

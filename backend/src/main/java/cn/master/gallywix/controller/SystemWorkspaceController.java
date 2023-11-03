@@ -84,8 +84,8 @@ public class SystemWorkspaceController {
      * @return 分页对象
      */
     @GetMapping("page")
-    public Page<SystemWorkspace> page(Page<SystemWorkspace> page) {
-        return iSystemWorkspaceService.page(page);
+    public ResponseResult<Page<SystemWorkspace>> page(Page<SystemWorkspace> page) {
+        return ResponseResult.success(iSystemWorkspaceService.page(page));
     }
 
 }
