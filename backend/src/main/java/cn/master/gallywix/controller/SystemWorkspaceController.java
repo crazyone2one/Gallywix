@@ -1,6 +1,7 @@
 package cn.master.gallywix.controller;
 
 import cn.master.gallywix.common.result.ResponseResult;
+import cn.master.gallywix.controller.vo.workspace.WorkspacePageReqVO;
 import cn.master.gallywix.entity.SystemWorkspace;
 import cn.master.gallywix.service.ISystemWorkspaceService;
 import com.mybatisflex.core.paginate.Page;
@@ -83,9 +84,9 @@ public class SystemWorkspaceController {
      * @param page 分页对象
      * @return 分页对象
      */
-    @GetMapping("page")
-    public ResponseResult<Page<SystemWorkspace>> page(Page<SystemWorkspace> page) {
-        return ResponseResult.success(iSystemWorkspaceService.page(page));
+    @PostMapping("page")
+    public ResponseResult<Page<SystemWorkspace>> page(@RequestBody WorkspacePageReqVO page) {
+        return ResponseResult.success(iSystemWorkspaceService.findDataByPage(page));
     }
 
 }

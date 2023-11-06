@@ -1,4 +1,4 @@
-import { IPage } from "../interface"
+import { IPage, PageReq } from "../interface"
 import alovaInstance from ".."
 
 export interface WORKSPACE {
@@ -8,8 +8,8 @@ export interface WORKSPACE {
   organizationId?: string
 }
 
-export const loadWorkspaceData = () =>
-  alovaInstance.Get<IPage<WORKSPACE[]>>(`/workspace/page`)
+export const loadWorkspaceData = (param: PageReq) =>
+  alovaInstance.Post<IPage<WORKSPACE[]>>(`/workspace/page`, param)
 
 export const createWorkspace = (param: WORKSPACE) =>
   alovaInstance.Post<WORKSPACE>(`/workspace/save`, param)

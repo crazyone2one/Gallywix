@@ -4,7 +4,7 @@ import BaseCard from "/@/components/BaseCard.vue"
 import WorkspaceEdit from "./components/WorkspaceEdit.vue"
 import { ref, onMounted } from "vue"
 import { WORKSPACE, loadWorkspaceData } from "/@/apis/workspace"
-import { ITableDataInfo } from "/@/apis/interface"
+import { ITableDataInfo, PageReq } from "/@/apis/interface"
 import { useRequest } from "alova"
 
 const workspaceEdit = ref<InstanceType<typeof WorkspaceEdit> | null>(null)
@@ -24,6 +24,12 @@ const columns: DataTableColumns<WORKSPACE> = [
     align: "center",
   },
 ]
+const condition = ref<PageReq>({
+  name: "",
+  ids: [],
+  pageNumber: 1,
+  pageSize: 10,
+})
 const tableInfo = ref<ITableDataInfo<WORKSPACE[]>>({
   data: [],
   total: 0,
@@ -32,9 +38,12 @@ const rowKey = (row: WORKSPACE) => row.id as unknown as string
 const handleAdd = () => {
   workspaceEdit.value?.open()
 }
-const { loading, send, onSuccess } = useRequest(loadWorkspaceData(), {
-  immediate: false,
-})
+const { loading, send, onSuccess } = useRequest(
+  loadWorkspaceData(condition.value),
+  {
+    immediate: false,
+  },
+)
 onMounted(() => {
   send()
 })
