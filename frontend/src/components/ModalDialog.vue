@@ -12,7 +12,7 @@ withDefaults(defineProps<Props>(), {
   title: "操作", // modal title
   showFooter: true, // show footer button
   btnText: "",
-  modalWidth: "auto", // modal width
+  modalWidth: "", // modal width
 })
 const show = ref(false)
 const emits = defineEmits(["confirm", "cancel", "saveAsEdit", "closeModal"])
