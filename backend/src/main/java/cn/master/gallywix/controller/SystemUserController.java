@@ -1,6 +1,7 @@
 package cn.master.gallywix.controller;
 
 import cn.master.gallywix.common.result.ResponseResult;
+import cn.master.gallywix.controller.vo.user.UserPageReqVO;
 import cn.master.gallywix.dto.user.UserDTO;
 import cn.master.gallywix.entity.SystemUser;
 import cn.master.gallywix.service.ISystemUserService;
@@ -84,9 +85,9 @@ public class SystemUserController {
      * @param page 分页对象
      * @return 分页对象
      */
-    @GetMapping("page")
-    public Page<SystemUser> page(Page<SystemUser> page) {
-        return iSystemUserService.page(page);
+    @PostMapping("page")
+    public ResponseResult<Page<SystemUser>> page(UserPageReqVO page) {
+        return ResponseResult.success(iSystemUserService.findDataByPage(page));
     }
 
 }

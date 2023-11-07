@@ -1,5 +1,7 @@
 package cn.master.gallywix.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
@@ -50,7 +52,7 @@ public class SystemUser implements Serializable {
     private String password;
 
     /**
-     * 帐号状态（0正常 1停用）
+     * 帐号状态（1正常 0停用）
      */
     private Boolean status;
 
@@ -62,6 +64,8 @@ public class SystemUser implements Serializable {
     /**
      * 创建时间
      */
+    @Column(onInsertValue = "now()")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
     /**
@@ -72,11 +76,13 @@ public class SystemUser implements Serializable {
     /**
      * 更新时间
      */
+    @Column(onInsertValue = "now()", onUpdateValue = "now()")
     private LocalDateTime updateTime;
 
     /**
      * （0正常 1删除）
      */
+    @Column(isLogicDelete = true)
     private Boolean delFlag;
 
     private String language;

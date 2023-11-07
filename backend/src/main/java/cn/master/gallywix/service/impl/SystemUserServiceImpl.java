@@ -1,13 +1,16 @@
 package cn.master.gallywix.service.impl;
 
 import cn.master.gallywix.common.exception.CustomException;
+import cn.master.gallywix.controller.vo.user.UserPageReqVO;
 import cn.master.gallywix.dto.user.UserDTO;
 import cn.master.gallywix.entity.SystemRole;
 import cn.master.gallywix.entity.SystemUser;
 import cn.master.gallywix.entity.UserRole;
 import cn.master.gallywix.mapper.SystemUserMapper;
 import cn.master.gallywix.service.ISystemUserService;
+import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryChain;
+import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -39,6 +42,12 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         return getUserDTO(user.getId());
     }
 
+    @Override
+    public Page<SystemUser> findDataByPage(UserPageReqVO page) {
+        QueryWrapper wrapper = QueryWrapper.create().where(SYSTEM_USER.USERNAME.like(page.getName()));
+        return mapper.paginate(page.getPageNumber(),page.getPageSize(),wrapper);
+    }
+
     private UserDTO getUserDTO(String id) {
         SystemUser user = QueryChain.of(SystemUser.class).where(SYSTEM_USER.ID.eq(id)).one();
         if (Objects.isNull(user)) {
@@ -57,7 +66,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     }
 
     public void createUser(SystemUser user) {
-        user.setStatus(true);
+//        user.setStatus(true);
         mapper.insert(user);
     }
 

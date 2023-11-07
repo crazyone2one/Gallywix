@@ -13,6 +13,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: "首页", requiresAuth: true },
       },
       {
+        path: "/user",
+        name: "user",
+        component: () => import(`/@/views/setting/user/index.vue`),
+        meta: { title: "用户管理", requiresAuth: true },
+      },
+      {
         path: "/workspace",
         name: "workspace",
         component: () => import(`/@/views/setting/workspace/WorkspaceView.vue`),
@@ -42,9 +48,9 @@ const router = createRouter({
 
 router.beforeEach((to, _from, next) => {
   const store = useAuthStore()
-  const isAuthenticated = store.accessToken != ""
-  if (to.path === "/login" && !isAuthenticated) {
-    next()
+  const isAuthenticated = store.accessToken || ""
+  if (to.path === "/login") {
+    !!isAuthenticated ? next("/") : next()
   } else {
     if (!isAuthenticated) {
       store.restAuthStore()

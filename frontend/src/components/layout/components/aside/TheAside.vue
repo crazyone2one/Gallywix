@@ -10,7 +10,12 @@ const menuOptions: MenuOption[] = [
     key: "pinball-1973",
     children: [
       {
-        label: "用户管理",
+        label: () =>
+          h(
+            RouterLink,
+            { to: { name: "user" } },
+            { default: () => "用户管理" },
+          ),
         key: "user",
       },
       {
