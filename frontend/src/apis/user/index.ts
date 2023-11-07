@@ -33,3 +33,5 @@ export const updateUserData = (param: USER) =>
  */
 export const deleteUserData = (param: string) =>
   alovaInstance.Delete(`/system/user/remove/${param}`)
+
+export const logOut = () => alovaInstance.Post("/system/user/logout")

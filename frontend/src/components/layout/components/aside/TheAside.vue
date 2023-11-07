@@ -29,6 +29,21 @@ const menuOptions: MenuOption[] = [
       },
     ],
   },
+  {
+    label: "demo",
+    key: "demo",
+    children: [
+      {
+        label: () =>
+          h(
+            RouterLink,
+            { to: { name: "upload" } },
+            { default: () => "upload" },
+          ),
+        key: "user",
+      },
+    ],
+  },
 ]
 </script>
 <template>

@@ -1,6 +1,7 @@
 package cn.master.gallywix.auth.config;
 
 import cn.master.gallywix.service.CustomUserDetailsService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * @author 11's papa
@@ -30,6 +32,7 @@ public class SecurityConfig {
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
         return
@@ -42,11 +45,14 @@ public class SecurityConfig {
                                 .anyRequest().authenticated())
                         // 不通过session获取security context
                         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                        // .authenticationProvider(authenticationProvider)
                         .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                         .exceptionHandling(exception -> exception
                                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                                 .accessDeniedHandler(jwtAccessDeniedHandler))
+                        .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                                .logoutSuccessHandler((request, response, authentication) -> {
+                                    response.setStatus(HttpServletResponse.SC_OK);
+                                }))
                         .build();
     }
 

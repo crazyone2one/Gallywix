@@ -2,6 +2,7 @@
 import { NLayoutHeader, NMenu, MenuOption } from "naive-ui"
 import { ref } from "vue"
 import logo from "./../../../../assets/387941.svg"
+import UserInfo from "./UserInfo.vue"
 
 const activeKey = ref<string | null>(null)
 const menuOptions: MenuOption[] = [
@@ -89,6 +90,9 @@ const menuOptions: MenuOption[] = [
         v-model:value="activeKey"
         mode="horizontal"
         :options="menuOptions" />
+    </div>
+    <div>
+      <user-info />
     </div>
   </n-layout-header>
 </template>

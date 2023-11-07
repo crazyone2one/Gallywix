@@ -24,6 +24,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import(`/@/views/setting/workspace/WorkspaceView.vue`),
         meta: { title: "工作空间管理", requiresAuth: true },
       },
+      {
+        path: "/demo/upload",
+        name: "upload",
+        component: () => import(`/@/views/demo/upload/index.vue`),
+        meta: { title: "上传" },
+      },
     ],
   },
   {
