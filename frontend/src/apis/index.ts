@@ -33,12 +33,20 @@ const alovaInstance = createAlova({
     onSuccess: async (response, method) => {
       logOnDev(`🚀 [API] ${method.url}  | Response ${response.status}`)
       const json = await response.json()
-      if (json.code !== 200) {
-        // 抛出错误或返回reject状态的Promise实例时，此请求将抛出错误
-        throw new Error(json.message)
+      if (response.status === 400) {
+        window.$message.error(json.message)
+      } else if (response.status === 401) {
+        useAuthStore().restAuthStore()
+        window.location.reload()
+      } else {
+        if (json.code !== 200) {
+          // 抛出错误或返回reject状态的Promise实例时，此请求将抛出错误
+          throw new Error(json.message)
+          // window.$message.error(json.message)
+        }
+        // 解析的响应数据将传给method实例的transformData钩子函数，这些函数将在后续讲解
+        return json.data
       }
-      // 解析的响应数据将传给method实例的transformData钩子函数，这些函数将在后续讲解
-      return json.data
     },
 
     // 请求失败的拦截器
