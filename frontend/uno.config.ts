@@ -22,7 +22,17 @@ export default defineConfig({
   presets: [
     presetUno(),
     presetAttributify(),
-    presetIcons(),
+    presetIcons({
+      extraProperties: {
+        display: "inline-block",
+        "vertical-align": "middle",
+        // ...
+      },
+      collections: {
+        tabler: () =>
+          import("@iconify-json/tabler/icons.json").then((i) => i.default),
+      },
+    }),
     presetTypography(),
     presetWebFonts({
       fonts: {
