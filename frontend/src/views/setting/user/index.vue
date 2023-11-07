@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue"
-import { NSkeleton, DataTableColumns, NDataTable } from "naive-ui"
+import { ref, onMounted, h } from "vue"
+import { NSkeleton, DataTableColumns, NDataTable, NSwitch } from "naive-ui"
 import BaseCard from "/@/components/BaseCard.vue"
 import BaseSearch from "/@/components/BaseSearch.vue"
 import UserEdit from "./components/UserEdit.vue"
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
 import { useRequest } from "alova"
-import { USER, loadUserData } from "/@/apis/user"
+import { USER, loadUserData, updateUserData } from "/@/apis/user"
 
 const userEdit = ref<InstanceType<typeof UserEdit> | null>(null)
 const columns: DataTableColumns<USER> = [
@@ -33,6 +33,16 @@ const columns: DataTableColumns<USER> = [
     title: "状态",
     key: "userStatus",
     align: "center",
+    render(rowData) {
+      return h(
+        NSwitch,
+        {
+          value: rowData.status,
+          onUpdateValue: () => handleChangeStatus(rowData),
+        },
+        {},
+      )
+    },
   },
   {
     title: "创建时间",
@@ -60,6 +70,15 @@ onSuccess((resp) => {
 })
 const handleAdd = () => {
   userEdit.value?.open()
+}
+
+const handleChangeStatus = (rowData: USER) => {
+  rowData.status = !rowData.status
+  useRequest(updateUserData(rowData))
+    .send()
+    .then(() => {
+      send()
+    })
 }
 onMounted(() => {
   send()
