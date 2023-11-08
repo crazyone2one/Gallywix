@@ -1,6 +1,5 @@
 package cn.master.gallywix.auth.config;
 
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * @author 11's papa
@@ -29,6 +27,7 @@ public class SecurityConfig {
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final UnAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final AuthLogoutSuccessHandler logoutSuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
@@ -46,10 +45,9 @@ public class SecurityConfig {
                         .exceptionHandling(exception -> exception
                                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                                 .accessDeniedHandler(jwtAccessDeniedHandler))
-                        .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                .logoutSuccessHandler((request, response, authentication) -> {
-                                    response.setStatus(HttpServletResponse.SC_OK);
-                                }))
+                        .logout(logout -> logout
+//                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                                .logoutSuccessHandler(logoutSuccessHandler))
                         .build();
     }
 

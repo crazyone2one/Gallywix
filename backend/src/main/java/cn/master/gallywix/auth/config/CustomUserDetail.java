@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,6 +21,11 @@ public class CustomUserDetail implements UserDetails {
     @Getter
     private final String id;
     private List<GrantedAuthority> authorities;
+
+    public CustomUserDetail(SystemUser systemUser) {
+        this(systemUser, Collections.emptyList());
+    }
+
     public CustomUserDetail(SystemUser systemUser, List<String> permissions) {
         this.systemUser = systemUser;
         this.id = systemUser.getId();

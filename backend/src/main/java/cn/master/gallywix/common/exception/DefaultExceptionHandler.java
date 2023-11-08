@@ -1,6 +1,5 @@
-package cn.master.gallywix.auth.config;
+package cn.master.gallywix.common.exception;
 
-import cn.master.gallywix.common.exception.CustomException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
