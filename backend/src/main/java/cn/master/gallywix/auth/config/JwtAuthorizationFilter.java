@@ -49,7 +49,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
         val accessToken = jwtProvider.resolveToken(request);
         if (Objects.isNull(accessToken) || StringUtils.isBlank(redisUtils.getString(accessToken))) {
-            ServletUtils.renderString(response, ResponseResult.fail(HttpStatus.UNAUTHORIZED.value(), "请先登录"), HttpStatus.UNAUTHORIZED.value());
+            ServletUtils.renderString(response, ResponseResult.fail(HttpStatus.UNAUTHORIZED.value(), "请先登录"));
             return;
         }
         Claims claims;
@@ -58,15 +58,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             claims = jwtProvider.resolveClaims(request);
         } catch (ExpiredJwtException e) {
             log.error("JWT token is expired: {}", e.getMessage());
-            ServletUtils.renderString(response, ResponseResult.fail(HttpStatus.UNAUTHORIZED.value(), "JWT token is expired"), HttpStatus.UNAUTHORIZED.value());
+            ServletUtils.renderString(response, ResponseResult.fail(HttpStatus.UNAUTHORIZED.value(), "JWT token is expired"));
             return;
         } catch (UnsupportedJwtException ex) {
             log.info("Unsupported JWT token.");
-            ServletUtils.renderString(response, ResponseResult.fail(HttpStatus.UNAUTHORIZED.value(), "Unsupported JWT token"), HttpStatus.UNAUTHORIZED.value());
+            ServletUtils.renderString(response, ResponseResult.fail(HttpStatus.UNAUTHORIZED.value(), "Unsupported JWT token"));
             return;
         } catch (Exception ex) {
             request.setAttribute("invalid", ex.getMessage());
-            ServletUtils.renderString(response, ResponseResult.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR.value());
+            ServletUtils.renderString(response, ResponseResult.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error"));
             return;
         }
         assert claims != null;

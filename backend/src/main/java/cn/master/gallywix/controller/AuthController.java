@@ -63,7 +63,7 @@ public class AuthController {
     }
 
     @GetMapping("demo1")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN1')")
     public ResponseResult<String> demo() {
         SystemUser user = SessionUtils.sessionUserInfo();
         return ResponseResult.success("current user: {},{}" + user.getUsername() + user.getId());
@@ -73,6 +73,6 @@ public class AuthController {
         String token = jwtProvider.resolveToken(request);
         redisUtils.delete(token);
         SessionUtils.clearContext();
-        ServletUtils.renderString(response, ResponseResult.success(), 200);
+        ServletUtils.renderString(response, ResponseResult.success());
     }
 }

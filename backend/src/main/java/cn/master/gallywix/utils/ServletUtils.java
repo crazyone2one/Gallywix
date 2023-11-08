@@ -10,13 +10,13 @@ import org.springframework.http.MediaType;
  **/
 @Slf4j
 public class ServletUtils {
-    public static void renderString(HttpServletResponse response, Object object, int status) {
-        renderString(response, JsonUtils.toJsonString(object), status);
+    public static void renderString(HttpServletResponse response, Object object) {
+        renderString(response, JsonUtils.toJsonString(object));
     }
 
-    public static void renderString(HttpServletResponse response, String json, int status) {
+    public static void renderString(HttpServletResponse response, String json) {
         try {
-            response.setStatus(status);
+            response.setStatus(200);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setCharacterEncoding("utf-8");
             response.getWriter().print(json);

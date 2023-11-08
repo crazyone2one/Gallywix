@@ -25,8 +25,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
-    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-    private final UnAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final UnAccessDeniedHandler unAccessDeniedHandler;
+    private final UnAuthenticationEntryPoint unAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
@@ -42,9 +42,12 @@ public class SecurityConfig {
                         // 不通过session获取security context
                         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                         .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
+                        // 异常处理
                         .exceptionHandling(exception -> exception
-                                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                                .accessDeniedHandler(jwtAccessDeniedHandler))
+                                // 认证失败
+                                .authenticationEntryPoint(unAuthenticationEntryPoint)
+                                // 权限不正确
+                                .accessDeniedHandler(unAccessDeniedHandler))
                         .build();
     }
 
