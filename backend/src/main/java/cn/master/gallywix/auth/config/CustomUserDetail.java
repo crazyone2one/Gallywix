@@ -2,12 +2,9 @@ package cn.master.gallywix.auth.config;
 
 import cn.master.gallywix.entity.SystemUser;
 import lombok.Getter;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -20,19 +17,16 @@ public class CustomUserDetail implements UserDetails {
     private final SystemUser systemUser;
     @Getter
     private final String id;
-    private List<GrantedAuthority> authorities;
+    private final List<GrantedAuthority> authorities;
 
     public CustomUserDetail(SystemUser systemUser) {
-        this(systemUser, Collections.emptyList());
+         this(systemUser, Collections.emptyList());
     }
 
-    public CustomUserDetail(SystemUser systemUser, List<String> permissions) {
+    public CustomUserDetail(SystemUser systemUser, List<GrantedAuthority> permissions) {
         this.systemUser = systemUser;
         this.id = systemUser.getId();
-        if (CollectionUtils.isNotEmpty(permissions)) {
-            this.authorities = new ArrayList<>();
-            permissions.forEach(role -> this.authorities.add(new SimpleGrantedAuthority(role)));
-        }
+        this.authorities = permissions;
     }
 
     @Override

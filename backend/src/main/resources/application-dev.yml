@@ -8,6 +8,15 @@ spring:
     username: root
     password: admin
     type: com.alibaba.druid.pool.DruidDataSource
+  data:
+    redis:
+      database: 1
+      host: localhost
+      port: 6379
+      timeout: 5000
+      jedis:
+        pool:
+          max-active: 10
 mybatis-flex:
   global-config:
     logic-delete-column: del_flag
@@ -17,6 +26,6 @@ application:
   security:
     jwt:
       secret-key: U2FsdGVkX18epMj+KK0TtMyZJzvr45zahWHKpl4+kSg=
-      expiration: 86400000 # a day
+      expiration: 60000 # a day=>86400000 1min=>60000
       refresh-token:
         expiration: 604800000 # 7 days

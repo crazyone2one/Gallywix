@@ -5,6 +5,8 @@ import cn.master.gallywix.entity.SystemUser;
 import com.mybatisflex.core.query.QueryChain;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static cn.master.gallywix.entity.table.SystemUserTableDef.SYSTEM_USER;
 
@@ -34,6 +37,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         List<String> roles = new ArrayList<>();
         roles.add("USER");
         roles.add("ADMIN");
-        return new CustomUserDetail(user, roles);
+        roles.add("ROLE_admin");
+        List<GrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        return new CustomUserDetail(user, authorities);
     }
 }

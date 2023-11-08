@@ -27,7 +27,6 @@ public class SecurityConfig {
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final UnAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final AuthLogoutSuccessHandler logoutSuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
@@ -36,8 +35,9 @@ public class SecurityConfig {
                 security.csrf(AbstractHttpConfigurer::disable)
                         .authorizeHttpRequests(request -> request
                                 // 配置不需要认证的请求
-                                .requestMatchers("/auth/authenticate", "/auth/refresh-token").permitAll()
+                                .requestMatchers("/auth/authenticate", "/auth/refresh-token").anonymous()
 //                                .requestMatchers("/auth/demo1").hasAuthority("ADMIN")
+                                .requestMatchers("/demo1").hasAnyRole("admin")
                                 .anyRequest().authenticated())
                         // 不通过session获取security context
                         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -45,9 +45,6 @@ public class SecurityConfig {
                         .exceptionHandling(exception -> exception
                                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                                 .accessDeniedHandler(jwtAccessDeniedHandler))
-                        .logout(logout -> logout
-//                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                .logoutSuccessHandler(logoutSuccessHandler))
                         .build();
     }
 

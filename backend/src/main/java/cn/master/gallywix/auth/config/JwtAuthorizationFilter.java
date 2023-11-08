@@ -1,6 +1,7 @@
 package cn.master.gallywix.auth.config;
 
 import cn.master.gallywix.common.result.ResponseResult;
+import cn.master.gallywix.utils.RedisUtils;
 import cn.master.gallywix.utils.ServletUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -13,6 +14,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,6 +37,7 @@ import java.util.Objects;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtProvider jwtProvider;
     private final UserDetailsService userDetailsService;
+    private final RedisUtils redisUtils;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -45,7 +48,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
         val accessToken = jwtProvider.resolveToken(request);
-        if (Objects.isNull(accessToken)) {
+        if (Objects.isNull(accessToken) || StringUtils.isBlank(redisUtils.getString(accessToken))) {
             ServletUtils.renderString(response, ResponseResult.fail(HttpStatus.UNAUTHORIZED.value(), "请先登录"), HttpStatus.UNAUTHORIZED.value());
             return;
         }

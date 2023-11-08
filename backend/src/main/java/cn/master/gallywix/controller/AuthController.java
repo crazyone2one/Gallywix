@@ -6,7 +6,12 @@ import cn.master.gallywix.auth.module.AuthenticationRequest;
 import cn.master.gallywix.auth.module.AuthenticationResponse;
 import cn.master.gallywix.common.result.ResponseResult;
 import cn.master.gallywix.entity.SystemUser;
+import cn.master.gallywix.utils.JsonUtils;
+import cn.master.gallywix.utils.RedisUtils;
+import cn.master.gallywix.utils.ServletUtils;
 import cn.master.gallywix.utils.SessionUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.http.HttpStatus;
@@ -30,6 +35,7 @@ import java.util.List;
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
+    private final RedisUtils redisUtils;
 
     @ResponseBody
     @PostMapping("/authenticate")
@@ -49,6 +55,7 @@ public class AuthController {
                     .user(principal)
                     .roles(collect)
                     .build();
+            redisUtils.setString(accessToken, JsonUtils.toJsonString(response));
             return ResponseResult.success(response);
         } catch (AuthenticationException e) {
             return ResponseResult.fail(HttpStatus.UNAUTHORIZED.value(), "invalid username or password");
@@ -60,5 +67,12 @@ public class AuthController {
     public ResponseResult<String> demo() {
         SystemUser user = SessionUtils.sessionUserInfo();
         return ResponseResult.success("current user: {},{}" + user.getUsername() + user.getId());
+    }
+    @PostMapping("/logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        String token = jwtProvider.resolveToken(request);
+        redisUtils.delete(token);
+        SessionUtils.clearContext();
+        ServletUtils.renderString(response, ResponseResult.success(), 200);
     }
 }

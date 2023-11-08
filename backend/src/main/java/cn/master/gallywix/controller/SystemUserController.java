@@ -6,12 +6,7 @@ import cn.master.gallywix.dto.user.UserDTO;
 import cn.master.gallywix.entity.SystemUser;
 import cn.master.gallywix.service.ISystemUserService;
 import com.mybatisflex.core.paginate.Page;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -93,14 +88,5 @@ public class SystemUserController {
     @PostMapping("page")
     public ResponseResult<Page<SystemUser>> page(UserPageReqVO page) {
         return ResponseResult.success(iSystemUserService.findDataByPage(page));
-    }
-
-    @PostMapping("/logout")
-    public ResponseResult<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-        return ResponseResult.success();
     }
 }
