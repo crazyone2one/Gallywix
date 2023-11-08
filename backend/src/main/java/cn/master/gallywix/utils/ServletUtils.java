@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
  * @since 11/08/2023
  **/
 @Slf4j
-public class ResponseUtils {
+public class ServletUtils {
     public static void renderString(HttpServletResponse response, Object object, int status) {
         renderString(response, JsonUtils.toJsonString(object), status);
     }
