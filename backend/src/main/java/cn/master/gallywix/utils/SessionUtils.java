@@ -17,8 +17,17 @@ public class SessionUtils {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (UserDetails) authentication.getPrincipal();
     }
+
+    public static Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    public static void setAuthentication(Authentication authentication) {
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
     public static SystemUser sessionUserInfo() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = getAuthentication();
         UserDetails principal = (UserDetails) authentication.getPrincipal();
         return QueryChain.of(SystemUser.class).where(SYSTEM_USER.USERNAME.eq(principal.getUsername())).one();
     }

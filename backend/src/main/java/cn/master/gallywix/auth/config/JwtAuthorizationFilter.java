@@ -1,5 +1,10 @@
 package cn.master.gallywix.auth.config;
 
+import cn.master.gallywix.common.result.ResponseResult;
+import cn.master.gallywix.utils.ResponseUtils;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,11 +13,12 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -29,20 +35,43 @@ import java.util.Objects;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtProvider jwtProvider;
     private final UserDetailsService userDetailsService;
+
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        val accessToken = jwtProvider.resolveToken(request);
-        if (Objects.isNull(accessToken)) {
+        String uri = request.getRequestURI();
+        // 登录接口
+        if ("/auth/authenticate".equals(uri) || "/auth/refresh-token".equals(uri)) {
             filterChain.doFilter(request, response);
             return;
         }
-        val claims = jwtProvider.resolveClaims(request);
+        val accessToken = jwtProvider.resolveToken(request);
+        if (Objects.isNull(accessToken)) {
+            ResponseUtils.renderString(response, ResponseResult.fail(HttpStatus.UNAUTHORIZED.value(), "请先登录"));
+            return;
+        }
+        Claims claims;
+        // 验证token
+        try {
+            claims = jwtProvider.resolveClaims(request);
+        } catch (ExpiredJwtException e) {
+            log.error("JWT token is expired: {}", e.getMessage());
+            ResponseUtils.renderString(response, ResponseResult.fail(HttpStatus.UNAUTHORIZED.value(), "JWT token is expired"));
+            return;
+        } catch (UnsupportedJwtException ex) {
+            log.info("Unsupported JWT token.");
+            ResponseUtils.renderString(response, ResponseResult.fail(HttpStatus.UNAUTHORIZED.value(), "Unsupported JWT token"));
+            return;
+        } catch (Exception ex) {
+            request.setAttribute("invalid", ex.getMessage());
+            ResponseUtils.renderString(response, ResponseResult.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error"));
+            return;
+        }
         assert claims != null;
         if (jwtProvider.validateClaims(claims)) {
+            // 将认证成功的用户保存到上下文
             String username = claims.getSubject();
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);

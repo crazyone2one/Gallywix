@@ -1,6 +1,5 @@
 package cn.master.gallywix.auth.config;
 
-import cn.master.gallywix.service.CustomUserDetailsService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +27,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableMethodSecurity
 public class SecurityConfig {
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
-    private final CustomUserDetailsService customUserDetailsService;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
@@ -57,10 +55,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder)
+    public AuthenticationManager authenticationManager(HttpSecurity http)
             throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder);
         return authenticationManagerBuilder.build();
     }
 

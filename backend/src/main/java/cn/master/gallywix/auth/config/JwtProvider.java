@@ -1,7 +1,8 @@
 package cn.master.gallywix.auth.config;
 
-import cn.master.gallywix.entity.SystemUser;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,31 +25,20 @@ public class JwtProvider {
     @Value("${application.security.jwt.refresh-token.expiration}")
     private long refreshExpiration;
 
-    public String generateToken(SystemUser user) {
+    public String generateToken(CustomUserDetail user) {
         return buildToken(user, jwtExpiration);
     }
 
-    public String generateRefreshToken(SystemUser user) {
+    public String generateRefreshToken(CustomUserDetail user) {
         return buildToken(user, refreshExpiration);
     }
 
     public Claims resolveClaims(HttpServletRequest request) {
-        try {
-            String token = resolveToken(request);
-            if (token != null) {
-                return parseJwtClaims(token);
-            }
-            return null;
-        } catch (ExpiredJwtException e) {
-            log.error("JWT token is expired: {}", e.getMessage());;
-            throw e;
-        } catch (UnsupportedJwtException ex) {
-            log.info("Unsupported JWT token.");
-            throw ex;
-        } catch (Exception ex) {
-            request.setAttribute("invalid", ex.getMessage());
-            throw ex;
+        String token = resolveToken(request);
+        if (token != null) {
+            return parseJwtClaims(token);
         }
+        return null;
     }
 
     public String resolveToken(HttpServletRequest request) {
@@ -65,15 +55,11 @@ public class JwtProvider {
         return claims.getExpiration().after(new Date());
     }
 
-    public String getUserName(Claims claims) {
-        return claims.getSubject();
-    }
-
     private Claims parseJwtClaims(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
     }
 
-    private String buildToken(SystemUser user, long expiration) {
+    private String buildToken(CustomUserDetail user, long expiration) {
         Claims claims = Jwts.claims().setSubject(user.getUsername());
         Date tokenCreateTime = new Date(System.currentTimeMillis());
         Date tokenValidity = new Date(tokenCreateTime.getTime() + expiration);
