@@ -1,17 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue"
-import {
-  FormInst,
-  FormItemRule,
-  FormRules,
-  NForm,
-  NFormItem,
-  NInput,
-  NSwitch,
-} from "naive-ui"
+import { FormInst, FormItemRule, FormRules, NForm, NFormItem, NInput, NSwitch } from "naive-ui"
 import { useForm } from "@alova/scene-vue"
 import ModalDialog from "/@/components/ModalDialog.vue"
-import { USER, saveUserData } from "/@/apis/user"
+import { USER, saveUserData, updateUserData } from "/@/apis/user"
 
 const modalDialog = ref<InstanceType<typeof ModalDialog> | null>(null)
 const formRef = ref<FormInst | null>(null)
@@ -46,10 +38,10 @@ const {
   send: submit,
   // 响应式的表单数据，内容由initialForm决定
   form: formData,
-  onComplete,
+  onSuccess,
 } = useForm(
   (formData) => {
-    return saveUserData(formData)
+    return formData.id ? updateUserData(formData) : saveUserData(formData)
   },
   {
     // 初始化表单数据
@@ -73,13 +65,14 @@ const handleSave = () => {
     }
   })
 }
-onComplete(() => {
+onSuccess(() => {
   modalDialog.value?.closeModal()
-  window.$message.success("创建成功")
+  window.$message.success("success")
   emits("refresh")
 })
 const open = (val?: USER) => {
   if (val) {
+    Object.assign(formData.value, val)
     window.$message.info(val.username)
   }
   modalDialog.value?.showModal()
@@ -87,11 +80,7 @@ const open = (val?: USER) => {
 defineExpose({ open })
 </script>
 <template>
-  <modal-dialog
-    ref="modalDialog"
-    title="创建用户"
-    modal-with="50%"
-    @confirm="handleSave">
+  <modal-dialog ref="modalDialog" title="创建用户" modal-with="50%" @confirm="handleSave">
     <template #content>
       <n-form
         ref="formRef"

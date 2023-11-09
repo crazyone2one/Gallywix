@@ -43,8 +43,8 @@ public class SystemUserController {
      * @return {@code true} 删除成功，{@code false} 删除失败
      */
     @DeleteMapping("remove/{id}")
-    public boolean remove(@PathVariable Serializable id) {
-        return iSystemUserService.removeById(id);
+    public ResponseResult<Boolean> remove(@PathVariable Serializable id) {
+        return ResponseResult.success(iSystemUserService.removeById(id));
     }
 
     /**
@@ -54,8 +54,8 @@ public class SystemUserController {
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
-    public boolean update(@RequestBody SystemUser systemUser) {
-        return iSystemUserService.updateById(systemUser);
+    public ResponseResult<Boolean> update(@RequestBody SystemUser systemUser) {
+        return ResponseResult.success(iSystemUserService.updateById(systemUser));
     }
 
     /**

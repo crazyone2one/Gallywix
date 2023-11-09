@@ -4,6 +4,7 @@ import { NSkeleton, DataTableColumns, NDataTable, NSwitch } from "naive-ui"
 import BaseCard from "/@/components/BaseCard.vue"
 import BaseSearch from "/@/components/BaseSearch.vue"
 import UserEdit from "./components/UserEdit.vue"
+import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
 import { useRequest } from "alova"
 import { USER, loadUserData, updateUserData } from "/@/apis/user"
@@ -49,6 +50,16 @@ const columns: DataTableColumns<USER> = [
     key: "createTime",
     align: "center",
   },
+  {
+    title: "操作",
+    key: "operator",
+    width: 200,
+    fixed: "right",
+    align: "center",
+    render(rowData) {
+      return h(GaTableOperation, { onEditClick: () => handleEdit(rowData) }, {})
+    },
+  },
 ]
 const condition = ref<PageReq>({
   name: "",
@@ -71,13 +82,20 @@ onSuccess((resp) => {
 const handleAdd = () => {
   userEdit.value?.open()
 }
-
+const handleEdit = (rowData: USER) => {
+  userEdit.value?.open(rowData)
+}
+/**
+ * 更新用户状态
+ * @param rowData user
+ */
 const handleChangeStatus = (rowData: USER) => {
   rowData.status = !rowData.status
   useRequest(updateUserData(rowData))
     .send()
     .then(() => {
       send()
+      window.$message.success("update user status success")
     })
 }
 onMounted(() => {
@@ -87,18 +105,11 @@ onMounted(() => {
 <template>
   <base-card>
     <template #header>
-      <base-search
-        :condition="condition"
-        popover-text="添加用户"
-        @create="handleAdd"></base-search>
+      <base-search :condition="condition" popover-text="添加用户" @create="handleAdd"></base-search>
     </template>
     <template #content>
       <n-skeleton v-if="loading" :sharp="false" height="550px"> </n-skeleton>
-      <n-data-table
-        v-else
-        :columns="columns"
-        :data="tableInfo.data"
-        :row-key="rowKey" />
+      <n-data-table v-else :columns="columns" :data="tableInfo.data" :row-key="rowKey" />
     </template>
   </base-card>
   <user-edit ref="userEdit" @refresh="send()" />
