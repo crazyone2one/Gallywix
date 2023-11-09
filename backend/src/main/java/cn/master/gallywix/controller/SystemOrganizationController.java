@@ -84,7 +84,7 @@ public class SystemOrganizationController {
      * @param page 分页对象
      * @return 分页对象
      */
-    @GetMapping("page")
+    @PostMapping("page")
     public ResponseResult<Page<SystemOrganization>> page(OrganizationReqVO page) {
         return ResponseResult.success(iSystemOrganizationService.findDataByPage(page));
     }

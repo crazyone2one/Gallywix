@@ -25,6 +25,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: "工作空间管理", requiresAuth: true },
       },
       {
+        path: "/organization",
+        name: "organization",
+        component: () => import(`/@/views/setting/organization/index.vue`),
+        meta: { title: "organization", requiresAuth: true },
+      },
+      {
         path: "/demo/upload",
         name: "upload",
         component: () => import(`/@/views/demo/upload/index.vue`),
@@ -60,11 +66,7 @@ router.beforeEach((to, _from, next) => {
   } else {
     if (!isAuthenticated) {
       store.restAuthStore()
-      next(
-        `/login?redirect=${to.path}&params=${JSON.stringify(
-          to.query ? to.query : to.params,
-        )}`,
-      )
+      next(`/login?redirect=${to.path}&params=${JSON.stringify(to.query ? to.query : to.params)}`)
     } else if (isAuthenticated && to.path === "login") {
       next("/")
     } else {

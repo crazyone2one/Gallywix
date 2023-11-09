@@ -1,5 +1,6 @@
 package cn.master.gallywix.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -45,12 +46,14 @@ public class SystemOrganization implements Serializable {
      * Create timestamp
      */
     @Column(onInsertValue = "now()")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
     /**
      * Update timestamp
      */
     @Column(onInsertValue = "now()", onUpdateValue = "now()")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
     /**

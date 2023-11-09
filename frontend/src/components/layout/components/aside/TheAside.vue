@@ -10,22 +10,16 @@ const menuOptions: MenuOption[] = [
     key: "pinball-1973",
     children: [
       {
-        label: () =>
-          h(
-            RouterLink,
-            { to: { name: "user" } },
-            { default: () => "用户管理" },
-          ),
+        label: () => h(RouterLink, { to: { name: "user" } }, { default: () => "用户管理" }),
         key: "user",
       },
       {
-        label: () =>
-          h(
-            RouterLink,
-            { to: { name: "workspace" } },
-            { default: () => "工作空间" },
-          ),
+        label: () => h(RouterLink, { to: { name: "workspace" } }, { default: () => "工作空间" }),
         key: "workspace",
+      },
+      {
+        label: () => h(RouterLink, { to: { name: "organization" } }, { default: () => "organization" }),
+        key: "organization",
       },
     ],
   },
@@ -34,12 +28,7 @@ const menuOptions: MenuOption[] = [
     key: "demo",
     children: [
       {
-        label: () =>
-          h(
-            RouterLink,
-            { to: { name: "upload" } },
-            { default: () => "upload" },
-          ),
+        label: () => h(RouterLink, { to: { name: "upload" } }, { default: () => "upload" }),
         key: "user",
       },
     ],
@@ -47,10 +36,7 @@ const menuOptions: MenuOption[] = [
 ]
 </script>
 <template>
-  <n-layout-sider
-    content-style="padding: 12px;"
-    :native-scrollbar="false"
-    bordered>
+  <n-layout-sider content-style="padding: 12px;" :native-scrollbar="false" bordered>
     <n-menu v-model:value="activeKey" :options="menuOptions" accordion />
   </n-layout-sider>
 </template>
