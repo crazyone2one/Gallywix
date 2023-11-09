@@ -1,5 +1,6 @@
 package cn.master.gallywix.common.exception;
 
+import cn.master.gallywix.common.result.ResponseResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -17,10 +18,10 @@ import java.util.Map;
  **/
 @ControllerAdvice
 public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler({ AuthenticationException.class })
+    @ExceptionHandler({AuthenticationException.class})
     @ResponseBody
     public ResponseEntity<Object> handleAuthenticationException(Exception ex) {
-        Map<String,String > error = new HashMap<>();
+        Map<String, String> error = new HashMap<>();
         error.put("code", HttpStatus.UNAUTHORIZED.toString());
         error.put("message", "Authentication failed at controller advice");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
@@ -28,9 +29,6 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({CustomException.class})
     public ResponseEntity<Object> handleCustomException(CustomException exception) {
-        Map<String,String > error = new HashMap<>();
-        error.put("code", HttpStatus.BAD_REQUEST.toString());
-        error.put("message", exception.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseResult.fail(HttpStatus.BAD_REQUEST.value(), exception.getMessage()));
     }
 }

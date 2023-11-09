@@ -10,6 +10,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author 11's papa
@@ -46,7 +48,7 @@ public class JwtProvider {
         String bearerToken = request.getHeader(tokenHeader);
         String tokenPrefix = "Bearer ";
         if (bearerToken != null && bearerToken.startsWith(tokenPrefix)) {
-            return bearerToken.substring(tokenPrefix.length());
+            return bearerToken.replace(tokenPrefix,"");
         }
         return null;
     }
@@ -61,10 +63,18 @@ public class JwtProvider {
 
     private String buildToken(CustomUserDetail user, long expiration) {
         Claims claims = Jwts.claims().setSubject(user.getUsername());
+        Map<String, Object> userInfo = new LinkedHashMap<>();
+        userInfo.put("id", user.getId());
+        userInfo.put("authorities", user.getAuthorities());
         Date tokenCreateTime = new Date(System.currentTimeMillis());
         Date tokenValidity = new Date(tokenCreateTime.getTime() + expiration);
-        return Jwts.builder().setClaims(claims)
+        return Jwts.builder()
+                .setIssuer("gallywix")
+                .setClaims(claims)
+                .claim("user_info",userInfo)
                 .setIssuedAt(tokenCreateTime)
-                .setExpiration(tokenValidity).signWith(SignatureAlgorithm.HS256, secretKey).compact();
+                .setExpiration(tokenValidity)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
     }
 }

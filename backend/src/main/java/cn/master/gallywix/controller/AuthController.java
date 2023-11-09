@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 11's papa
@@ -36,6 +38,11 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
     private final RedisUtils redisUtils;
+
+    @Value("${application.security.jwt.expiration}")
+    private long jwtExpiration;
+    @Value("${application.security.jwt.refresh-token.expiration}")
+    private long refreshExpiration;
 
     @ResponseBody
     @PostMapping("/authenticate")
@@ -55,7 +62,9 @@ public class AuthController {
                     .user(principal)
                     .roles(collect)
                     .build();
-            redisUtils.setString(accessToken, JsonUtils.toJsonString(response));
+            // 将token存放在redis，并设置超时时间
+            redisUtils.setString("accessToken", JsonUtils.toJsonString(authenticate), jwtExpiration, TimeUnit.MILLISECONDS);
+            redisUtils.setString("refreshToken", JsonUtils.toJsonString(authenticate), refreshExpiration, TimeUnit.MILLISECONDS);
             return ResponseResult.success(response);
         } catch (AuthenticationException e) {
             return ResponseResult.fail(HttpStatus.BAD_REQUEST.value(), "invalid username or password");
@@ -68,10 +77,11 @@ public class AuthController {
         SystemUser user = SessionUtils.sessionUserInfo();
         return ResponseResult.success("current user: {},{}" + user.getUsername() + user.getId());
     }
+
     @PostMapping("/logout")
     public void logout(HttpServletRequest request, HttpServletResponse response) {
-        String token = jwtProvider.resolveToken(request);
-        redisUtils.delete(token);
+        redisUtils.delete("accessToken");
+        redisUtils.delete("refreshToken");
         SessionUtils.clearContext();
         ServletUtils.renderString(response, ResponseResult.success());
     }

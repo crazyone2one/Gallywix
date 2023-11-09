@@ -48,7 +48,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
         val accessToken = jwtProvider.resolveToken(request);
-        if (Objects.isNull(accessToken) || StringUtils.isBlank(redisUtils.getString(accessToken))) {
+        if (Objects.isNull(accessToken) || StringUtils.isBlank(redisUtils.getString("accessToken"))) {
             ServletUtils.renderString(response, ResponseResult.fail(HttpStatus.UNAUTHORIZED.value(), "请先登录"));
             return;
         }
