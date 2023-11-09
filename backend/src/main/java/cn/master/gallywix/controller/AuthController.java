@@ -58,7 +58,7 @@ public class AuthController {
             redisUtils.setString(accessToken, JsonUtils.toJsonString(response));
             return ResponseResult.success(response);
         } catch (AuthenticationException e) {
-            return ResponseResult.fail(HttpStatus.UNAUTHORIZED.value(), "invalid username or password");
+            return ResponseResult.fail(HttpStatus.BAD_REQUEST.value(), "invalid username or password");
         }
     }
 
