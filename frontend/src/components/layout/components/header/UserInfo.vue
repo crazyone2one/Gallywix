@@ -4,10 +4,10 @@ import { NAvatar, NButton, NDropdown, NText } from "naive-ui"
 import { useRequest } from "alova"
 import { logOut } from "/@/apis/user"
 import { useAuthStore } from "/@/store/auth-store"
-import { useRouter } from "vue-router"
+import { useDate } from "/@/composables/use-date"
 
-const router = useRouter()
 const store = useAuthStore()
+const { year, week } = useDate()
 function renderCustomHeader() {
   return h(
     "div",
@@ -23,11 +23,7 @@ function renderCustomHeader() {
       h("div", null, [
         h("div", null, [h(NText, { depth: 2 }, { default: () => "打工仔" })]),
         h("div", { style: "font-size: 12px;" }, [
-          h(
-            NText,
-            { depth: 3 },
-            { default: () => "毫无疑问，你是办公室里最亮的星" },
-          ),
+          h(NText, { depth: 3 }, { default: () => "毫无疑问，你是办公室里最亮的星" }),
         ]),
       ]),
     ],
@@ -58,19 +54,27 @@ const options = [
 ]
 const { send, onSuccess } = useRequest(logOut(), { immediate: false })
 const handleSelect = (key: string | number) => {
-  window.$message.info(`select: ${key}`)
   if (key === "stmt3") {
-    send()
+    window.$dialog.warning({
+      title: "",
+      maskClosable: false,
+      content: () => "是否退出系统",
+      positiveText: "确定",
+      negativeText: "不确定",
+      onPositiveClick() {
+        send()
+      },
+    })
   }
 }
 onSuccess(() => {
   store.restAuthStore()
-  router.push("/login")
+  window.location.reload()
 })
 </script>
 <template>
   <n-dropdown trigger="hover" :options="options" @select="handleSelect">
-    <n-button>2021年 第36周</n-button>
+    <n-button>{{ year }}年 第{{ week }}周</n-button>
   </n-dropdown>
 </template>
 
