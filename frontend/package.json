@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@alova/adapter-xhr": "^1.0.1",
     "@alova/scene-vue": "^1.2.1",
     "alova": "^2.13.1",
     "pinia": "^2.1.7",
