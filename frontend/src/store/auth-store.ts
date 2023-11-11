@@ -7,8 +7,8 @@ export const useAuthStore = defineStore(
     const accessToken = ref<string>("")
     const refreshToken = ref<string>("")
     const userId = ref<number | null>()
-    const roles = ref<Array<string>>()
-
+    const roles = ref<Array<string>>([])
+    const userInfo = ref()
     /**
      * 重置token信息
      */
@@ -17,9 +17,10 @@ export const useAuthStore = defineStore(
       refreshToken.value = ""
       userId.value = null
       roles.value = []
+      userInfo.value = {}
     }
 
-    return { accessToken, refreshToken, userId, roles, restAuthStore }
+    return { accessToken, refreshToken, userId, roles, restAuthStore, userInfo }
   },
   { persist: true },
 )

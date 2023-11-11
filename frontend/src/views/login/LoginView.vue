@@ -25,9 +25,7 @@ const rules = {
 }
 const route = useRoute()
 const router = useRouter()
-const disabled = computed<boolean>(
-  () => model.value.username === "" || model.value.password === "",
-)
+const disabled = computed<boolean>(() => model.value.username === "" || model.value.password === "")
 const { loading, send, onSuccess } = useRequest(loginFunction(model.value), {
   immediate: false,
 })
@@ -35,9 +33,11 @@ const handleLogin = () => {
   send()
 }
 onSuccess((resp) => {
-  const { access_token, refresh_token } = resp.data
+  const { access_token, refresh_token, roles, user } = resp.data
   store.accessToken = access_token
   store.refreshToken = refresh_token
+  store.roles = roles
+  store.userInfo = user
   // 路由跳转
   if (route.query?.redirect) {
     router.push({
@@ -55,16 +55,11 @@ onSuccess((resp) => {
 </script>
 <template>
   <n-h1 style="--font-size: 60px; --font-weight: 100"> Sign-in </n-h1>
-  <n-card
-    size="large"
-    style="--padding-bottom: 30px"
-    class="shadow-lg shadow-rose-500/50">
+  <n-card size="large" style="--padding-bottom: 30px" class="shadow-lg shadow-rose-500/50">
     <!-- <n-h2 style="--font-weight: 400">Sign-in</n-h2> -->
     <n-form size="large" :rules="rules" :model="model">
       <n-form-item-row path="username">
-        <n-input
-          v-model:value="model.username"
-          placeholder="Input your username">
+        <n-input v-model:value="model.username" placeholder="Input your username">
           <template #prefix>
             <span class="i-carbon:group-security" />
           </template>
@@ -82,13 +77,7 @@ onSuccess((resp) => {
         </n-input>
       </n-form-item-row>
     </n-form>
-    <n-button
-      type="primary"
-      size="large"
-      block
-      :loading="loading"
-      :disabled="disabled"
-      @click="handleLogin"
+    <n-button type="primary" size="large" block :loading="loading" :disabled="disabled" @click="handleLogin"
       >Sign in
     </n-button>
     <br />
