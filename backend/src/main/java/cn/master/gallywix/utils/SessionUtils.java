@@ -7,6 +7,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Optional;
+
 import static cn.master.gallywix.entity.table.SystemUserTableDef.SYSTEM_USER;
 
 /**
@@ -36,5 +38,13 @@ public class SessionUtils {
     public static void clearContext() {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         SecurityContextHolder.setContext(context);
+    }
+
+    public static String getCurrentWorkspaceId() {
+        return Optional.ofNullable(sessionUserInfo()).orElse(new SystemUser()).getLastWorkspaceId();
+    }
+
+    public static String getCurrentOrganizationId() {
+        return Optional.ofNullable(sessionUserInfo()).orElse(new SystemUser()).getLastOrganizationId();
     }
 }
