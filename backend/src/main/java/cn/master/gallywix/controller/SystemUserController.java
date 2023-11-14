@@ -1,10 +1,12 @@
 package cn.master.gallywix.controller;
 
 import cn.master.gallywix.common.result.ResponseResult;
+import cn.master.gallywix.controller.vo.user.AddOrgMemberRequestVO;
 import cn.master.gallywix.controller.vo.user.UserPageReqVO;
 import cn.master.gallywix.dto.user.UserDTO;
 import cn.master.gallywix.entity.SystemUser;
 import cn.master.gallywix.service.ISystemUserService;
+import cn.master.gallywix.utils.SessionUtils;
 import com.mybatisflex.core.paginate.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -64,8 +66,8 @@ public class SystemUserController {
      * @return 所有数据
      */
     @GetMapping("list")
-    public List<SystemUser> list() {
-        return iSystemUserService.list();
+    public ResponseResult<List<SystemUser>> list() {
+        return ResponseResult.success(iSystemUserService.list());
     }
 
     /**
@@ -75,8 +77,8 @@ public class SystemUserController {
      * @return 用户信息表详情
      */
     @GetMapping("getInfo/{id}")
-    public SystemUser getInfo(@PathVariable Serializable id) {
-        return iSystemUserService.getById(id);
+    public ResponseResult<SystemUser> getInfo(@PathVariable Serializable id) {
+        return ResponseResult.success(iSystemUserService.getById(id));
     }
 
     /**
@@ -88,5 +90,20 @@ public class SystemUserController {
     @PostMapping("page")
     public ResponseResult<Page<SystemUser>> page(UserPageReqVO page) {
         return ResponseResult.success(iSystemUserService.findDataByPage(page));
+    }
+
+    @PostMapping("/orgmember/add")
+    public void addOrganizationMember(@RequestBody AddOrgMemberRequestVO request) {
+        iSystemUserService.addOrganizationMember(request);
+    }
+    @GetMapping("/orgmember/delete/{organizationId}/{userId}")
+    public void delOrganizationMember(@PathVariable String organizationId, @PathVariable String userId) {
+        iSystemUserService.delOrganizationMember(organizationId, userId);
+    }
+
+    @PostMapping("/switch/source/{sign}/{sourceId}")
+    public ResponseResult<SystemUser> switchUserRole(@PathVariable String sign, @PathVariable(value = "sourceId") String sourceId) {
+        iSystemUserService.switchUserRole(sign, sourceId);
+        return ResponseResult.success(SessionUtils.sessionUserInfo());
     }
 }

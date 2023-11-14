@@ -1,5 +1,6 @@
 package cn.master.gallywix.service;
 
+import cn.master.gallywix.controller.vo.user.AddOrgMemberRequestVO;
 import cn.master.gallywix.controller.vo.user.UserPageReqVO;
 import cn.master.gallywix.dto.user.UserDTO;
 import cn.master.gallywix.entity.SystemUser;
@@ -17,4 +18,10 @@ public interface ISystemUserService extends IService<SystemUser> {
     UserDTO saveUser(SystemUser systemUser);
 
     Page<SystemUser> findDataByPage(UserPageReqVO page);
+
+    void addOrganizationMember(AddOrgMemberRequestVO request);
+
+    void delOrganizationMember(String organizationId, String userId);
+
+    void switchUserRole(String sign, String sourceId);
 }

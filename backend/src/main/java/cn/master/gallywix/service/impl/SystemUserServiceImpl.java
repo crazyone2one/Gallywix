@@ -1,17 +1,24 @@
 package cn.master.gallywix.service.impl;
 
+import cn.master.gallywix.common.constants.RoleConstants;
 import cn.master.gallywix.common.exception.CustomException;
+import cn.master.gallywix.controller.vo.user.AddOrgMemberRequestVO;
 import cn.master.gallywix.controller.vo.user.UserPageReqVO;
 import cn.master.gallywix.dto.user.UserDTO;
 import cn.master.gallywix.entity.SystemRole;
 import cn.master.gallywix.entity.SystemUser;
+import cn.master.gallywix.entity.SystemWorkspace;
 import cn.master.gallywix.entity.UserRole;
 import cn.master.gallywix.mapper.SystemUserMapper;
+import cn.master.gallywix.mapper.SystemWorkspaceMapper;
+import cn.master.gallywix.mapper.UserRoleMapper;
 import cn.master.gallywix.service.ISystemUserService;
+import cn.master.gallywix.utils.SessionUtils;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryChain;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -32,7 +39,10 @@ import static cn.master.gallywix.entity.table.UserRoleTableDef.USER_ROLE;
  * @since 1.0.0
  */
 @Service
+@RequiredArgsConstructor
 public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemUser> implements ISystemUserService {
+    final UserRoleMapper userRoleMapper;
+    final SystemWorkspaceMapper workspaceMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -45,7 +55,45 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     @Override
     public Page<SystemUser> findDataByPage(UserPageReqVO page) {
         QueryWrapper wrapper = QueryWrapper.create().where(SYSTEM_USER.USERNAME.like(page.getName()));
-        return mapper.paginate(page.getPageNumber(),page.getPageSize(),wrapper);
+        return mapper.paginate(page.getPageNumber(), page.getPageSize(), wrapper);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void addOrganizationMember(AddOrgMemberRequestVO request) {
+        if (CollectionUtils.isNotEmpty(request.getUserIds())) {
+            for (String userId : request.getUserIds()) {
+                UserRole userRole = UserRole.builder().roleId(RoleConstants.ORG_ADMIN)
+                        .sourceId(request.getOrganizationId())
+                        .userId(userId).build();
+                userRoleMapper.insert(userRole);
+            }
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void delOrganizationMember(String organizationId, String userId) {
+        userRoleMapper.deleteByQuery(
+                new QueryWrapper().where(USER_ROLE.ROLE_ID.eq(RoleConstants.ORG_OTHER).
+                        and(USER_ROLE.SOURCE_ID.eq(organizationId))
+                        .and(USER_ROLE.USER_ID.eq(userId))));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void switchUserRole(String sign, String sourceId) {
+        SystemUser user = SessionUtils.sessionUserInfo();
+        if (StringUtils.equals("organization", sign)) {
+            user.setLastOrganizationId(sourceId);
+            user.setLastWorkspaceId("");
+        }
+        if (StringUtils.equals("workspace", sign)) {
+            SystemWorkspace workspace = workspaceMapper.selectOneById(sourceId);
+            user.setLastOrganizationId(workspace.getOrganizationId());
+            user.setLastWorkspaceId(sourceId);
+        }
+        mapper.update(user);
     }
 
     private UserDTO getUserDTO(String id) {
