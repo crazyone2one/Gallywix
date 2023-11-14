@@ -8,7 +8,10 @@ import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
 import { useRequest } from "alova"
 import { PROJECT, loadData } from "/@/apis/project"
+import { useRoute, useRouter } from "vue-router"
 
+const route = useRoute()
+const router = useRouter()
 const projectEdit = ref<InstanceType<typeof ProjectEdit> | null>(null)
 const columns: DataTableColumns<PROJECT> = [
   {
@@ -16,18 +19,13 @@ const columns: DataTableColumns<PROJECT> = [
     align: "center",
   },
   {
-    title: "用户名",
-    key: "username",
+    title: "名称",
+    key: "name",
     align: "center",
   },
   {
-    title: "邮箱",
-    key: "email",
-    align: "center",
-  },
-  {
-    title: "电话",
-    key: "phone",
+    title: "描述",
+    key: "description",
     align: "center",
   },
   {
@@ -70,8 +68,13 @@ const handleAdd = () => {
 const handleEdit = (rowData: PROJECT) => {
   projectEdit.value?.open(rowData)
 }
+
 onMounted(() => {
   send()
+  if (route.path.split("/")[2] === "create") {
+    projectEdit.value?.open()
+    router.push("/project/list")
+  }
 })
 </script>
 <template>

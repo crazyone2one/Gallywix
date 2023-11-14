@@ -2,7 +2,7 @@ import { IPage, PageReq } from "../interface"
 import alovaInstance from ".."
 import { SelectOption } from "naive-ui"
 export interface PROJECT {
-  id: number | null
+  id: string | null
   name: string
   description: string
   workspaceId?: string
@@ -17,7 +17,7 @@ export const loadProjectOption = () =>
       _data.forEach((item) => {
         const option: SelectOption = {}
         option.label = item.name
-        option.key = item.id
+        option.value = item.id as string
         options.push(option)
       })
       return options

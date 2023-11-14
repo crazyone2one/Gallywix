@@ -29,9 +29,13 @@ const menuOptions: MenuOption[] = [
     children: [
       {
         label: () => h(RouterLink, { to: { name: "upload" } }, { default: () => "upload" }),
-        key: "user",
+        key: "demo1",
       },
     ],
+  },
+  {
+    label: () => h(RouterLink, { to: { path: "/project/all" } }, { default: () => "项目" }),
+    key: "project",
   },
 ]
 </script>

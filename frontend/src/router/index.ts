@@ -38,7 +38,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: "上传", roles: ["admin"] },
       },
       {
-        path: "/project",
+        path: "/project/:type",
         name: "project",
         component: () => import(`/@/views/setting/project/index.vue`),
         meta: { title: "项目管理", requiresAuth: true },

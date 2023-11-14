@@ -7,6 +7,7 @@ import { PROJECT, saveData } from "/@/apis/project"
 
 const modalDialog = ref<InstanceType<typeof ModalDialog> | null>(null)
 const formRef = ref<FormInst | null>(null)
+const emits = defineEmits(["refresh"])
 const rules: FormRules = {
   name: [
     { required: true, message: "请输入工作空间名称", trigger: "blur" },
@@ -61,6 +62,7 @@ const handleSave = () => {
 onSuccess(() => {
   modalDialog.value?.closeModal()
   window.$message.success("创建成功")
+  emits("refresh")
 })
 onError((val) => {
   window.$message.error(val.error.message)
