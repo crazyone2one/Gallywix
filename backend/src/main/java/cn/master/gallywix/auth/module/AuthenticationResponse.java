@@ -1,6 +1,6 @@
 package cn.master.gallywix.auth.module;
 
-import cn.master.gallywix.auth.config.CustomUserDetail;
+import cn.master.gallywix.entity.SystemUser;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +22,8 @@ public class AuthenticationResponse {
     private String accessToken;
     @JsonProperty("refresh_token")
     private String refreshToken;
+    private String userId;
 
-    private CustomUserDetail user;
+    private SystemUser user;
     private List<String> roles;
 }
