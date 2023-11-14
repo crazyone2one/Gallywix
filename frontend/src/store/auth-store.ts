@@ -6,7 +6,7 @@ export const useAuthStore = defineStore(
   () => {
     const accessToken = ref<string>("")
     const refreshToken = ref<string>("")
-    const userId = ref<number | null>()
+    const userId = ref<string | null>()
     const roles = ref<Array<string>>([])
     const userInfo = ref()
     /**
