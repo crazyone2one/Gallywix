@@ -59,8 +59,9 @@ public class AuthController {
             AuthenticationResponse response = AuthenticationResponse.builder()
                     .accessToken(accessToken)
                     .refreshToken(refreshToken)
-                    .user(principal)
+                    .user(principal.getSystemUser())
                     .roles(collect)
+                    .userId(principal.getId())
                     .build();
             // 将token存放在redis，并设置超时时间
             redisUtils.setString("accessToken", JsonUtils.toJsonString(authenticate), jwtExpiration, TimeUnit.MILLISECONDS);

@@ -33,11 +33,12 @@ const handleLogin = () => {
   send()
 }
 onSuccess((resp) => {
-  const { access_token, refresh_token, roles, user } = resp.data
+  const { access_token, refresh_token, roles, userId } = resp.data
   store.accessToken = access_token
   store.refreshToken = refresh_token
   store.roles = roles
-  store.userInfo = user
+  // store.userInfo = user
+  store.userId = userId
   // 路由跳转
   if (route.query?.redirect) {
     router.push({

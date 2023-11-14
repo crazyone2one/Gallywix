@@ -14,6 +14,7 @@ import java.util.List;
  * @since 11/08/2023
  **/
 public class CustomUserDetail implements UserDetails {
+    @Getter
     private final SystemUser systemUser;
     @Getter
     private final String id;
