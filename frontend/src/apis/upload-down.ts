@@ -8,7 +8,7 @@ const logOnDev = (message: string) => {
   }
 }
 // 1. 创建alova实例
-const uploadDownloadInstance = createAlova({
+const alovaInst = createAlova({
   baseURL: import.meta.env.VITE_APP_BASE_API,
   // VueHook用于创建ref状态，包括请求状态loading、响应数据data、请求错误对象error等
   statesHook: VueHook,
@@ -41,4 +41,23 @@ const uploadDownloadInstance = createAlova({
     },
   },
 })
-export default uploadDownloadInstance
+/**
+ * 通用上传方法
+ * @param file 上传的文件
+ * @param url upload接口地址
+ */
+export const uploadFile = (file: File, url: string) => {
+  const formData = new FormData()
+  formData.append("file", file as File)
+  return alovaInst.Post(`${url}`, formData, {
+    // 开启上传进度
+    enableUpload: true,
+  })
+}
+export const downloadFile = (url: string) =>
+  alovaInst.Get(`${url}`, {
+    // 开启下载进度
+    enableDownload: true,
+    responseType: "blob",
+  })
+export default alovaInst
