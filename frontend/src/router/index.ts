@@ -1,5 +1,6 @@
 import { RouteRecordRaw, createRouter, createWebHashHistory } from "vue-router"
 import { useAuthStore } from "../store/auth-store"
+// 路由信息
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -34,7 +35,13 @@ const routes: Array<RouteRecordRaw> = [
         path: "/demo/upload",
         name: "upload",
         component: () => import(`/@/views/demo/upload/index.vue`),
-        meta: { title: "上传" },
+        meta: { title: "上传", roles: ["admin"] },
+      },
+      {
+        path: "/project",
+        name: "project",
+        component: () => import(`/@/views/setting/project/index.vue`),
+        meta: { title: "项目管理", requiresAuth: true },
       },
     ],
   },
@@ -82,4 +89,5 @@ router.afterEach((to) => {
   to.meta.title != null && items.unshift(to.meta.title)
   document.title = items.join(" | ")
 })
+
 export default router
