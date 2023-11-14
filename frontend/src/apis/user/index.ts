@@ -31,3 +31,8 @@ export const updateUserData = (param: USER) => alovaInstance.Put(`/system/user/u
 export const deleteUserData = (param: string) => alovaInstance.Delete(`/system/user/remove/${param}`)
 
 export const logOut = () => alovaInstance.Post("/auth/logout")
+
+export const getUserInfo = (id: string) => alovaInstance.Get(`/system/user/getInfo${id}`)
+
+export const switchUserRole = (sign: string, sourceId: string) =>
+  alovaInstance.Post(`/system/user//switch/source/${sign}/${sourceId}`)
