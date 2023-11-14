@@ -1,5 +1,4 @@
 import alovaInstance from ".."
-import { GenericResponse } from "../interface"
 export interface LOGIN {
   username: string
   password: string
@@ -7,13 +6,13 @@ export interface LOGIN {
 export interface LoginResponse {
   access_token: string
   refresh_token: string
-  user_id: number
+  userId: string
   roles: Array<string>
+  user: Object
 }
 /**
  * 登录
  * @param param0 登录参数
  * @returns
  */
-export const loginFunction = (param: LOGIN) =>
-  alovaInstance.Post<LoginResponse>(`/auth/authenticate`, param)
+export const loginFunction = (param: LOGIN) => alovaInstance.Post<LoginResponse>(`/auth/authenticate`, param)
