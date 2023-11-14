@@ -11,12 +11,13 @@ spring:
   data:
     redis:
       database: 1
-      host: localhost
+      host: 172.16.2.10
       port: 6379
       timeout: 5000
       jedis:
         pool:
           max-active: 10
+      password: c1$4T&9pW#z2Q@7vL
 mybatis-flex:
   global-config:
     logic-delete-column: del_flag
@@ -26,6 +27,6 @@ application:
   security:
     jwt:
       secret-key: U2FsdGVkX18epMj+KK0TtMyZJzvr45zahWHKpl4+kSg=
-      expiration: 60000 # a day=>86400000 1min=>60000
+      expiration: 86400000 # a day=>86400000 1min=>60000
       refresh-token:
         expiration: 604800000 # 7 days
