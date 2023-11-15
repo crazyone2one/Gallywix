@@ -3,6 +3,7 @@ import { NLayoutHeader } from "naive-ui"
 import HeaderMenu from "./HeaderMenu.vue"
 import logo from "./../../../../assets/387941.svg"
 import UserInfo from "./UserInfo.vue"
+import HeaderRightMenu from "./HeaderRightMenu.vue"
 </script>
 <template>
   <n-layout-header
@@ -16,7 +17,8 @@ import UserInfo from "./UserInfo.vue"
     <div style="display: flex; align-items: center">
       <header-menu />
     </div>
-    <div>
+    <div class="flex items-center">
+      <header-right-menu />
       <user-info />
     </div>
   </n-layout-header>
