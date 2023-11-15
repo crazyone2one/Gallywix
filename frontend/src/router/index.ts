@@ -43,6 +43,10 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import(`/@/views/setting/project/index.vue`),
         meta: { title: "项目管理", requiresAuth: true },
       },
+      {
+        path: "createTest",
+        component: () => import(`/@/views/test-plan/index.vue`),
+      },
     ],
   },
   {

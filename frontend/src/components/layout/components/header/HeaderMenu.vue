@@ -37,6 +37,10 @@ const menuOptions: MenuOption[] = [
     label: () => h(RouterLink, { to: { path: "/project/all" } }, { default: () => "项目" }),
     key: "project",
   },
+  {
+    label: () => h(RouterLink, { to: { path: "createTest" } }, { default: () => "创建测试" }),
+    key: "createTest",
+  },
 ]
 </script>
 <template>
