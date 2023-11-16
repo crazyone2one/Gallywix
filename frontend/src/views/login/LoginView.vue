@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { useRequest } from "alova"
-import { NCard, NH1, NForm, NFormItemRow, NInput, NButton } from "naive-ui"
-import { ref, computed } from "vue"
-import { LOGIN, loginFunction } from "/@/apis/auth"
+import { computed,ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
+
 import { useAuthStore } from "/@/store/auth-store"
+
+import { LOGIN, loginFunction } from "/@/apis/auth"
+import { useRequest } from "alova"
+import { NButton,NCard, NForm, NFormItemRow, NH1, NInput } from "naive-ui"
 
 const model = ref<LOGIN>({
   username: "",
@@ -55,7 +57,9 @@ onSuccess((resp) => {
 })
 </script>
 <template>
-  <n-h1 style="--font-size: 60px; --font-weight: 100"> Sign-in </n-h1>
+  <n-h1 style="--font-size: 60px; --font-weight: 100">
+    Sign-in
+  </n-h1>
   <n-card size="large" style="--padding-bottom: 30px" class="shadow-lg shadow-rose-500/50">
     <!-- <n-h2 style="--font-weight: 400">Sign-in</n-h2> -->
     <n-form size="large" :rules="rules" :model="model">
@@ -71,17 +75,25 @@ onSuccess((resp) => {
           v-model:value="model.password"
           type="password"
           placeholder="Input your password"
-          show-password-on="mousedown">
+          show-password-on="mousedown"
+        >
           <template #prefix>
             <span class="i-carbon:ibm-cloud-hyper-protect-crypto-services" />
           </template>
         </n-input>
       </n-form-item-row>
     </n-form>
-    <n-button type="primary" size="large" block :loading="loading" :disabled="disabled" @click="handleLogin"
-      >Sign in
+    <n-button
+      type="primary"
+      size="large"
+      block
+      :loading="loading"
+      :disabled="disabled"
+      @click="handleLogin"
+    >
+      Sign in
     </n-button>
-    <br />
+    <br>
   </n-card>
 </template>
 

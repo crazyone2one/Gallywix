@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue"
-import { FormInst, FormItemRule, FormRules, NForm, NFormItem, NInput, NSwitch } from "naive-ui"
-import { useForm } from "@alova/scene-vue"
+
 import ModalDialog from "/@/components/ModalDialog.vue"
-import { USER, saveUserData, updateUserData } from "/@/apis/user"
+import { useForm } from "@alova/scene-vue"
+
+import { saveUserData, updateUserData,USER } from "/@/apis/user"
+import { FormInst, FormItemRule, FormRules, NForm, NFormItem, NInput, NSwitch } from "naive-ui"
 
 const modalDialog = ref<InstanceType<typeof ModalDialog> | null>(null)
 const formRef = ref<FormInst | null>(null)
@@ -88,7 +90,8 @@ defineExpose({ open })
         :rules="rules"
         label-placement="left"
         label-width="auto"
-        require-mark-placement="right-hanging">
+        require-mark-placement="right-hanging"
+      >
         <n-form-item label="用户名" path="username">
           <n-input v-model:value="formData.username" />
         </n-form-item>

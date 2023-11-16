@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { ref, onMounted, h } from "vue"
-import { NSkeleton, DataTableColumns, NDataTable } from "naive-ui"
+import { h,onMounted, ref } from "vue"
+import { useRoute, useRouter } from "vue-router"
+
+import ProjectEdit from "./components/ProjectEdit.vue"
 import BaseCard from "/@/components/BaseCard.vue"
 import BaseSearch from "/@/components/BaseSearch.vue"
-import ProjectEdit from "./components/ProjectEdit.vue"
 import GaTableOperation from "/@/components/table/GaTableOperation.vue"
+
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
+import { loadData,PROJECT } from "/@/apis/project"
 import { useRequest } from "alova"
-import { PROJECT, loadData } from "/@/apis/project"
-import { useRoute, useRouter } from "vue-router"
+import { DataTableColumns, NDataTable,NSkeleton } from "naive-ui"
 
 const route = useRoute()
 const router = useRouter()
@@ -80,10 +82,10 @@ onMounted(() => {
 <template>
   <base-card>
     <template #header>
-      <base-search :condition="condition" popover-text="添加项目" @create="handleAdd"></base-search>
+      <base-search :condition="condition" popover-text="添加项目" @create="handleAdd" />
     </template>
     <template #content>
-      <n-skeleton v-if="loading" :sharp="false" height="550px"> </n-skeleton>
+      <n-skeleton v-if="loading" :sharp="false" height="550px" />
       <n-data-table v-else :columns="columns" :data="tableInfo.data" :row-key="rowKey" />
     </template>
   </base-card>

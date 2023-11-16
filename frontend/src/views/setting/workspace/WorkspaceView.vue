@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { NButton, NSkeleton, DataTableColumns, NDataTable } from "naive-ui"
-import BaseCard from "/@/components/BaseCard.vue"
+import { onMounted,ref } from "vue"
+
 import WorkspaceEdit from "./components/WorkspaceEdit.vue"
-import { ref, onMounted } from "vue"
-import { WORKSPACE, loadWorkspaceData } from "/@/apis/workspace"
+import BaseCard from "/@/components/BaseCard.vue"
+
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
+import { loadWorkspaceData,WORKSPACE } from "/@/apis/workspace"
 import { useRequest } from "alova"
+import { DataTableColumns, NButton, NDataTable,NSkeleton } from "naive-ui"
 
 const workspaceEdit = ref<InstanceType<typeof WorkspaceEdit> | null>(null)
 const columns: DataTableColumns<WORKSPACE> = [
@@ -55,15 +57,18 @@ onSuccess((resp) => {
 <template>
   <base-card>
     <template #header>
-      <n-button @click="handleAdd">workspace</n-button>
+      <n-button @click="handleAdd">
+        workspace
+      </n-button>
     </template>
     <template #content>
-      <n-skeleton v-if="loading" :sharp="false" height="550px"> </n-skeleton>
+      <n-skeleton v-if="loading" :sharp="false" height="550px" />
       <n-data-table
         v-else
         :columns="columns"
         :data="tableInfo.data"
-        :row-key="rowKey" />
+        :row-key="rowKey"
+      />
     </template>
   </base-card>
   <workspace-edit ref="workspaceEdit" />

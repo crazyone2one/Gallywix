@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { ref, onMounted, h } from "vue"
-import { NSkeleton, DataTableColumns, NDataTable, NSwitch } from "naive-ui"
+import { h, onMounted, ref } from "vue"
+
+import UserEdit from "./components/UserEdit.vue"
 import BaseCard from "/@/components/BaseCard.vue"
 import BaseSearch from "/@/components/BaseSearch.vue"
-import UserEdit from "./components/UserEdit.vue"
 import GaTableOperation from "/@/components/table/GaTableOperation.vue"
+
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
+import { loadUserData, updateUserData, USER } from "/@/apis/user"
 import { useRequest } from "alova"
-import { USER, loadUserData, updateUserData } from "/@/apis/user"
+import { DataTableColumns, NDataTable, NSkeleton, NSwitch } from "naive-ui"
 
 const userEdit = ref<InstanceType<typeof UserEdit> | null>(null)
 const columns: DataTableColumns<USER> = [
@@ -105,11 +107,18 @@ onMounted(() => {
 <template>
   <base-card>
     <template #header>
-      <base-search :condition="condition" popover-text="添加用户" @create="handleAdd"></base-search>
+      <base-search
+        :condition="condition"
+        popover-text="添加用户"
+        @create="handleAdd" />
     </template>
     <template #content>
-      <n-skeleton v-if="loading" :sharp="false" height="550px"> </n-skeleton>
-      <n-data-table v-else :columns="columns" :data="tableInfo.data" :row-key="rowKey" />
+      <n-skeleton v-if="loading" :sharp="false" height="550px" />
+      <n-data-table
+        v-else
+        :columns="columns"
+        :data="tableInfo.data"
+        :row-key="rowKey" />
     </template>
   </base-card>
   <user-edit ref="userEdit" @refresh="send()" />

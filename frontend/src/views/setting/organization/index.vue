@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { ref, onMounted, h } from "vue"
-import { NSkeleton, DataTableColumns, NDataTable } from "naive-ui"
+import { h,onMounted, ref } from "vue"
+
+import OrganizationEdit from "./components/OrganizationEdit.vue"
 import BaseCard from "/@/components/BaseCard.vue"
 import BaseSearch from "/@/components/BaseSearch.vue"
 import GaTableOperation from "/@/components/table/GaTableOperation.vue"
-import OrganizationEdit from "./components/OrganizationEdit.vue"
+
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
+import { loadTableData,ORGANIZATION } from "/@/apis/organization"
 import { useRequest } from "alova"
-import { ORGANIZATION, loadTableData } from "/@/apis/organization"
+import { DataTableColumns, NDataTable,NSkeleton } from "naive-ui"
 
 const organizationEdit = ref<InstanceType<typeof OrganizationEdit> | null>(null)
 const columns: DataTableColumns<ORGANIZATION> = [
@@ -73,10 +75,10 @@ onMounted(() => {
 <template>
   <base-card>
     <template #header>
-      <base-search :condition="condition" popover-text="添加用户" @create="handleAdd"></base-search>
+      <base-search :condition="condition" popover-text="添加用户" @create="handleAdd" />
     </template>
     <template #content>
-      <n-skeleton v-if="loading" :sharp="false" height="550px"> </n-skeleton>
+      <n-skeleton v-if="loading" :sharp="false" height="550px" />
       <n-data-table v-else :columns="columns" :data="tableInfo.data" :row-key="rowKey" />
     </template>
   </base-card>
