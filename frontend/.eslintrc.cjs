@@ -67,5 +67,6 @@ module.exports = {
       },
     ],
     "simple-import-sort/exports": "error",
+    "vue/html-self-closing": 0,
   },
 }
