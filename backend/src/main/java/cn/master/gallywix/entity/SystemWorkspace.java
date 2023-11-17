@@ -1,5 +1,6 @@
 package cn.master.gallywix.entity;
 
+import cn.master.gallywix.listener.workspace.WorkspaceListener;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -22,11 +23,11 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "tb_system_workspace")
+@Table(value = "tb_system_workspace", onInsert = WorkspaceListener.class, onUpdate = WorkspaceListener.class)
 public class SystemWorkspace implements Serializable {
 
     /**
-     * Workspace ID 
+     * Workspace ID
      */
     @Id(keyType = KeyType.Generator, value = "flexId")
     private String id;
@@ -45,6 +46,9 @@ public class SystemWorkspace implements Serializable {
      * Workspace description
      */
     private String description;
+
+    private String createUser;
+    private String updateUser;
 
     /**
      * Create timestamp

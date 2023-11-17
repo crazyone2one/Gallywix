@@ -42,8 +42,8 @@ public class SystemWorkspaceController {
      * @return {@code true} 删除成功，{@code false} 删除失败
      */
     @DeleteMapping("remove/{id}")
-    public boolean remove(@PathVariable Serializable id) {
-        return iSystemWorkspaceService.removeById(id);
+    public ResponseResult<Boolean> remove(@PathVariable String id) {
+        return ResponseResult.success(iSystemWorkspaceService.deleteWorkspace(id));
     }
 
     /**
@@ -63,8 +63,8 @@ public class SystemWorkspaceController {
      * @return 所有数据
      */
     @GetMapping("list")
-    public List<SystemWorkspace> list() {
-        return iSystemWorkspaceService.list();
+    public ResponseResult<List<SystemWorkspace>> list() {
+        return ResponseResult.success(iSystemWorkspaceService.list());
     }
 
     /**

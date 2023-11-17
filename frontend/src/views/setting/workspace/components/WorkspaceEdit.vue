@@ -4,11 +4,12 @@ import { ref } from "vue"
 import ModalDialog from "/@/components/ModalDialog.vue"
 import { useForm } from "@alova/scene-vue"
 
-import { createWorkspace,WORKSPACE } from "/@/apis/workspace"
+import { createWorkspace, WORKSPACE } from "/@/apis/workspace"
 import { FormInst, FormRules, NForm, NFormItem, NInput } from "naive-ui"
 
 const modalDialog = ref<InstanceType<typeof ModalDialog> | null>(null)
 const formRef = ref<FormInst | null>(null)
+const emits = defineEmits(["refresh"])
 const rules: FormRules = {
   name: [
     { required: true, message: "请输入工作空间名称", trigger: "blur" },
@@ -44,7 +45,7 @@ const {
   {
     // 初始化表单数据
     initialForm: {
-      id: null,
+      id: undefined,
       name: "",
       description: "",
     },
@@ -62,23 +63,26 @@ const handleSave = () => {
 onSuccess(() => {
   modalDialog.value?.closeModal()
   window.$message.success("创建成功")
+  emits("refresh")
 })
 defineExpose({ open })
 </script>
 <template>
-  <modal-dialog ref="modalDialog" title="创建工作空间" @confirm="handleSave">
+  <modal-dialog
+    ref="modalDialog"
+    :title="$t('workspace.create')"
+    @confirm="handleSave">
     <template #content>
       <n-form
         ref="formRef"
         :model="formData"
         :rules="rules"
         label-placement="left"
-        require-mark-placement="right-hanging"
-      >
-        <n-form-item label="名称" path="name">
+        require-mark-placement="right-hanging">
+        <n-form-item :label="$t('commons.name')" path="name">
           <n-input v-model:value="formData.name" />
         </n-form-item>
-        <n-form-item label="描述" path="description">
+        <n-form-item :label="$t('commons.description')" path="description">
           <n-input v-model:value="formData.description" type="textarea" />
         </n-form-item>
       </n-form>

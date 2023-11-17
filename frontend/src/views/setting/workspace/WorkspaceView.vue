@@ -1,13 +1,20 @@
 <script setup lang="ts">
-import { onMounted,ref } from "vue"
+import { h, onMounted, ref } from "vue"
 
 import WorkspaceEdit from "./components/WorkspaceEdit.vue"
 import BaseCard from "/@/components/BaseCard.vue"
+import BaseSearch from "/@/components/BaseSearch.vue"
+import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
-import { loadWorkspaceData,WORKSPACE } from "/@/apis/workspace"
+import {
+  delWorkspaceSpecial,
+  loadWorkspaceData,
+  WORKSPACE,
+} from "/@/apis/workspace"
+import i18n from "/@/i18n"
 import { useRequest } from "alova"
-import { DataTableColumns, NButton, NDataTable,NSkeleton } from "naive-ui"
+import { DataTableColumns, NDataTable, NSkeleton } from "naive-ui"
 
 const workspaceEdit = ref<InstanceType<typeof WorkspaceEdit> | null>(null)
 const columns: DataTableColumns<WORKSPACE> = [
@@ -24,6 +31,23 @@ const columns: DataTableColumns<WORKSPACE> = [
     title: "描述",
     key: "description",
     align: "center",
+  },
+  {
+    title: "操作",
+    key: "operator",
+    width: 200,
+    fixed: "right",
+    align: "center",
+    render(rowData) {
+      return h(
+        GaTableOperation,
+        {
+          onEditClick: () => handleEdit(rowData),
+          onDeleteClick: () => handleDelete(rowData),
+        },
+        {},
+      )
+    },
   },
 ]
 const condition = ref<PageReq>({
@@ -49,6 +73,33 @@ const { loading, send, onSuccess } = useRequest(
 onMounted(() => {
   send()
 })
+const handleEdit = (val: WORKSPACE) => {
+  window.$message.info(val.name)
+}
+const { send: deleteWs, onSuccess: deleteWsSuccess } = useRequest(
+  (wsId) => delWorkspaceSpecial(wsId),
+  {
+    immediate: false,
+  },
+)
+const handleDelete = (val: WORKSPACE) => {
+  window.$dialog.warning({
+    title: "",
+    maskClosable: false,
+    content: i18n.global.t("workspace.delete_confirm"),
+    positiveText: i18n.global.t("commons.confirm"),
+    negativeText: i18n.global.t("commons.cancel"),
+    onPositiveClick: () => {
+      deleteWs(val.id)
+    },
+    onNegativeClick: () => {
+      window.$message.info(i18n.global.t("commons.delete_cancelled"))
+    },
+  })
+}
+deleteWsSuccess(() => {
+  send()
+})
 onSuccess((resp) => {
   loading.value = false
   tableInfo.value.data = resp.data.records
@@ -57,9 +108,10 @@ onSuccess((resp) => {
 <template>
   <base-card>
     <template #header>
-      <n-button @click="handleAdd">
-        workspace
-      </n-button>
+      <base-search
+        :condition="condition"
+        :popover-text="$t('workspace.create')"
+        @create="handleAdd" />
     </template>
     <template #content>
       <n-skeleton v-if="loading" :sharp="false" height="550px" />
@@ -67,11 +119,10 @@ onSuccess((resp) => {
         v-else
         :columns="columns"
         :data="tableInfo.data"
-        :row-key="rowKey"
-      />
+        :row-key="rowKey" />
     </template>
   </base-card>
-  <workspace-edit ref="workspaceEdit" />
+  <workspace-edit ref="workspaceEdit" @refresh="send()" />
 </template>
 
 <style></style>
