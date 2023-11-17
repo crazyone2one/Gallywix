@@ -1,7 +1,9 @@
-import { createAlova } from "alova"
 import VueHook from "alova/vue"
-import { xhrRequestAdapter } from "@alova/adapter-xhr"
+
 import { useAuthStore } from "../store/auth-store"
+
+import { xhrRequestAdapter } from "@alova/adapter-xhr"
+import { createAlova } from "alova"
 const logOnDev = (message: string) => {
   if (import.meta.env.MODE === "development") {
     console.log(message)
