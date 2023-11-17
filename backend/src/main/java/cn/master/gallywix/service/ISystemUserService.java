@@ -7,6 +7,9 @@ import cn.master.gallywix.entity.SystemUser;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 用户信息表 服务层。
  *
@@ -24,4 +27,6 @@ public interface ISystemUserService extends IService<SystemUser> {
     void delOrganizationMember(String organizationId, String userId);
 
     void switchUserRole(String sign, String sourceId);
+
+    Map<String, SystemUser> queryNameByIds(List<String> userIds);
 }
