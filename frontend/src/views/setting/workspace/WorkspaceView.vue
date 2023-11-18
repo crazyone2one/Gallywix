@@ -4,6 +4,8 @@ import { h, onMounted, ref } from "vue"
 import WorkspaceEdit from "./components/WorkspaceEdit.vue"
 import BaseCard from "/@/components/BaseCard.vue"
 import BaseSearch from "/@/components/BaseSearch.vue"
+import GaDeleteConfirm from "/@/components/GaDeleteConfirm.vue"
+import GaPagination from "/@/components/table/GaPagination.vue"
 import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
@@ -12,28 +14,34 @@ import {
   loadWorkspaceData,
   WORKSPACE,
 } from "/@/apis/workspace"
-import i18n from "/@/i18n"
+import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
 import { DataTableColumns, NDataTable, NSkeleton } from "naive-ui"
 
 const workspaceEdit = ref<InstanceType<typeof WorkspaceEdit> | null>(null)
+const deleteConfirm = ref<InstanceType<typeof GaDeleteConfirm> | null>(null)
 const columns: DataTableColumns<WORKSPACE> = [
   {
     type: "selection",
     align: "center",
   },
   {
-    title: "名称",
+    title: i18n.t("commons.name"),
     key: "name",
     align: "center",
   },
   {
-    title: "描述",
+    title: i18n.t("commons.description"),
     key: "description",
     align: "center",
   },
   {
-    title: "操作",
+    title: i18n.t("commons.member"),
+    key: "memberSize",
+    align: "center",
+  },
+  {
+    title: i18n.t("commons.operating"),
     key: "operator",
     width: 200,
     fixed: "right",
@@ -82,18 +90,22 @@ const { send: deleteWs, onSuccess: deleteWsSuccess } = useRequest(
     immediate: false,
   },
 )
+// 删除功能
 const handleDelete = (val: WORKSPACE) => {
+  deleteConfirm.value?.open(val)
+}
+const _deleteWorkspace = (val: WORKSPACE) => {
   window.$dialog.warning({
     title: "",
     maskClosable: false,
-    content: i18n.global.t("workspace.delete_confirm"),
-    positiveText: i18n.global.t("commons.confirm"),
-    negativeText: i18n.global.t("commons.cancel"),
+    content: i18n.t("workspace.delete_confirm"),
+    positiveText: i18n.t("commons.confirm"),
+    negativeText: i18n.t("commons.cancel"),
     onPositiveClick: () => {
       deleteWs(val.id)
     },
     onNegativeClick: () => {
-      window.$message.info(i18n.global.t("commons.delete_cancelled"))
+      window.$message.info(i18n.t("commons.delete_cancelled"))
     },
   })
 }
@@ -120,9 +132,11 @@ onSuccess((resp) => {
         :columns="columns"
         :data="tableInfo.data"
         :row-key="rowKey" />
+      <ga-pagination :condition="condition" />
     </template>
   </base-card>
   <workspace-edit ref="workspaceEdit" @refresh="send()" />
+  <ga-delete-confirm ref="deleteConfirm" @delete="_deleteWorkspace" />
 </template>
 
 <style></style>

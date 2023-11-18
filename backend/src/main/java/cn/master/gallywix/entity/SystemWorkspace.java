@@ -68,4 +68,7 @@ public class SystemWorkspace implements Serializable {
     @Column(isLogicDelete = true)
     private Boolean delFlag;
 
+    @Column(ignore = true)
+    private Integer memberSize;
+
 }

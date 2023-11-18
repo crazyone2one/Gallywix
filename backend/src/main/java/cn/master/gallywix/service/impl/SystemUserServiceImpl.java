@@ -2,6 +2,7 @@ package cn.master.gallywix.service.impl;
 
 import cn.master.gallywix.common.constants.RoleConstants;
 import cn.master.gallywix.common.exception.CustomException;
+import cn.master.gallywix.controller.vo.member.QueryMemberRequest;
 import cn.master.gallywix.controller.vo.user.AddOrgMemberRequestVO;
 import cn.master.gallywix.controller.vo.user.UserPageReqVO;
 import cn.master.gallywix.dto.user.UserDTO;
@@ -25,11 +26,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static cn.master.gallywix.entity.table.SystemRoleTableDef.SYSTEM_ROLE;
 import static cn.master.gallywix.entity.table.SystemUserTableDef.SYSTEM_USER;
+import static cn.master.gallywix.entity.table.UserGroupTableDef.USER_GROUP;
 import static cn.master.gallywix.entity.table.UserRoleTableDef.USER_ROLE;
 
 /**
@@ -85,15 +89,49 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     public void switchUserRole(String sign, String sourceId) {
         SystemUser user = SessionUtils.sessionUserInfo();
         if (StringUtils.equals("organization", sign)) {
-            user.setLastOrganizationId(sourceId);
+            user.setLastProjectId(sourceId);
             user.setLastWorkspaceId("");
         }
         if (StringUtils.equals("workspace", sign)) {
             SystemWorkspace workspace = workspaceMapper.selectOneById(sourceId);
-            user.setLastOrganizationId(workspace.getOrganizationId());
+            user.setLastProjectId(workspace.getOrganizationId());
             user.setLastWorkspaceId(sourceId);
         }
         mapper.update(user);
+    }
+
+    @Override
+    public Map<String, SystemUser> queryNameByIds(List<String> userIds) {
+        if (userIds.isEmpty()) {
+            return new HashMap<>(0);
+        }
+        return mapper.queryNameByIds(userIds);
+    }
+
+    @Override
+    public void refreshSessionUser(String sign, String sourceId) {
+        SystemUser user = mapper.selectOneById(SessionUtils.getUserId());
+        if (StringUtils.equals("organization", sign)) {
+            user.setLastProjectId(StringUtils.EMPTY);
+        }
+        if (StringUtils.equals("workspace", sign) && StringUtils.equals(sourceId, user.getLastWorkspaceId())) {
+            user.setLastWorkspaceId(StringUtils.EMPTY);
+        }
+        mapper.update(user);
+    }
+
+    @Override
+    public List<SystemUser> getMemberList(QueryMemberRequest request) {
+        QueryWrapper wrapper = new QueryWrapper();
+        QueryWrapper query = new QueryWrapper()
+                .select("distinct *").from(
+                        wrapper.select(SYSTEM_USER.ALL_COLUMNS)
+                                .from(USER_GROUP).join(SYSTEM_USER).on(USER_GROUP.USER_ID.eq(SYSTEM_USER.ID))
+                                .where(USER_GROUP.SOURCE_ID.eq(request.getWorkspaceId()))
+                                .and(SYSTEM_USER.USERNAME.like(request.getName(), StringUtils.isNoneBlank(request.getName())))
+                                .orderBy(USER_GROUP.UPDATE_TIME.desc())
+                ).as("temp");
+        return mapper.selectListByQuery(query);
     }
 
     private UserDTO getUserDTO(String id) {

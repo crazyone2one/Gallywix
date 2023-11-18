@@ -1,5 +1,6 @@
 package cn.master.gallywix.service;
 
+import cn.master.gallywix.controller.vo.member.QueryMemberRequest;
 import cn.master.gallywix.controller.vo.user.AddOrgMemberRequestVO;
 import cn.master.gallywix.controller.vo.user.UserPageReqVO;
 import cn.master.gallywix.dto.user.UserDTO;
@@ -29,4 +30,8 @@ public interface ISystemUserService extends IService<SystemUser> {
     void switchUserRole(String sign, String sourceId);
 
     Map<String, SystemUser> queryNameByIds(List<String> userIds);
+
+    void refreshSessionUser(String sign, String sourceId);
+
+    List<SystemUser> getMemberList(QueryMemberRequest request);
 }

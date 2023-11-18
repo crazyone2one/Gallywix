@@ -1,6 +1,7 @@
 package cn.master.gallywix.controller;
 
 import cn.master.gallywix.common.result.ResponseResult;
+import cn.master.gallywix.controller.vo.member.QueryMemberRequest;
 import cn.master.gallywix.controller.vo.user.AddOrgMemberRequestVO;
 import cn.master.gallywix.controller.vo.user.UserPageReqVO;
 import cn.master.gallywix.dto.user.UserDTO;
@@ -106,4 +107,10 @@ public class SystemUserController {
         iSystemUserService.switchUserRole(sign, sourceId);
         return ResponseResult.success(SessionUtils.sessionUserInfo());
     }
+
+    @PostMapping("/special/ws/member/list/all")
+    public ResponseResult<List<SystemUser>> getMemberListByAdmin(@RequestBody QueryMemberRequest request) {
+        return ResponseResult.success(iSystemUserService.getMemberList(request));
+    }
+
 }

@@ -16,4 +16,6 @@ public interface ISystemWorkspaceService extends IService<SystemWorkspace> {
     SystemWorkspace add(SystemWorkspace systemWorkspace);
 
     Page<SystemWorkspace> findDataByPage(WorkspacePageReqVO page);
+
+    String deleteWorkspace(String id);
 }

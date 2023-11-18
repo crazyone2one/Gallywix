@@ -4,4 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.master.gallywix.mapper.SystemUserMapper">
 
+    <select id="queryNameByIds" resultType="cn.master.gallywix.entity.SystemUser">
+        SELECT id, username
+        FROM `tb_system_user`
+        WHERE id IN
+        <foreach collection="list" item="id" index="index"
+                 open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

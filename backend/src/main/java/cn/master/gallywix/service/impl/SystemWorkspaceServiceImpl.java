@@ -2,6 +2,7 @@ package cn.master.gallywix.service.impl;
 
 import cn.master.gallywix.common.constants.UserGroupConstants;
 import cn.master.gallywix.common.exception.CustomException;
+import cn.master.gallywix.controller.vo.member.QueryMemberRequest;
 import cn.master.gallywix.controller.vo.workspace.WorkspacePageReqVO;
 import cn.master.gallywix.entity.SystemProject;
 import cn.master.gallywix.entity.SystemWorkspace;
@@ -43,6 +44,7 @@ public class SystemWorkspaceServiceImpl extends ServiceImpl<SystemWorkspaceMappe
     private final ISystemUserService systemUserService;
     private final SystemProjectMapper systemProjectMapper;
     private final SystemGroupMapper systemGroupMapper;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public SystemWorkspace add(SystemWorkspace workspace) {
@@ -73,7 +75,15 @@ public class SystemWorkspaceServiceImpl extends ServiceImpl<SystemWorkspaceMappe
     @Override
     public Page<SystemWorkspace> findDataByPage(WorkspacePageReqVO page) {
         QueryWrapper wrapper = QueryWrapper.create().where(SYSTEM_WORKSPACE.NAME.like(page.getName()));
-        return mapper.paginate(page.getPageNumber(), page.getPageSize(), wrapper);
+        Page<SystemWorkspace> paginate = mapper.paginate(page.getPageNumber(), page.getPageSize(), wrapper);
+        if (CollectionUtils.isNotEmpty(paginate.getRecords())) {
+            paginate.getRecords().forEach(workspace -> {
+                QueryMemberRequest request = new QueryMemberRequest();
+                request.setWorkspaceId(workspace.getId());
+                workspace.setMemberSize(systemUserService.getMemberList(request).size());
+            });
+        }
+        return paginate;
     }
 
     @Override
