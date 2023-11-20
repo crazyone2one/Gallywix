@@ -30,4 +30,5 @@ public class GroupPageReqVO extends Page<SystemGroup> {
     private boolean onlyQueryGlobal = false;
     private List<GroupPermission> permissions;
     private List<OrderRequest> orders;
+    private String name;
 }

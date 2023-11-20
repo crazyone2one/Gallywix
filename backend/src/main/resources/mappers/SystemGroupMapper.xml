@@ -6,32 +6,19 @@
 
     <select id="getGroupList" resultType="cn.master.gallywix.dto.GroupDTO">
         SELECT *,
-        (SELECT COUNT(DISTINCT ug.user_id) FROM tb_user_group ug JOIN tb_system_user ON ug.user_id = tb_system_user.id WHERE ug.group_id =
+        (SELECT COUNT(DISTINCT ug.user_id) FROM tb_user_group ug JOIN tb_system_user ON ug.user_id = tb_system_user.id
+        WHERE ug.group_id =
         temp.id) AS memberSize
         FROM (
-        SELECT g.*, w.name AS scopeName FROM `tb_system_group` g, tb_system_workspace w
-        <where>
-            and g.scope_id = w.id
-            <if test="request.types != null and request.types.size() > 0">
-                AND g.type IN
-                <foreach collection="request.types" item="type" separator="," open="(" close=")">
-                    #{type}
-                </foreach>
-            </if>
-            <if test="request.scopes != null and request.scopes.size() > 0">
-                AND g.scope_id IN
-                <foreach collection="request.scopes" item="scope" separator="," open="(" close=")">
-                    #{scope}
-                </foreach>
-            </if>
-        </where>
+        SELECT g.*, w.name AS scopeName FROM `tb_system_group` g join tb_system_workspace w on g.scope_id = w.id
+        ${qwSql}
         UNION DISTINCT
         SELECT g.*, 'global' AS scopeName FROM `tb_system_group` g
         <where>
             g.scope_id = 'global'
-            <if test="request.types != null and request.types.size() > 0">
+            <if test="types != null and types.size() > 0">
                 AND g.type IN
-                <foreach collection="request.types" item="type" separator="," open="(" close=")">
+                <foreach collection="types" item="type" separator="," open="(" close=")">
                     #{type}
                 </foreach>
             </if>
@@ -40,44 +27,80 @@
         SELECT g.*, 'system' AS scopeName FROM `tb_system_group` g
         <where>
             g.scope_id = 'system'
-            <if test="request.types != null and request.types.size() > 0">
+            <if test="types != null and types.size() > 0">
                 AND g.type IN
-                <foreach collection="request.types" item="type" separator="," open="(" close=")">
+                <foreach collection="types" item="type" separator="," open="(" close=")">
                     #{type}
                 </foreach>
             </if>
         </where>
         union distinct
-        select g.*, p.name as scopeName from `tb_system_group` g, tb_system_project p
-        <where>
-            and g.scope_id = p.id
-            <if test="request.types != null and request.types.size() > 0">
-                AND g.type in
-                <foreach collection="request.types" item="type" separator="," open="(" close=")">
-                    #{type}
-                </foreach>
-            </if>
-            <if test="request.scopes != null and request.scopes.size() > 0">
-                AND g.scope_id in
-                <foreach collection="request.scopes" item="scope" separator="," open="(" close=")">
-                    #{scope}
-                </foreach>
-            </if>
-        </where>
-        ) temp
-        <if test="request.name != null and request.name!=''">
-            WHERE temp.name LIKE CONCAT('%', #{request.name},'%')
+        select g.*, p.name as scopeName from `tb_system_group` g join tb_system_project p on g.scope_id = p.id
+        ${qwSql}
+        limit ${pageOffset}, ${pageSize}) temp
+        <if test="name != null and name!=''">
+            WHERE temp.name LIKE CONCAT('%', #{name},'%')
         </if>
-        <if test="request.orders == null or request.orders.size() == 0">
+        <if test="orders == null or orders.size() == 0">
             ORDER BY field(temp.type, 'SYSTEM', 'WORKSPACE', 'PROJECT'),
             field(temp.scope_id, 'system') desc,
             temp.update_time, temp.name
         </if>
-        <if test="request.orders != null and request.orders.size() > 0">
+        <if test="orders != null and orders.size() > 0">
             ORDER BY
-            <foreach collection="request.orders" separator="," item="order">
+            <foreach collection="orders" separator="," item="order">
                 temp.${order.name} ${order.type}, temp.name DESC
             </foreach>
         </if>
+    </select>
+
+    <select id="getGroupList_COUNT" resultType="long">
+        select count(*) from (
+        SELECT *,
+        (SELECT COUNT(DISTINCT ug.user_id) FROM tb_user_group ug JOIN tb_system_user ON ug.user_id = tb_system_user.id WHERE ug.group_id =
+        temp.id) AS memberSize
+        FROM (
+        SELECT g.*, w.name AS scopeName FROM `tb_system_group` g join tb_system_workspace w on g.scope_id = w.id
+        ${qwSql}
+        UNION DISTINCT
+        SELECT g.*, 'global' AS scopeName FROM `tb_system_group` g
+        <where>
+            g.scope_id = 'global'
+            <if test="types != null and types.size() > 0">
+                AND g.type IN
+                <foreach collection="types" item="type" separator="," open="(" close=")">
+                    #{type}
+                </foreach>
+            </if>
+        </where>
+        UNION DISTINCT
+        SELECT g.*, 'system' AS scopeName FROM `tb_system_group` g
+        <where>
+            g.scope_id = 'system'
+            <if test="types != null and types.size() > 0">
+                AND g.type IN
+                <foreach collection="types" item="type" separator="," open="(" close=")">
+                    #{type}
+                </foreach>
+            </if>
+        </where>
+        union distinct
+        select g.*, p.name as scopeName from `tb_system_group` g join tb_system_project p on g.scope_id = p.id
+        ${qwSql}
+        limit ${pageOffset}, ${pageSize}) temp
+        <if test="name != null and name!=''">
+            WHERE temp.name LIKE CONCAT('%', #{name},'%')
+        </if>
+        <if test="orders == null or orders.size() == 0">
+            ORDER BY field(temp.type, 'SYSTEM', 'WORKSPACE', 'PROJECT'),
+            field(temp.scope_id, 'system') desc,
+            temp.update_time, temp.name
+        </if>
+        <if test="orders != null and orders.size() > 0">
+            ORDER BY
+            <foreach collection="orders" separator="," item="order">
+                temp.${order.name} ${order.type}, temp.name DESC
+            </foreach>
+        </if>) a
     </select>
 </mapper>

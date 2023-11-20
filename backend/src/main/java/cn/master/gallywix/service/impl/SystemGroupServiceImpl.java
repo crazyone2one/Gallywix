@@ -6,7 +6,6 @@ import cn.master.gallywix.common.exception.CustomException;
 import cn.master.gallywix.controller.vo.group.EditGroupRequest;
 import cn.master.gallywix.controller.vo.group.GroupPageReqVO;
 import cn.master.gallywix.dto.GroupDTO;
-import cn.master.gallywix.dto.UserGroupDTO;
 import cn.master.gallywix.entity.SystemGroup;
 import cn.master.gallywix.entity.SystemUser;
 import cn.master.gallywix.entity.UserGroup;
@@ -101,14 +100,15 @@ public class SystemGroupServiceImpl extends ServiceImpl<SystemGroupMapper, Syste
     @Override
     public Page<GroupDTO> getGroupPageList(GroupPageReqVO page) {
         SystemUser user = SessionUtils.sessionUserInfo();
-        QueryWrapper query = QueryWrapper.create()
+        List<UserGroup> userGroups = QueryChain.of(UserGroup.class)
                 .select(USER_GROUP.USER_ID, USER_GROUP.GROUP_ID, USER_GROUP.SOURCE_ID)
-                .select(SYSTEM_GROUP.NAME, SYSTEM_GROUP.TYPE)
+                .select(SYSTEM_GROUP.NAME, SYSTEM_GROUP.TYPE.as("type"))
                 .from(USER_GROUP).leftJoin(SYSTEM_GROUP).on(USER_GROUP.GROUP_ID.eq(SYSTEM_GROUP.ID))
                 .where(USER_GROUP.USER_ID.eq(user.getId()))
-                .where(USER_GROUP.SOURCE_ID.eq(page.getProjectId(), StringUtils.isNoneBlank(page.getProjectId())));
-        List<UserGroupDTO> userGroups = userGroupMapper.selectListByQueryAs(query, UserGroupDTO.class);
-        List<String> groupTypeList = userGroups.stream().map(UserGroupDTO::getType).distinct().toList();
+                .where(USER_GROUP.SOURCE_ID.eq(page.getProjectId(), StringUtils.isNoneBlank(page.getProjectId())))
+                .list();
+//         = userGroupMapper.selectListByQueryAs(query, UserGroupDTO.class);
+        List<String> groupTypeList = userGroups.stream().map(UserGroup::getType).distinct().toList();
         return getGroups(groupTypeList, page);
     }
 
@@ -136,8 +136,13 @@ public class SystemGroupServiceImpl extends ServiceImpl<SystemGroupMapper, Syste
         types = MAP.get(groupType);
         page.setTypes(types);
         page.setScopes(scopes);
-
-        return mapper.getGroupList(page);
+        QueryWrapper wrapper = QueryWrapper.create().where(SYSTEM_GROUP.TYPE.in(types))
+                .and(SYSTEM_GROUP.SCOPE_ID.in(scopes));
+        Map<String,Object> otherParams  = new HashMap<>();
+        otherParams .put("types", types);
+        otherParams .put("name", page.getName());
+        otherParams .put("orders", page.getOrders());
+        return mapper.xmlPaginate("getGroupList", Page.of(page.getPageNumber(), page.getPageSize()), wrapper,otherParams );
     }
 
     private void checkGroupExist(EditGroupRequest request) {
