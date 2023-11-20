@@ -1,7 +1,7 @@
 import alovaInstance from ".."
 import { IPage, PageReq } from "../interface"
 export interface USER {
-  id: number | null
+  id: string | undefined
   username: string
   nickname: string
   password: string
@@ -51,3 +51,5 @@ export const getWorkspaceMemberListSpecial = (param: PageReq) =>
     `/system/user/special/ws/member/page`,
     param,
   )
+
+export const getUserList = () => alovaInstance.Get<USER[]>(`/system/user/list`)

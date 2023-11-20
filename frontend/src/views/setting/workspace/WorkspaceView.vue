@@ -10,7 +10,6 @@ import GaPagination from "/@/components/table/GaPagination.vue"
 import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
-import { getWorkspaceMemberListSpecial } from "/@/apis/user"
 import {
   delWorkspaceSpecial,
   loadWorkspaceData,
@@ -76,12 +75,6 @@ const condition = ref<PageReq>({
   pageNumber: 1,
   pageSize: 10,
 })
-const wsMemberCondition = ref<PageReq>({
-  name: "",
-  workspaceId: "",
-  pageNumber: 1,
-  pageSize: 10,
-})
 const tableInfo = ref<ITableDataInfo<WORKSPACE[]>>({
   data: [],
   total: 0,
@@ -135,20 +128,9 @@ onSuccess((resp) => {
   tableInfo.value.data = resp.data.records
 })
 // 单击成员事件
-const { send: loadWsMember, onSuccess: loadWsMemberSucccess } = useRequest(
-  (val) => getWorkspaceMemberListSpecial(val),
-  {
-    immediate: false,
-  },
-)
 const cellClick = (val: WORKSPACE) => {
-  wsMemberCondition.value.workspaceId = val.id
   workspaceMember.value?.open(val)
-  loadWsMember(wsMemberCondition.value)
 }
-loadWsMemberSucccess((resp) => {
-  console.log(resp)
-})
 </script>
 <template>
   <base-card>

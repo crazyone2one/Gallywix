@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { h, ref } from "vue"
 
+import AddMember from "./AddMember.vue"
 import BaseCard from "/@/components/BaseCard.vue"
 import BaseSearch from "/@/components/BaseSearch.vue"
 import ModalDialog from "/@/components/ModalDialog.vue"
@@ -13,6 +14,7 @@ import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
 import { DataTableColumns, NDataTable } from "naive-ui"
 const modalDialog = ref<InstanceType<typeof ModalDialog> | null>(null)
+const addMember = ref<InstanceType<typeof AddMember> | null>(null)
 const condition = ref<PageReq>({
   name: "",
   workspaceId: "",
@@ -85,6 +87,9 @@ const handleEditMember = (val: USER) => {
 const handleDeleteMember = (val: USER) => {
   console.log(val)
 }
+const handleOpenAdd = () => {
+  addMember.value?.open()
+}
 defineExpose({ open })
 </script>
 <template>
@@ -94,7 +99,8 @@ defineExpose({ open })
         <template #header>
           <base-search
             :condition="condition"
-            :popover-text="$t('member.create')" />
+            :popover-text="$t('member.create')"
+            @create="handleOpenAdd" />
         </template>
         <template #content>
           <n-data-table
@@ -105,6 +111,7 @@ defineExpose({ open })
       </base-card>
     </template>
   </modal-dialog>
+  <add-member ref="addMember" />
 </template>
 
 <style></style>
