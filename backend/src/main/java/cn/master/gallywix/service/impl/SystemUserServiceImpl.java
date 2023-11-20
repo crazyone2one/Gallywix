@@ -134,6 +134,20 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         return mapper.selectListByQuery(query);
     }
 
+    @Override
+    public Page<SystemUser> findWsMemberByPage(UserPageReqVO page) {
+        QueryWrapper wrapper = new QueryWrapper();
+        QueryWrapper query = new QueryWrapper()
+                .select("distinct *").from(
+                        wrapper.select(SYSTEM_USER.ALL_COLUMNS)
+                                .from(USER_GROUP).join(SYSTEM_USER).on(USER_GROUP.USER_ID.eq(SYSTEM_USER.ID))
+                                .where(USER_GROUP.SOURCE_ID.eq(page.getWorkspaceId()))
+                                .and(SYSTEM_USER.USERNAME.like(page.getName(), StringUtils.isNoneBlank(page.getName())))
+                                .orderBy(USER_GROUP.UPDATE_TIME.desc())
+                ).as("temp");
+        return mapper.paginate(page, query);
+    }
+
     private UserDTO getUserDTO(String id) {
         SystemUser user = QueryChain.of(SystemUser.class).where(SYSTEM_USER.ID.eq(id)).one();
         if (Objects.isNull(user)) {

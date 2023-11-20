@@ -34,4 +34,6 @@ public interface ISystemUserService extends IService<SystemUser> {
     void refreshSessionUser(String sign, String sourceId);
 
     List<SystemUser> getMemberList(QueryMemberRequest request);
+
+    Page<SystemUser> findWsMemberByPage(UserPageReqVO page);
 }

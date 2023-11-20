@@ -92,7 +92,10 @@ public class SystemUserController {
     public ResponseResult<Page<SystemUser>> page(UserPageReqVO page) {
         return ResponseResult.success(iSystemUserService.findDataByPage(page));
     }
-
+    @PostMapping("/special/ws/member/page")
+    public ResponseResult<Page<SystemUser>> getWsMemberUserPage(UserPageReqVO page) {
+        return ResponseResult.success(iSystemUserService.findWsMemberByPage(page));
+    }
     @PostMapping("/orgmember/add")
     public void addOrganizationMember(@RequestBody AddOrgMemberRequestVO request) {
         iSystemUserService.addOrganizationMember(request);
