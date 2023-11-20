@@ -2,6 +2,7 @@
 import { h, onMounted, ref } from "vue"
 
 import WorkspaceEdit from "./components/WorkspaceEdit.vue"
+import WorkspaceMember from "./components/WorkspaceMember.vue"
 import BaseCard from "/@/components/BaseCard.vue"
 import BaseSearch from "/@/components/BaseSearch.vue"
 import GaDeleteConfirm from "/@/components/GaDeleteConfirm.vue"
@@ -9,6 +10,7 @@ import GaPagination from "/@/components/table/GaPagination.vue"
 import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
+import { getWorkspaceMemberListSpecial } from "/@/apis/user"
 import {
   delWorkspaceSpecial,
   loadWorkspaceData,
@@ -16,10 +18,11 @@ import {
 } from "/@/apis/workspace"
 import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
-import { DataTableColumns, NDataTable, NSkeleton } from "naive-ui"
+import { DataTableColumns, NButton, NDataTable, NSkeleton } from "naive-ui"
 
 const workspaceEdit = ref<InstanceType<typeof WorkspaceEdit> | null>(null)
 const deleteConfirm = ref<InstanceType<typeof GaDeleteConfirm> | null>(null)
+const workspaceMember = ref<InstanceType<typeof WorkspaceMember> | null>(null)
 const columns: DataTableColumns<WORKSPACE> = [
   {
     type: "selection",
@@ -39,6 +42,15 @@ const columns: DataTableColumns<WORKSPACE> = [
     title: i18n.t("commons.member"),
     key: "memberSize",
     align: "center",
+    render(rowData) {
+      return h(
+        NButton,
+        { text: true, type: "primary", onClick: () => cellClick(rowData) },
+        {
+          default: () => rowData.memberSize,
+        },
+      )
+    },
   },
   {
     title: i18n.t("commons.operating"),
@@ -61,6 +73,12 @@ const columns: DataTableColumns<WORKSPACE> = [
 const condition = ref<PageReq>({
   name: "",
   ids: [],
+  pageNumber: 1,
+  pageSize: 10,
+})
+const wsMemberCondition = ref<PageReq>({
+  name: "",
+  workspaceId: "",
   pageNumber: 1,
   pageSize: 10,
 })
@@ -116,6 +134,21 @@ onSuccess((resp) => {
   loading.value = false
   tableInfo.value.data = resp.data.records
 })
+// 单击成员事件
+const { send: loadWsMember, onSuccess: loadWsMemberSucccess } = useRequest(
+  (val) => getWorkspaceMemberListSpecial(val),
+  {
+    immediate: false,
+  },
+)
+const cellClick = (val: WORKSPACE) => {
+  wsMemberCondition.value.workspaceId = val.id
+  workspaceMember.value?.open(val)
+  loadWsMember(wsMemberCondition.value)
+}
+loadWsMemberSucccess((resp) => {
+  console.log(resp)
+})
 </script>
 <template>
   <base-card>
@@ -137,6 +170,7 @@ onSuccess((resp) => {
   </base-card>
   <workspace-edit ref="workspaceEdit" @refresh="send()" />
   <ga-delete-confirm ref="deleteConfirm" @delete="_deleteWorkspace" />
+  <workspace-member ref="workspaceMember" />
 </template>
 
 <style></style>
