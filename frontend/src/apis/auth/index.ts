@@ -8,11 +8,12 @@ export interface LoginResponse {
   refresh_token: string
   userId: string
   roles: Array<string>
-  user: Object
+  user: object
 }
 /**
  * 登录
- * @param param0 登录参数
+ * @param param 登录参数
  * @returns
  */
-export const loginFunction = (param: LOGIN) => alovaInstance.Post<LoginResponse>(`/auth/authenticate`, param)
+export const loginFunction = (param: LOGIN) =>
+  alovaInstance.Post<LoginResponse>(`/auth/authenticate`, param)
