@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 项目信息 实体类。
+ *  实体类。
  *
  * @author 11's papa
  * @since 1.0.0
@@ -22,42 +22,31 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "tb_system_project")
-public class SystemProject implements Serializable {
+@Table(value = "tb_project_version")
+public class ProjectVersion implements Serializable {
 
-    /**
-     * Project ID
-     */
     @Id(keyType = KeyType.Generator, value = "flexId")
     private String id;
 
-    /**
-     * Workspace ID this project belongs to
-     */
-    private String workspaceId;
+    private String projectId;
 
-    /**
-     * Project name
-     */
     private String name;
 
-    /**
-     * Project description
-     */
     private String description;
 
-    private String systemId;
+    private String status;
 
-    /**
-     * Create timestamp
-     */
+    private Boolean latest;
+
+    private LocalDateTime publishTime;
+
+    private LocalDateTime startTime;
+
+    private LocalDateTime endTime;
+
     @Column(onInsertValue = "now()")
     private LocalDateTime createTime;
 
-    /**
-     * Update timestamp
-     */
-    @Column(onInsertValue = "now()", onUpdateValue = "now()")
-    private LocalDateTime updateTime;
+    private String createUser;
 
 }

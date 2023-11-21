@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { h,onMounted, ref } from "vue"
+import { h, onMounted, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 
 import ProjectEdit from "./components/ProjectEdit.vue"
@@ -8,9 +8,10 @@ import BaseSearch from "/@/components/BaseSearch.vue"
 import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
-import { loadData,PROJECT } from "/@/apis/project"
+import { loadData, PROJECT } from "/@/apis/project"
+import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
-import { DataTableColumns, NDataTable,NSkeleton } from "naive-ui"
+import { DataTableColumns, NDataTable, NSkeleton } from "naive-ui"
 
 const route = useRoute()
 const router = useRouter()
@@ -21,12 +22,17 @@ const columns: DataTableColumns<PROJECT> = [
     align: "center",
   },
   {
-    title: "名称",
+    title: i18n.t("commons.name"),
     key: "name",
     align: "center",
   },
   {
-    title: "描述",
+    title: i18n.t("commons.description"),
+    key: "description",
+    align: "center",
+  },
+  {
+    title: i18n.t("commons.member"),
     key: "description",
     align: "center",
   },
@@ -36,7 +42,7 @@ const columns: DataTableColumns<PROJECT> = [
     align: "center",
   },
   {
-    title: "操作",
+    title: i18n.t("commons.operating"),
     key: "operator",
     width: 200,
     fixed: "right",
@@ -82,11 +88,18 @@ onMounted(() => {
 <template>
   <base-card>
     <template #header>
-      <base-search :condition="condition" popover-text="添加项目" @create="handleAdd" />
+      <base-search
+        :condition="condition"
+        :popover-text="$t('project.create')"
+        @create="handleAdd" />
     </template>
     <template #content>
       <n-skeleton v-if="loading" :sharp="false" height="550px" />
-      <n-data-table v-else :columns="columns" :data="tableInfo.data" :row-key="rowKey" />
+      <n-data-table
+        v-else
+        :columns="columns"
+        :data="tableInfo.data"
+        :row-key="rowKey" />
     </template>
   </base-card>
   <project-edit ref="projectEdit" @refresh="send()" />

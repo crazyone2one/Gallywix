@@ -5,7 +5,6 @@ import cn.master.gallywix.entity.SystemProject;
 import cn.master.gallywix.service.ISystemProjectService;
 import com.mybatisflex.core.paginate.Page;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -31,7 +30,7 @@ public class SystemProjectController {
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
-    public ResponseResult<Integer> save(@RequestBody SystemProject systemProject) {
+    public ResponseResult<SystemProject> save(@RequestBody SystemProject systemProject) {
         return ResponseResult.success(iSystemProjectService.saveProject(systemProject));
     }
 
@@ -85,7 +84,7 @@ public class SystemProjectController {
      * @return 分页对象
      */
     @PostMapping("page")
-    @PreAuthorize("hasAnyAuthority('ADMIN1','project_query')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN1','project_query')")
     public ResponseResult<Page<SystemProject>> page(Page<SystemProject> page) {
         return ResponseResult.success(iSystemProjectService.page(page));
     }

@@ -11,5 +11,7 @@ import cn.master.gallywix.entity.SystemProject;
  */
 public interface ISystemProjectService extends IService<SystemProject> {
 
-    int saveProject(SystemProject systemProject);
+    SystemProject saveProject(SystemProject systemProject);
+
+    String getMaxSystemId();
 }

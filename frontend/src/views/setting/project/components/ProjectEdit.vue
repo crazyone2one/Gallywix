@@ -4,11 +4,15 @@ import { ref } from "vue"
 import ModalDialog from "/@/components/ModalDialog.vue"
 import { useForm } from "@alova/scene-vue"
 
+import { useAuthStore } from "/@/store/auth-store"
+
 import { PROJECT, saveData } from "/@/apis/project"
+import { i18n } from "/@/i18n"
 import { FormInst, FormRules, NForm, NFormItem, NInput } from "naive-ui"
 
 const modalDialog = ref<InstanceType<typeof ModalDialog> | null>(null)
 const formRef = ref<FormInst | null>(null)
+const title = ref(i18n.t("project.create"))
 const emits = defineEmits(["refresh"])
 const rules: FormRules = {
   name: [
@@ -46,9 +50,10 @@ const {
   {
     // 初始化表单数据
     initialForm: {
-      id: null,
+      id: undefined,
       name: "",
       description: "",
+      workspaceId: "",
     },
     // 设置这个参数为true即可在提交完成后自动重置表单数据
     resetAfterSubmiting: true,
@@ -57,6 +62,7 @@ const {
 const handleSave = () => {
   formRef.value?.validate((error) => {
     if (!error) {
+      formData.value.workspaceId = useAuthStore().workspace_id as string
       submit(formData.value)
     }
   })
@@ -72,7 +78,7 @@ onError((val) => {
 defineExpose({ open })
 </script>
 <template>
-  <modal-dialog ref="modalDialog" title="创建项目" @confirm="handleSave">
+  <modal-dialog ref="modalDialog" :title="title" @confirm="handleSave">
     <template #content>
       <n-form
         ref="formRef"
@@ -80,10 +86,10 @@ defineExpose({ open })
         :rules="rules"
         label-placement="left"
         require-mark-placement="right-hanging">
-        <n-form-item label="名称" path="name">
+        <n-form-item :label="$t('commons.name')" path="name">
           <n-input v-model:value="formData.name" />
         </n-form-item>
-        <n-form-item label="描述" path="description">
+        <n-form-item :label="$t('commons.description')" path="description">
           <n-input v-model:value="formData.description" type="textarea" />
         </n-form-item>
       </n-form>
