@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue"
 
+import { i18n } from "../i18n"
 import { NButton, NModal, NSpace } from "naive-ui"
 
 interface Props {
@@ -10,7 +11,7 @@ interface Props {
   modalWidth?: string
 }
 withDefaults(defineProps<Props>(), {
-  title: "操作", // modal title
+  title: i18n.t("commons.operating"), // modal title
   showFooter: true, // show footer button
   btnText: "",
   modalWidth: "", // modal width
@@ -53,10 +54,10 @@ defineExpose({ toggleModal, showModal, closeModal })
     <template #action>
       <n-space v-if="showFooter" justify="end">
         <n-button type="default" size="small" @click="onCancel">
-          算了
+          {{ $t("commons.cancel") }}
         </n-button>
         <n-button type="primary" size="small" @click="emits('confirm')">
-          确认
+          {{ $t("commons.confirm") }}
         </n-button>
         <n-button
           v-if="btnText"
