@@ -3,11 +3,13 @@ import { IPage, PageReq } from "../interface"
 export interface IGroupDTO {
   id: string | undefined
   name: string
+  code: string
   description: string
   system: boolean
   global: boolean
   type: string
   scopeId: string
+  scopeName?: string
   createTime?: number
   creator?: string
   memberSize?: number

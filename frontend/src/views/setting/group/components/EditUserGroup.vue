@@ -36,6 +36,19 @@ const rules: FormRules = {
       trigger: "blur",
     },
   ],
+  code: [
+    {
+      required: true,
+      message: i18n.global.t("commons.encode"),
+      trigger: "blur",
+    },
+    {
+      min: 2,
+      max: 50,
+      message: "长度在 2 到 50 个字符",
+      trigger: "blur",
+    },
+  ],
   description: {
     min: 2,
     max: 90,
@@ -69,6 +82,7 @@ const {
     initialForm: {
       id: undefined,
       name: "",
+      code: "",
       description: "",
       system: true,
       global: false,
@@ -114,9 +128,10 @@ const open = (type: string, tip: string, val?: IGroupDTO) => {
   isSystem.value = false
   show.value = true
   dialogType.value = type
-  if (val) {
-    formData.value = Object.assign({}, val)
-  }
+  formData.value = Object.assign({}, val)
+  // if (val) {
+  //   formData.value = Object.assign({}, val)
+  // }
   if (type !== "create") {
     if (formData.value.type === GROUP_SYSTEM) {
       formData.value.global = true
@@ -163,9 +178,13 @@ defineExpose({ open })
         :model="formData"
         :rules="rules"
         label-placement="left"
+        size="small"
         require-mark-placement="right-hanging">
         <n-form-item :label="$t('commons.name')" path="name">
           <n-input v-model:value="formData.name" />
+        </n-form-item>
+        <n-form-item :label="$t('commons.encode')" path="code">
+          <n-input v-model:value="formData.code" />
         </n-form-item>
         <n-form-item :label="$t('group.type')" path="type">
           <n-select v-model:value="formData.type" :options="options" />
@@ -177,7 +196,7 @@ defineExpose({ open })
           <n-switch
             v-model:value="formData.global"
             :disabled="dialogType === 'edit' || formData.type === 'SYSTEM'"
-            @update:value="handleChange" />
+            @update:value="handleChange(formData.global)" />
         </n-form-item>
         <n-form-item v-if="show" :label="showLabel" path="scopeId">
           <n-select
@@ -185,7 +204,8 @@ defineExpose({ open })
             :options="workspaces"
             :placeholder="$t('project.please_choose_workspace')"
             :disabled="dialogType === 'edit'"
-            filterable />
+            filterable
+            clearable />
         </n-form-item>
       </n-form>
     </template>

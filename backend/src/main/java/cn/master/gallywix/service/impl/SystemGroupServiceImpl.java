@@ -103,11 +103,10 @@ public class SystemGroupServiceImpl extends ServiceImpl<SystemGroupMapper, Syste
         List<UserGroup> userGroups = QueryChain.of(UserGroup.class)
                 .select(USER_GROUP.USER_ID, USER_GROUP.GROUP_ID, USER_GROUP.SOURCE_ID)
                 .select(SYSTEM_GROUP.NAME, SYSTEM_GROUP.TYPE.as("type"))
-                .from(USER_GROUP).leftJoin(SYSTEM_GROUP).on(USER_GROUP.GROUP_ID.eq(SYSTEM_GROUP.ID))
+                .from(USER_GROUP).leftJoin(SYSTEM_GROUP).on(USER_GROUP.GROUP_ID.eq(SYSTEM_GROUP.CODE))
                 .where(USER_GROUP.USER_ID.eq(user.getId()))
                 .where(USER_GROUP.SOURCE_ID.eq(page.getProjectId(), StringUtils.isNoneBlank(page.getProjectId())))
                 .list();
-//         = userGroupMapper.selectListByQueryAs(query, UserGroupDTO.class);
         List<String> groupTypeList = userGroups.stream().map(UserGroup::getType).distinct().toList();
         return getGroups(groupTypeList, page);
     }

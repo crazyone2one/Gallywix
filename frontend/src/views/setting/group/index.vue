@@ -1,49 +1,127 @@
 <script setup lang="ts">
-import { h, onMounted, ref } from "vue"
+import { computed, h, onMounted, ref } from "vue"
 
 import EditUserGroup from "./components/EditUserGroup.vue"
 import BaseCard from "/@/components/BaseCard.vue"
 import BaseSearch from "/@/components/BaseSearch.vue"
 import GaTableOperation from "/@/components/table/GaTableOperation.vue"
+import GaTableOperatorButton from "/@/components/table/GaTableOperatorButton.vue"
+
+import { SUPER_GROUP } from "/@/utils/constants"
+import { USER_GROUP_SCOPE } from "/@/utils/table-constants"
 
 import { IGroupDTO, loadTableData } from "/@/apis/group"
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
-import i18n from "/@/i18n"
+import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
 import { DataTableColumns, NDataTable, NSkeleton } from "naive-ui"
 
 const editUserGroup = ref<InstanceType<typeof EditUserGroup> | null>(null)
+const userGroupType = computed(() => {
+  return USER_GROUP_SCOPE
+})
 const columns: DataTableColumns<IGroupDTO> = [
   {
     type: "selection",
     align: "center",
   },
   {
-    title: i18n.global.t("commons.name"),
+    title: i18n.t("commons.name"),
     key: "name",
     align: "center",
   },
   {
-    title: i18n.global.t("commons.member"),
+    title: i18n.t("group.type"),
+    key: "type",
+    align: "center",
+    render(row) {
+      return h(
+        "span",
+        {},
+        {
+          default: () =>
+            userGroupType.value[row.type]
+              ? i18n.t(userGroupType.value[row.type])
+              : row.type,
+        },
+      )
+    },
+  },
+  {
+    title: i18n.t("commons.member"),
     key: "memberSize",
+    align: "center",
   },
   {
-    title: i18n.global.t("group.scope"),
+    title: i18n.t("group.scope"),
     key: "scopeName",
+    align: "center",
+    render(row) {
+      return h(
+        "span",
+        {},
+        {
+          default: () => {
+            if (row.scopeId === "global") {
+              return i18n.t("group.global")
+            } else if (row.scopeId === "system") {
+              return i18n.t("group.system")
+            } else {
+              return row.scopeName
+            }
+          },
+        },
+      )
+    },
   },
   {
-    title: i18n.global.t("commons.create_time"),
+    title: i18n.t("group.description"),
+    key: "description",
+  },
+  {
+    title: i18n.t("commons.create_time"),
     key: "createTime",
     align: "center",
   },
   {
-    title: i18n.global.t("commons.operating"),
+    title: i18n.t("commons.operating"),
     key: "operator",
     width: 200,
     fixed: "right",
     align: "center",
     render(rowData) {
-      return h(GaTableOperation, { onEditClick: () => handleEdit(rowData) }, {})
+      if (rowData.code === SUPER_GROUP) {
+        return h(
+          GaTableOperation,
+          { onEditClick: () => handleEdit(rowData) },
+          {
+            middle: () => {
+              return h(
+                GaTableOperatorButton,
+                { tip: i18n.t("group.set_permission") },
+                {},
+              )
+            },
+          },
+        )
+      } else {
+        return h(
+          GaTableOperation,
+          { onEditClick: () => handleEdit(rowData) },
+          {
+            middle: () => {
+              return h(
+                GaTableOperatorButton,
+                {
+                  tip: i18n.t("group.set_permission"),
+                  iconText: "i-tabler:tool",
+                },
+                {},
+              )
+            },
+          },
+        )
+      }
     },
   },
 ]
@@ -69,7 +147,14 @@ onSuccess((resp) => {
   tableInfo.value.data = resp.data.records
 })
 const handleAdd = () => {
-  editUserGroup.value?.open("create", i18n.global.t("group.create"))
+  editUserGroup.value?.open("create", i18n.t("group.create"))
+}
+const handleEdit = (val: IGroupDTO) => {
+  if (val.code === "admin") {
+    window.$message.warning(i18n.t("group.admin_not_allow_edit"))
+    return
+  }
+  editUserGroup.value?.open("edit", i18n.t("group.edit"), val)
 }
 onMounted(() => {
   send()
