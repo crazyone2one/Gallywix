@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, h, onMounted, ref } from "vue"
 
+import EditPermission from "./components/EditPermission.vue"
 import EditUserGroup from "./components/EditUserGroup.vue"
 import BaseCard from "/@/components/BaseCard.vue"
 import BaseSearch from "/@/components/BaseSearch.vue"
@@ -17,6 +18,7 @@ import { useRequest } from "alova"
 import { DataTableColumns, NDataTable, NSkeleton } from "naive-ui"
 
 const editUserGroup = ref<InstanceType<typeof EditUserGroup> | null>(null)
+const editPermission = ref<InstanceType<typeof EditPermission> | null>(null)
 const userGroupType = computed(() => {
   return USER_GROUP_SCOPE
 })
@@ -114,7 +116,8 @@ const columns: DataTableColumns<IGroupDTO> = [
                 GaTableOperatorButton,
                 {
                   tip: i18n.t("group.set_permission"),
-                  iconText: "i-tabler:tool",
+                  iconText: "i-tabler:settings",
+                  onExec: () => setPermission(rowData),
                 },
                 {},
               )
@@ -156,6 +159,9 @@ const handleEdit = (val: IGroupDTO) => {
   }
   editUserGroup.value?.open("edit", i18n.t("group.edit"), val)
 }
+const setPermission = (val: IGroupDTO) => {
+  editPermission.value?.open(val)
+}
 onMounted(() => {
   send()
 })
@@ -178,6 +184,7 @@ onMounted(() => {
     </template>
   </base-card>
   <edit-user-group ref="editUserGroup" @refresh="send" />
+  <edit-permission ref="editPermission" />
 </template>
 
 <style></style>

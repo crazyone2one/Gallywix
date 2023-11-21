@@ -5,3 +5,8 @@ export const ROLE_TEST_MANAGER = "test_manager"
 export const ROLE_TEST_USER = "test_user"
 export const ROLE_TEST_VIEWER = "test_viewer"
 export const SUPER_GROUP = "super_group"
+export const GROUP_TYPE: { [key: string]: string } = {
+  SYSTEM: "SYSTEM",
+  WORKSPACE: "WORKSPACE",
+  PROJECT: "PROJECT",
+}
