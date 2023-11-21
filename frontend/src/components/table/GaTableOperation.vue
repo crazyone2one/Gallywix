@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { NSpace } from "naive-ui"
 import GaButton from "/@/components/GaButton.vue"
+
+import { i18n } from "/@/i18n"
+import { NSpace } from "naive-ui"
 interface PROPS {
   showEdit?: boolean
   showDelete?: boolean
@@ -10,8 +12,8 @@ interface PROPS {
 withDefaults(defineProps<PROPS>(), {
   showEdit: true,
   showDelete: true,
-  editTip: () => "编辑",
-  deleteTip: () => "删除",
+  editTip: () => i18n.t("commons.edit"),
+  deleteTip: () => i18n.t("commons.delete"),
 })
 const emits = defineEmits(["editClick", "deleteClick"])
 </script>

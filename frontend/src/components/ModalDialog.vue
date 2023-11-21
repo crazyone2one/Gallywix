@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue"
-import { NModal, NButton, NSpace } from "naive-ui"
+
+import { NButton, NModal, NSpace } from "naive-ui"
 
 interface Props {
   title?: string
