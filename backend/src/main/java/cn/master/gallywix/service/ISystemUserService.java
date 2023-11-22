@@ -20,6 +20,8 @@ public interface ISystemUserService extends IService<SystemUser> {
 
     UserDTO saveUser(SystemUser systemUser);
 
+    UserDTO getUserDTO(String id);
+
     Page<SystemUser> findDataByPage(UserPageReqVO page);
 
     void addOrganizationMember(AddOrgMemberRequestVO request);

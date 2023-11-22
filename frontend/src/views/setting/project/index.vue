@@ -131,7 +131,8 @@ onMounted(() => {
     <template #header>
       <base-search
         :condition="condition"
-        :popover-text="$t('project.create')"
+        :create-tip="$t('project.create')"
+        :create-permission="['WORKSPACE_PROJECT_MANAGER:READ+CREATE']"
         @create="handleAdd" />
     </template>
     <template #content>

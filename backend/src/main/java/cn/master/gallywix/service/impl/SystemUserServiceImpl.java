@@ -4,14 +4,11 @@ import cn.master.gallywix.common.constants.RoleConstants;
 import cn.master.gallywix.common.exception.CustomException;
 import cn.master.gallywix.controller.vo.user.AddOrgMemberRequestVO;
 import cn.master.gallywix.controller.vo.user.UserPageReqVO;
+import cn.master.gallywix.dto.GroupResourceDTO;
+import cn.master.gallywix.dto.UserGroupPermissionDTO;
 import cn.master.gallywix.dto.user.UserDTO;
-import cn.master.gallywix.entity.SystemRole;
-import cn.master.gallywix.entity.SystemUser;
-import cn.master.gallywix.entity.SystemWorkspace;
-import cn.master.gallywix.entity.UserRole;
-import cn.master.gallywix.mapper.SystemUserMapper;
-import cn.master.gallywix.mapper.SystemWorkspaceMapper;
-import cn.master.gallywix.mapper.UserRoleMapper;
+import cn.master.gallywix.entity.*;
+import cn.master.gallywix.mapper.*;
 import cn.master.gallywix.service.ISystemUserService;
 import cn.master.gallywix.utils.SessionUtils;
 import com.mybatisflex.core.paginate.Page;
@@ -25,13 +22,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
-import static cn.master.gallywix.entity.table.SystemRoleTableDef.SYSTEM_ROLE;
+import static cn.master.gallywix.entity.table.SystemGroupTableDef.SYSTEM_GROUP;
 import static cn.master.gallywix.entity.table.SystemUserTableDef.SYSTEM_USER;
+import static cn.master.gallywix.entity.table.UserGroupPermissionTableDef.USER_GROUP_PERMISSION;
 import static cn.master.gallywix.entity.table.UserGroupTableDef.USER_GROUP;
 import static cn.master.gallywix.entity.table.UserRoleTableDef.USER_ROLE;
 
@@ -46,6 +41,9 @@ import static cn.master.gallywix.entity.table.UserRoleTableDef.USER_ROLE;
 public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemUser> implements ISystemUserService {
     final UserRoleMapper userRoleMapper;
     final SystemWorkspaceMapper workspaceMapper;
+    private final UserGroupMapper userGroupMapper;
+    private final SystemGroupMapper systemGroupMapper;
+    private final UserGroupPermissionMapper userGroupPermissionMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -159,24 +157,42 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
                 ).as("temp");
         return mapper.paginate(request, query);
     }
-
-    private UserDTO getUserDTO(String id) {
+    @Override
+    public UserDTO getUserDTO(String id) {
         SystemUser user = QueryChain.of(SystemUser.class).where(SYSTEM_USER.ID.eq(id)).one();
         if (Objects.isNull(user)) {
             return null;
         }
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(user, userDTO);
-        List<UserRole> userRoleList = QueryChain.of(UserRole.class).where(USER_ROLE.USER_ID.eq(id)).list();
-        if (CollectionUtils.isEmpty(userRoleList)) {
-            return userDTO;
-        }
-        List<String> roleIds = userRoleList.stream().map(UserRole::getRoleId).toList();
-        List<SystemRole> systemRoles = QueryChain.of(SystemRole.class).where(SYSTEM_ROLE.ID.in(roleIds)).list();
-        userDTO.setRoles(systemRoles);
+        UserGroupPermissionDTO dto = getUserGroupPermission(user.getId());
+        userDTO.setUserGroups(dto.getUserGroups());
+        userDTO.setGroups(dto.getGroups());
+        userDTO.setGroupPermissions(dto.getList());
         return userDTO;
     }
-
+    private UserGroupPermissionDTO getUserGroupPermission(String id) {
+        UserGroupPermissionDTO permissionDTO = new UserGroupPermissionDTO();
+        List<GroupResourceDTO> list = new ArrayList<>();
+        List<UserGroup> userGroups = userGroupMapper.selectListByQuery(QueryChain.of(UserGroup.class).where(USER_GROUP.USER_ID.eq(id)));
+        if (CollectionUtils.isEmpty(userGroups)) {
+            return permissionDTO;
+        }
+        permissionDTO.setUserGroups(userGroups);
+        List<String> groupList = userGroups.stream().map(UserGroup::getGroupId).toList();
+        List<SystemGroup> groups = systemGroupMapper.selectListByQuery(QueryChain.of(SystemGroup.class).where(SYSTEM_GROUP.ID.in(groupList)));
+        permissionDTO.setGroups(groups);
+        groups.forEach(gp->{
+            GroupResourceDTO dto = new GroupResourceDTO();
+            dto.setGroup(gp);
+            List<UserGroupPermission> userGroupPermissions = userGroupPermissionMapper
+                    .selectListByQuery(QueryChain.of(UserGroupPermission.class).where(USER_GROUP_PERMISSION.GROUP_ID.eq(gp.getCode())));
+            dto.setUserGroupPermissions(userGroupPermissions);
+            list.add(dto);
+        });
+        permissionDTO.setList(list);
+        return permissionDTO;
+    }
     public void createUser(SystemUser user) {
 //        user.setStatus(true);
         mapper.insert(user);

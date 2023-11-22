@@ -1,9 +1,13 @@
 package cn.master.gallywix.dto.user;
 
-import cn.master.gallywix.entity.SystemRole;
+import cn.master.gallywix.dto.GroupResourceDTO;
+import cn.master.gallywix.entity.SystemGroup;
+import cn.master.gallywix.entity.SystemUser;
+import cn.master.gallywix.entity.UserGroup;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,20 +17,11 @@ import java.util.List;
  **/
 @Setter
 @Getter
-public class UserDTO {
-    private String id;
+public class UserDTO extends SystemUser {
+    private List<UserGroup> userGroups = new ArrayList<>();
+    private List<SystemGroup> groups = new ArrayList<>();
+    private List<GroupResourceDTO> groupPermissions = new ArrayList<>();
 
-    private String name;
-
-    private String email;
-
-    private String phone;
-
-    private String status;
-
-    private Long createTime;
-
-    private Long updateTime;
-
-    private List<SystemRole> roles = new ArrayList<>();
+    @Serial
+    private static final long serialVersionUID = 1L;
 }

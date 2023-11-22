@@ -138,6 +138,7 @@ const cellClick = (val: WORKSPACE) => {
       <base-search
         :condition="condition"
         :popover-text="$t('workspace.create')"
+        :create-permission="['SYSTEM_WORKSPACE:READ+CREATE']"
         @create="handleAdd" />
     </template>
     <template #content>

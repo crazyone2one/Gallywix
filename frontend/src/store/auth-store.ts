@@ -21,6 +21,8 @@ export const useAuthStore = defineStore(
       userId.value = null
       roles.value = []
       userInfo.value = {}
+      workspace_id.value = undefined
+      project_id.value = undefined
     }
     const saveSessionStorage = () => {
       const currentProjectId = project_id.value
