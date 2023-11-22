@@ -1,6 +1,7 @@
 package cn.master.gallywix.controller;
 
 import cn.master.gallywix.common.result.ResponseResult;
+import cn.master.gallywix.controller.vo.project.ProjectPageReqVO;
 import cn.master.gallywix.entity.SystemProject;
 import cn.master.gallywix.service.ISystemProjectService;
 import com.mybatisflex.core.paginate.Page;
@@ -41,8 +42,8 @@ public class SystemProjectController {
      * @return {@code true} 删除成功，{@code false} 删除失败
      */
     @DeleteMapping("remove/{id}")
-    public ResponseResult<Boolean> remove(@PathVariable Serializable id) {
-        return ResponseResult.success(iSystemProjectService.removeById(id));
+    public ResponseResult<Integer> remove(@PathVariable String id) {
+        return ResponseResult.success(iSystemProjectService.deleteProject(id));
     }
 
     /**
@@ -85,7 +86,7 @@ public class SystemProjectController {
      */
     @PostMapping("page")
 //    @PreAuthorize("hasAnyAuthority('ADMIN1','project_query')")
-    public ResponseResult<Page<SystemProject>> page(Page<SystemProject> page) {
-        return ResponseResult.success(iSystemProjectService.page(page));
+    public ResponseResult<Page<SystemProject>> page(ProjectPageReqVO page) {
+        return ResponseResult.success(iSystemProjectService.getProjectPageList(page));
     }
 }

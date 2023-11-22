@@ -2,6 +2,8 @@ package cn.master.gallywix.service.impl;
 
 import cn.master.gallywix.common.constants.UserGroupConstants;
 import cn.master.gallywix.common.exception.CustomException;
+import cn.master.gallywix.controller.vo.project.ProjectPageReqVO;
+import cn.master.gallywix.controller.vo.user.UserPageReqVO;
 import cn.master.gallywix.entity.ProjectVersion;
 import cn.master.gallywix.entity.SystemProject;
 import cn.master.gallywix.entity.SystemUser;
@@ -10,19 +12,25 @@ import cn.master.gallywix.mapper.ProjectVersionMapper;
 import cn.master.gallywix.mapper.SystemProjectMapper;
 import cn.master.gallywix.mapper.UserGroupMapper;
 import cn.master.gallywix.service.ISystemProjectService;
+import cn.master.gallywix.service.ISystemUserService;
 import cn.master.gallywix.utils.SessionUtils;
+import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryChain;
+import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.update.UpdateChain;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static cn.master.gallywix.entity.table.SystemProjectTableDef.SYSTEM_PROJECT;
 import static cn.master.gallywix.entity.table.SystemUserTableDef.SYSTEM_USER;
+import static cn.master.gallywix.entity.table.UserGroupTableDef.USER_GROUP;
 
 /**
  * 项目信息 服务层实现。
@@ -35,6 +43,7 @@ import static cn.master.gallywix.entity.table.SystemUserTableDef.SYSTEM_USER;
 public class SystemProjectServiceImpl extends ServiceImpl<SystemProjectMapper, SystemProject> implements ISystemProjectService {
     private final UserGroupMapper userGroupMapper;
     private final ProjectVersionMapper projectVersionMapper;
+    private final ISystemUserService systemUserService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -92,4 +101,30 @@ public class SystemProjectServiceImpl extends ServiceImpl<SystemProjectMapper, S
     public String getMaxSystemId() {
         return mapper.getMaxSystemId();
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int deleteProject(String id) {
+        // User Group
+        userGroupMapper.deleteByQuery(QueryWrapper.create().where(USER_GROUP.SOURCE_ID.eq(id)));
+        return mapper.deleteById(id);
+    }
+
+    @Override
+    public Page<SystemProject> getProjectPageList(ProjectPageReqVO page) {
+        QueryChain<SystemProject> queryChain = QueryChain.of(SystemProject.class)
+                .where(SYSTEM_PROJECT.NAME.like(page.getName()))
+                .where(SYSTEM_PROJECT.WORKSPACE_ID.eq(page.getWorkspaceId()));
+        Page<SystemProject> paginate = mapper.paginate(page, queryChain);
+        List<SystemProject> records = paginate.getRecords();
+        if (CollectionUtils.isNotEmpty(records)) {
+            records.forEach(project -> {
+                UserPageReqVO reqVO = new UserPageReqVO();
+                reqVO.setProjectId(project.getId());
+                project.setMemberSize(systemUserService.getProjectMemberList(reqVO).getRecords().size());
+            });
+        }
+        return paginate;
+    }
+
 }

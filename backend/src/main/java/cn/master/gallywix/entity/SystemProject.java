@@ -60,4 +60,6 @@ public class SystemProject implements Serializable {
     @Column(onInsertValue = "now()", onUpdateValue = "now()")
     private LocalDateTime updateTime;
 
+    @Column(ignore = true)
+    private long memberSize;
 }

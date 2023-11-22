@@ -2,7 +2,6 @@ package cn.master.gallywix.service.impl;
 
 import cn.master.gallywix.common.constants.RoleConstants;
 import cn.master.gallywix.common.exception.CustomException;
-import cn.master.gallywix.controller.vo.member.QueryMemberRequest;
 import cn.master.gallywix.controller.vo.user.AddOrgMemberRequestVO;
 import cn.master.gallywix.controller.vo.user.UserPageReqVO;
 import cn.master.gallywix.dto.user.UserDTO;
@@ -121,7 +120,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     }
 
     @Override
-    public List<SystemUser> getMemberList(QueryMemberRequest request) {
+    public List<SystemUser> getMemberList(UserPageReqVO request) {
         QueryWrapper wrapper = new QueryWrapper();
         QueryWrapper query = new QueryWrapper()
                 .select("distinct *").from(
@@ -142,10 +141,23 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
                         wrapper.select(SYSTEM_USER.ALL_COLUMNS)
                                 .from(USER_GROUP).join(SYSTEM_USER).on(USER_GROUP.USER_ID.eq(SYSTEM_USER.ID))
                                 .where(USER_GROUP.SOURCE_ID.eq(page.getWorkspaceId()))
-                                .and(SYSTEM_USER.USERNAME.like(page.getName(), StringUtils.isNoneBlank(page.getName())))
+                                .and(SYSTEM_USER.USERNAME.like(page.getName()))
                                 .orderBy(USER_GROUP.UPDATE_TIME.desc())
                 ).as("temp");
         return mapper.paginate(page, query);
+    }
+
+    @Override
+    public Page<SystemUser> getProjectMemberList(UserPageReqVO request) {
+        QueryWrapper wrapper = new QueryWrapper();
+        QueryWrapper query = new QueryWrapper()
+                .select("distinct *").from(
+                        wrapper.select(SYSTEM_USER.ALL_COLUMNS)
+                                .from(USER_GROUP).join(SYSTEM_USER).on(USER_GROUP.USER_ID.eq(SYSTEM_USER.ID))
+                                .where(USER_GROUP.SOURCE_ID.eq(request.getProjectId()))
+                                .orderBy(USER_GROUP.UPDATE_TIME.desc())
+                ).as("temp");
+        return mapper.paginate(request, query);
     }
 
     private UserDTO getUserDTO(String id) {

@@ -89,7 +89,7 @@ public class SystemUser implements Serializable {
 
     private String lastWorkspaceId;
 
-    private String lastOrganizationId;
+    private String lastProjectId;
 
     /**
      * Phone number of user
