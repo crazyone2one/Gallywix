@@ -64,7 +64,8 @@ const emits = defineEmits(["exec"])
     :icon-class="iconText"
     :text="true"
     :is-pop="true"
-    :is-icon="true" />
+    :is-icon="true"
+    @exec="emits('exec')" />
 </template>
 
 <style scoped></style>
