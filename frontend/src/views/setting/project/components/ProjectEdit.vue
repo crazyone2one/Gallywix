@@ -6,7 +6,7 @@ import { useForm } from "@alova/scene-vue"
 
 import { useAuthStore } from "/@/store/auth-store"
 
-import { PROJECT, saveData } from "/@/apis/project"
+import { PROJECT, saveData, updateData } from "/@/apis/project"
 import { i18n } from "/@/i18n"
 import { FormInst, FormRules, NForm, NFormItem, NInput } from "naive-ui"
 
@@ -32,7 +32,8 @@ const rules: FormRules = {
 }
 const open = (val?: PROJECT) => {
   if (val) {
-    window.$message.info(val.name)
+    title.value = i18n.t("project.edit")
+    formData.value = Object.assign({}, val)
   }
   modalDialog.value?.showModal()
 }
@@ -44,8 +45,8 @@ const {
   onSuccess,
   onError,
 } = useForm(
-  (formData) => {
-    return saveData(formData)
+  (formData: PROJECT) => {
+    return formData.id ? updateData(formData) : saveData(formData)
   },
   {
     // 初始化表单数据
@@ -69,7 +70,7 @@ const handleSave = () => {
 }
 onSuccess(() => {
   modalDialog.value?.closeModal()
-  window.$message.success("创建成功")
+  window.$message.success(i18n.t("commons.save_success"))
   emits("refresh")
 })
 onError((val) => {
