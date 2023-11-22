@@ -8,12 +8,16 @@ interface PROPS {
   showDelete?: boolean
   editTip?: string
   deleteTip?: string
+  editPermission?: Array<string>
+  deletePermission?: Array<string>
 }
 withDefaults(defineProps<PROPS>(), {
   showEdit: true,
   showDelete: true,
   editTip: () => i18n.t("commons.edit"),
   deleteTip: () => i18n.t("commons.delete"),
+  editPermission: () => [],
+  deletePermission: () => [],
 })
 const emits = defineEmits(["editClick", "deleteClick"])
 </script>
@@ -22,6 +26,7 @@ const emits = defineEmits(["editClick", "deleteClick"])
     <slot name="front" />
     <ga-button
       v-if="showEdit"
+      v-permission="editPermission"
       :text="true"
       :is-icon="true"
       icon-class="i-tabler:edit"
@@ -32,6 +37,7 @@ const emits = defineEmits(["editClick", "deleteClick"])
     <slot name="middle" />
     <ga-button
       v-if="showDelete"
+      v-permission="deletePermission"
       :text="true"
       :is-icon="true"
       icon-class="i-tabler:trash"
