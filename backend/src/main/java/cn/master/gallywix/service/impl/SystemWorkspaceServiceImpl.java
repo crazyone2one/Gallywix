@@ -2,7 +2,7 @@ package cn.master.gallywix.service.impl;
 
 import cn.master.gallywix.common.constants.UserGroupConstants;
 import cn.master.gallywix.common.exception.CustomException;
-import cn.master.gallywix.controller.vo.member.QueryMemberRequest;
+import cn.master.gallywix.controller.vo.user.UserPageReqVO;
 import cn.master.gallywix.controller.vo.workspace.WorkspacePageReqVO;
 import cn.master.gallywix.entity.SystemProject;
 import cn.master.gallywix.entity.SystemWorkspace;
@@ -78,7 +78,7 @@ public class SystemWorkspaceServiceImpl extends ServiceImpl<SystemWorkspaceMappe
         Page<SystemWorkspace> paginate = mapper.paginate(page.getPageNumber(), page.getPageSize(), wrapper);
         if (CollectionUtils.isNotEmpty(paginate.getRecords())) {
             paginate.getRecords().forEach(workspace -> {
-                QueryMemberRequest request = new QueryMemberRequest();
+                UserPageReqVO request = new UserPageReqVO();
                 request.setWorkspaceId(workspace.getId());
                 workspace.setMemberSize(systemUserService.getMemberList(request).size());
             });
