@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import { NLayoutHeader } from "naive-ui"
 import HeaderMenu from "./HeaderMenu.vue"
-import logo from "./../../../../assets/387941.svg"
-import UserInfo from "./UserInfo.vue"
 import HeaderRightMenu from "./HeaderRightMenu.vue"
+import UserInfo from "./UserInfo.vue"
+
+import logo from "./../../../../assets/387941.svg"
+
+import { NLayoutHeader } from "naive-ui"
 </script>
 <template>
   <n-layout-header
     class="header-layout"
-    style="--side-padding: 32px; grid-template-columns: calc(272px - var(--side-padding)) 1fr auto"
+    style="
+      --side-padding: 32px;
+      grid-template-columns: calc(272px - var(--side-padding)) 1fr auto;
+    "
     bordered>
     <div class="ui-logo">
       <img class="ui-img" :src="logo" />

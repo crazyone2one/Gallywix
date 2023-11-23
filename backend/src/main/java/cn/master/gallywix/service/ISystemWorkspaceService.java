@@ -1,6 +1,7 @@
 package cn.master.gallywix.service;
 
 import cn.master.gallywix.controller.vo.workspace.WorkspacePageReqVO;
+import cn.master.gallywix.dto.WorkspaceResource;
 import cn.master.gallywix.entity.SystemWorkspace;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
@@ -18,4 +19,6 @@ public interface ISystemWorkspaceService extends IService<SystemWorkspace> {
     Page<SystemWorkspace> findDataByPage(WorkspacePageReqVO page);
 
     String deleteWorkspace(String id);
+
+    WorkspaceResource listResource(String groupId, String type);
 }

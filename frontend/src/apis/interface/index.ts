@@ -1,3 +1,7 @@
+import { IProject } from "../project"
+import { IWorkspace } from "../workspace"
+import { SelectOption } from "naive-ui"
+
 /**
  * 通用返回结果（根据后端定义的返回类型更改）
  */
@@ -42,4 +46,15 @@ export interface PageReq {
 export interface ITableDataInfo<T> {
   data?: T
   total: number
+}
+
+export interface ICustomGroup {
+  ids: Array<string>
+  type: string
+  workspaces?: Array<IWorkspace>
+  projects?: Array<IProject>
+  showSearchGetMore?: boolean
+  workspaceOptions?: Array<SelectOption>
+  projectOptions?: Array<SelectOption>
+  selects?: Array<string> | undefined
 }

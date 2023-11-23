@@ -1,9 +1,12 @@
 package cn.master.gallywix.service.impl;
 
 import cn.master.gallywix.common.constants.UserGroupConstants;
+import cn.master.gallywix.common.constants.UserGroupType;
 import cn.master.gallywix.common.exception.CustomException;
 import cn.master.gallywix.controller.vo.user.UserPageReqVO;
 import cn.master.gallywix.controller.vo.workspace.WorkspacePageReqVO;
+import cn.master.gallywix.dto.WorkspaceResource;
+import cn.master.gallywix.entity.SystemGroup;
 import cn.master.gallywix.entity.SystemProject;
 import cn.master.gallywix.entity.SystemWorkspace;
 import cn.master.gallywix.entity.UserGroup;
@@ -24,7 +27,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static cn.master.gallywix.entity.table.SystemGroupTableDef.SYSTEM_GROUP;
 import static cn.master.gallywix.entity.table.SystemProjectTableDef.SYSTEM_PROJECT;
@@ -44,6 +49,8 @@ public class SystemWorkspaceServiceImpl extends ServiceImpl<SystemWorkspaceMappe
     private final ISystemUserService systemUserService;
     private final SystemProjectMapper systemProjectMapper;
     private final SystemGroupMapper systemGroupMapper;
+
+    private static final String GLOBAL = "global";
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -106,5 +113,42 @@ public class SystemWorkspaceServiceImpl extends ServiceImpl<SystemWorkspaceMappe
         // delete workspace
         mapper.deleteById(id);
         return null;
+    }
+
+    @Override
+    public WorkspaceResource listResource(String groupId, String type) {
+        SystemGroup group = systemGroupMapper.selectOneByQuery(QueryChain.of(SystemGroup.class).where(SYSTEM_GROUP.CODE.eq(groupId)));
+        WorkspaceResource resource = new WorkspaceResource();
+        if (Objects.isNull(group)) {
+            return resource;
+        }
+        if (StringUtils.equals(UserGroupType.WORKSPACE, type)) {
+            resource.setWorkspaces(getWorkspaceGroupResource(group.getScopeId()));
+        }
+        if (StringUtils.equals(UserGroupType.PROJECT, type)) {
+            resource.setProjects(getProjectGroupResource(group.getScopeId()));
+        }
+        return resource;
+    }
+
+    private List<SystemWorkspace> getWorkspaceGroupResource(String scopeId) {
+        return mapper.selectListByQuery(queryChain().where(SYSTEM_WORKSPACE.ID.eq(scopeId, !StringUtils.equals(scopeId, GLOBAL))));
+    }
+
+    private List<SystemProject> getProjectGroupResource(String scopeId) {
+        if (StringUtils.equals(scopeId, GLOBAL)) {
+            return systemProjectMapper.selectAll();
+        }
+        SystemWorkspace workspace = mapper.selectOneById(scopeId);
+        if (Objects.nonNull(workspace)) {
+            return systemProjectMapper.selectListByQuery(QueryChain.of(SystemProject.class)
+                    .where(SYSTEM_PROJECT.WORKSPACE_ID.eq(workspace.getId())));
+        }
+        SystemProject project = systemProjectMapper.selectOneById(scopeId);
+        List<SystemProject> list = new ArrayList<>();
+        if (Objects.nonNull(project)) {
+            list.add(project);
+        }
+        return list;
     }
 }

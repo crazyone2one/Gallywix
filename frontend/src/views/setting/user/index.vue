@@ -8,6 +8,7 @@ import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
 import { loadUserData, updateUserData, USER } from "/@/apis/user"
+import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
 import { DataTableColumns, NDataTable, NSkeleton, NSwitch } from "naive-ui"
 
@@ -18,12 +19,16 @@ const columns: DataTableColumns<USER> = [
     align: "center",
   },
   {
-    title: "用户名",
+    title: i18n.t("commons.name"),
     key: "username",
     align: "center",
   },
   {
-    title: "邮箱",
+    title: i18n.t("commons.group"),
+    key: "x",
+  },
+  {
+    title: i18n.t("commons.email"),
     key: "email",
     align: "center",
   },
@@ -33,7 +38,7 @@ const columns: DataTableColumns<USER> = [
     align: "center",
   },
   {
-    title: "状态",
+    title: i18n.t("commons.status"),
     key: "userStatus",
     align: "center",
     render(rowData) {
@@ -48,18 +53,31 @@ const columns: DataTableColumns<USER> = [
     },
   },
   {
-    title: "创建时间",
+    title: i18n.t("commons.create_time"),
     key: "createTime",
     align: "center",
   },
   {
-    title: "操作",
+    title: i18n.t("user.source"),
+    key: "source",
+    align: "center",
+  },
+  {
+    title: i18n.t("commons.operating"),
     key: "operator",
     width: 200,
     fixed: "right",
     align: "center",
     render(rowData) {
-      return h(GaTableOperation, { onEditClick: () => handleEdit(rowData) }, {})
+      return h(
+        GaTableOperation,
+        {
+          type: "default",
+          editTip: i18n.t("commons.edit") + "(有bug，慎用)",
+          onEditClick: () => handleEdit(rowData),
+        },
+        {},
+      )
     },
   },
 ]
@@ -82,10 +100,10 @@ onSuccess((resp) => {
   tableInfo.value.data = resp.data.records
 })
 const handleAdd = () => {
-  userEdit.value?.open()
+  userEdit.value?.open("Add", i18n.t("user.create"))
 }
 const handleEdit = (rowData: USER) => {
-  userEdit.value?.open(rowData)
+  userEdit.value?.open("Edit", i18n.t("user.modify"), rowData)
 }
 /**
  * 更新用户状态
@@ -109,7 +127,7 @@ onMounted(() => {
     <template #header>
       <base-search
         :condition="condition"
-        popover-text="添加用户"
+        :create-tip="$t('user.create')"
         @create="handleAdd" />
     </template>
     <template #content>

@@ -1,4 +1,5 @@
-import { RouteRecordRaw, createRouter, createWebHashHistory } from "vue-router"
+import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router"
+
 import { useAuthStore } from "../store/auth-store"
 // 路由信息
 const routes: Array<RouteRecordRaw> = [
@@ -32,6 +33,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: "organization", requiresAuth: true },
       },
       {
+        path: "/setting/group",
+        name: "group",
+        component: () => import(`/@/views/setting/group/index.vue`),
+        meta: { title: "group", requiresAuth: true },
+      },
+      {
         path: "/demo/upload",
         name: "upload",
         component: () => import(`/@/views/demo/upload/index.vue`),
@@ -44,7 +51,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: "项目管理", requiresAuth: true },
       },
       {
-        path: "createTest",
+        path: "/createTest",
         component: () => import(`/@/views/test-plan/index.vue`),
       },
     ],
@@ -73,11 +80,15 @@ router.beforeEach((to, _from, next) => {
   const store = useAuthStore()
   const isAuthenticated = store.accessToken || ""
   if (to.path === "/login") {
-    !!isAuthenticated ? next("/") : next()
+    isAuthenticated ? next("/") : next()
   } else {
     if (!isAuthenticated) {
       store.restAuthStore()
-      next(`/login?redirect=${to.path}&params=${JSON.stringify(to.query ? to.query : to.params)}`)
+      next(
+        `/login?redirect=${to.path}&params=${JSON.stringify(
+          to.query ? to.query : to.params,
+        )}`,
+      )
     } else if (isAuthenticated && to.path === "login") {
       next("/")
     } else {

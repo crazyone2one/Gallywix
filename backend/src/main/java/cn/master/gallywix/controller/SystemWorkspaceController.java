@@ -2,6 +2,7 @@ package cn.master.gallywix.controller;
 
 import cn.master.gallywix.common.result.ResponseResult;
 import cn.master.gallywix.controller.vo.workspace.WorkspacePageReqVO;
+import cn.master.gallywix.dto.WorkspaceResource;
 import cn.master.gallywix.entity.SystemWorkspace;
 import cn.master.gallywix.service.ISystemWorkspaceService;
 import com.mybatisflex.core.paginate.Page;
@@ -89,4 +90,8 @@ public class SystemWorkspaceController {
         return ResponseResult.success(iSystemWorkspaceService.findDataByPage(page));
     }
 
+    @GetMapping("/list/resource/{groupId}/{type}")
+    public ResponseResult<WorkspaceResource> listResource(@PathVariable String groupId, @PathVariable String type) {
+        return ResponseResult.success(iSystemWorkspaceService.listResource(groupId, type));
+    }
 }

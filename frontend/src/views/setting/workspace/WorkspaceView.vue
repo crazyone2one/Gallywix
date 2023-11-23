@@ -12,8 +12,8 @@ import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
 import {
   delWorkspaceSpecial,
+  IWorkspace,
   loadWorkspaceData,
-  WORKSPACE,
 } from "/@/apis/workspace"
 import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
@@ -22,7 +22,7 @@ import { DataTableColumns, NButton, NDataTable, NSkeleton } from "naive-ui"
 const workspaceEdit = ref<InstanceType<typeof WorkspaceEdit> | null>(null)
 const deleteConfirm = ref<InstanceType<typeof GaDeleteConfirm> | null>(null)
 const workspaceMember = ref<InstanceType<typeof WorkspaceMember> | null>(null)
-const columns: DataTableColumns<WORKSPACE> = [
+const columns: DataTableColumns<IWorkspace> = [
   {
     type: "selection",
     align: "center",
@@ -75,11 +75,11 @@ const condition = ref<PageReq>({
   pageNumber: 1,
   pageSize: 10,
 })
-const tableInfo = ref<ITableDataInfo<WORKSPACE[]>>({
+const tableInfo = ref<ITableDataInfo<IWorkspace[]>>({
   data: [],
   total: 0,
 })
-const rowKey = (row: WORKSPACE) => row.id as unknown as string
+const rowKey = (row: IWorkspace) => row.id as unknown as string
 const handleAdd = () => {
   workspaceEdit.value?.open()
 }
@@ -92,7 +92,7 @@ const { loading, send, onSuccess } = useRequest(
 onMounted(() => {
   send()
 })
-const handleEdit = (val: WORKSPACE) => {
+const handleEdit = (val: IWorkspace) => {
   window.$message.info(val.name)
 }
 const { send: deleteWs, onSuccess: deleteWsSuccess } = useRequest(
@@ -102,10 +102,10 @@ const { send: deleteWs, onSuccess: deleteWsSuccess } = useRequest(
   },
 )
 // 删除功能
-const handleDelete = (val: WORKSPACE) => {
+const handleDelete = (val: IWorkspace) => {
   deleteConfirm.value?.open(val)
 }
-const _deleteWorkspace = (val: WORKSPACE) => {
+const _deleteWorkspace = (val: IWorkspace) => {
   window.$dialog.warning({
     title: "",
     maskClosable: false,
@@ -128,7 +128,7 @@ onSuccess((resp) => {
   tableInfo.value.data = resp.data.records
 })
 // 单击成员事件
-const cellClick = (val: WORKSPACE) => {
+const cellClick = (val: IWorkspace) => {
   workspaceMember.value?.open(val)
 }
 </script>

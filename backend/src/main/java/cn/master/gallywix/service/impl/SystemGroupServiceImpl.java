@@ -6,6 +6,7 @@ import cn.master.gallywix.common.exception.CustomException;
 import cn.master.gallywix.controller.vo.group.EditGroupRequest;
 import cn.master.gallywix.controller.vo.group.GroupPageReqVO;
 import cn.master.gallywix.dto.GroupDTO;
+import cn.master.gallywix.dto.WorkspaceResource;
 import cn.master.gallywix.entity.SystemGroup;
 import cn.master.gallywix.entity.SystemUser;
 import cn.master.gallywix.entity.UserGroup;
@@ -14,6 +15,7 @@ import cn.master.gallywix.mapper.SystemGroupMapper;
 import cn.master.gallywix.mapper.UserGroupMapper;
 import cn.master.gallywix.mapper.UserGroupPermissionMapper;
 import cn.master.gallywix.service.ISystemGroupService;
+import cn.master.gallywix.service.ISystemWorkspaceService;
 import cn.master.gallywix.utils.SessionUtils;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryChain;
@@ -43,6 +45,7 @@ import static cn.master.gallywix.entity.table.UserGroupTableDef.USER_GROUP;
 public class SystemGroupServiceImpl extends ServiceImpl<SystemGroupMapper, SystemGroup> implements ISystemGroupService {
     private final UserGroupMapper userGroupMapper;
     private final UserGroupPermissionMapper userGroupPermissionMapper;
+    private final ISystemWorkspaceService workspaceService;
     private static final String GLOBAL = "global";
     private static final Map<String, List<String>> MAP = new HashMap<>(4) {{
         put(UserGroupType.SYSTEM, Arrays.asList(UserGroupType.SYSTEM, UserGroupType.WORKSPACE, UserGroupType.PROJECT));
@@ -111,6 +114,42 @@ public class SystemGroupServiceImpl extends ServiceImpl<SystemGroupMapper, Syste
         return getGroups(groupTypeList, page);
     }
 
+    @Override
+    public List<SystemGroup> getGroupByType(EditGroupRequest request) {
+        String type = request.getType();
+        if (StringUtils.isBlank(type)) {
+            return new ArrayList<>();
+        }
+        return mapper.selectListByQuery(queryChain()
+                .where(SYSTEM_GROUP.TYPE.eq(type, !StringUtils.equals(type, UserGroupType.SYSTEM)))
+                .where(SYSTEM_GROUP.SCOPE_ID.eq(GLOBAL, BooleanUtils.isTrue(request.isOnlyQueryGlobal()))));
+    }
+
+    @Override
+    public List<Map<String, Object>> getAllUserGroup(String userId) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        List<UserGroup> userGroups = userGroupMapper.selectListByQuery(QueryChain.of(UserGroup.class)
+                .where(USER_GROUP.USER_ID.eq(userId)));
+        List<String> groupsIds = userGroups.stream().map(UserGroup::getGroupId).distinct().toList();
+        groupsIds.forEach(id->{
+            SystemGroup group = mapper.selectOneByQuery(queryChain().where(SYSTEM_GROUP.CODE.eq(id)));
+            String type = group.getType();
+            Map<String, Object> map = new HashMap<>(2);
+            map.put("type", id + "+" + type);
+            WorkspaceResource workspaceResource = workspaceService.listResource(id, group.getType());
+            List<String> collect = userGroups.stream().filter(ugp -> ugp.getGroupId().equals(id)).map(UserGroup::getSourceId).toList();
+            map.put("ids", collect);
+            if (StringUtils.equals(type, UserGroupType.WORKSPACE)) {
+                map.put("workspaces", workspaceResource.getWorkspaces());
+            }
+            if (StringUtils.equals(type, UserGroupType.PROJECT)) {
+                map.put("projects", workspaceResource.getProjects());
+            }
+            list.add(map);
+        });
+        return list;
+    }
+
     private Page<GroupDTO> getGroups(List<String> groupTypeList, GroupPageReqVO page) {
         if (groupTypeList.contains(UserGroupType.SYSTEM)) {
             return getUserGroup(UserGroupType.SYSTEM, page);
@@ -137,11 +176,11 @@ public class SystemGroupServiceImpl extends ServiceImpl<SystemGroupMapper, Syste
         page.setScopes(scopes);
         QueryWrapper wrapper = QueryWrapper.create().where(SYSTEM_GROUP.TYPE.in(types))
                 .and(SYSTEM_GROUP.SCOPE_ID.in(scopes));
-        Map<String,Object> otherParams  = new HashMap<>();
-        otherParams .put("types", types);
-        otherParams .put("name", page.getName());
-        otherParams .put("orders", page.getOrders());
-        return mapper.xmlPaginate("getGroupList", Page.of(page.getPageNumber(), page.getPageSize()), wrapper,otherParams );
+        Map<String, Object> otherParams = new HashMap<>();
+        otherParams.put("types", types);
+        otherParams.put("name", page.getName());
+        otherParams.put("orders", page.getOrders());
+        return mapper.xmlPaginate("getGroupList", Page.of(page.getPageNumber(), page.getPageSize()), wrapper, otherParams);
     }
 
     private void checkGroupExist(EditGroupRequest request) {

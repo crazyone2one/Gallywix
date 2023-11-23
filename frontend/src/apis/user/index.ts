@@ -1,5 +1,6 @@
 import alovaInstance from ".."
-import { IPage, PageReq } from "../interface"
+import { ICustomGroup, IPage, PageReq } from "../interface"
+
 export interface USER {
   id: string | undefined
   username: string
@@ -9,6 +10,7 @@ export interface USER {
   email: string
   phone: string
   createTime?: number
+  groups: Array<ICustomGroup>
 }
 export const loadUserData = (param: PageReq) =>
   alovaInstance.Post<IPage<USER[]>>(`/system/user/page`, param)

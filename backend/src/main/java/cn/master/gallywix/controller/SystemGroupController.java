@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 控制层。
@@ -69,6 +70,11 @@ public class SystemGroupController {
         return iSystemGroupService.list();
     }
 
+    @PostMapping("/list-by-type")
+    public ResponseResult<List<SystemGroup>> getGroupByType(@RequestBody EditGroupRequest request) {
+        return ResponseResult.success(iSystemGroupService.getGroupByType(request));
+    }
+
     /**
      * 根据主键获取详细信息。
      *
@@ -91,4 +97,8 @@ public class SystemGroupController {
         return ResponseResult.success(iSystemGroupService.getGroupPageList(page));
     }
 
+    @GetMapping("/all/{userId}")
+    public ResponseResult<List<Map<String, Object>>> getAllUserGroup(@PathVariable("userId") String userId) {
+        return ResponseResult.success(iSystemGroupService.getAllUserGroup(userId));
+    }
 }

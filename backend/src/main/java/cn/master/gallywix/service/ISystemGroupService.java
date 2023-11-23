@@ -8,6 +8,8 @@ import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
  *  服务层。
@@ -24,4 +26,8 @@ public interface ISystemGroupService extends IService<SystemGroup> {
     String deleteGroup(Serializable id);
 
     Page<GroupDTO> getGroupPageList(GroupPageReqVO page);
+
+    List<SystemGroup> getGroupByType(EditGroupRequest request);
+
+    List<Map<String, Object>> getAllUserGroup(String userId);
 }

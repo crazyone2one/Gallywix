@@ -1,5 +1,7 @@
 import alovaInstance from ".."
 import { IPage, PageReq } from "../interface"
+import { IProject } from "../project"
+import { IWorkspace } from "../workspace"
 export interface IGroupDTO {
   id: string | undefined
   name: string
@@ -22,3 +24,16 @@ export const saveGroup = (param: IGroupDTO) =>
 
 export const updateGroup = (param: IGroupDTO) =>
   alovaInstance.Put<IGroupDTO>("/system/group/update", param)
+
+export const getAllUserGroupByType = (param: { type: string }) =>
+  alovaInstance.Post<Array<IGroupDTO>>(`/system/group/list-by-type`, param)
+
+export const getUserAllGroups = (userId: string) =>
+  alovaInstance.Get<
+    Array<{
+      ids: Array<string>
+      type: string
+      workspaces?: Array<IWorkspace>
+      projects?: Array<IProject>
+    }>
+  >(`/system/group/all/${userId}`)

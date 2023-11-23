@@ -27,7 +27,7 @@ const menuOptions: MenuOption[] = [
             { to: { name: "group" } },
             { default: () => i18n.global.t("group.group_permission") },
           ),
-        key: "user",
+        key: "group",
       },
       {
         label: () =>

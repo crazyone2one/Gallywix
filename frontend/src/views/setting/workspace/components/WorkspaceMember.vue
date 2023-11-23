@@ -9,7 +9,7 @@ import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
 import { getWorkspaceMemberListSpecial, USER } from "/@/apis/user"
-import { WORKSPACE } from "/@/apis/workspace"
+import { IWorkspace } from "/@/apis/workspace"
 import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
 import { DataTableColumns, NDataTable } from "naive-ui"
@@ -72,7 +72,7 @@ const { send: loadWsMember, onSuccess: loadWsMemberSucccess } = useRequest(
     immediate: false,
   },
 )
-const open = (val: WORKSPACE) => {
+const open = (val: IWorkspace) => {
   modalDialog.value?.showModal()
   condition.value.workspaceId = val.id
   loadWsMember(condition.value)

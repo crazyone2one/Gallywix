@@ -4195,6 +4195,10 @@ const zh_CN = {
     reporter: "报告人",
     lastmodify: "最后更改",
   },
+  system_user: {
+    search_get_more_tip: "搜索获取其他选项",
+    remove_group_tip: "至少拥有一个用户组权限",
+  },
 }
 
 export default zh_CN

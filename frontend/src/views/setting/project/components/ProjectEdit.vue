@@ -6,7 +6,7 @@ import { useForm } from "@alova/scene-vue"
 
 import { useAuthStore } from "/@/store/auth-store"
 
-import { PROJECT, saveData, updateData } from "/@/apis/project"
+import { IProject, saveData, updateData } from "/@/apis/project"
 import { i18n } from "/@/i18n"
 import { FormInst, FormRules, NForm, NFormItem, NInput } from "naive-ui"
 
@@ -30,7 +30,7 @@ const rules: FormRules = {
     trigger: "blur",
   },
 }
-const open = (val?: PROJECT) => {
+const open = (val?: IProject) => {
   if (val) {
     title.value = i18n.t("project.edit")
     formData.value = Object.assign({}, val)
@@ -45,7 +45,7 @@ const {
   onSuccess,
   onError,
 } = useForm(
-  (formData: PROJECT) => {
+  (formData: IProject) => {
     return formData.id ? updateData(formData) : saveData(formData)
   },
   {

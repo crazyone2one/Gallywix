@@ -11,7 +11,7 @@ import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 import { useAuthStore } from "/@/store/auth-store"
 
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
-import { deleteData, loadData, PROJECT } from "/@/apis/project"
+import { deleteData, IProject, loadData } from "/@/apis/project"
 import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
 import { DataTableColumns, NDataTable, NSkeleton } from "naive-ui"
@@ -20,7 +20,7 @@ const route = useRoute()
 const router = useRouter()
 const projectEdit = ref<InstanceType<typeof ProjectEdit> | null>(null)
 const deleteConfirm = ref<InstanceType<typeof GaDeleteConfirm> | null>(null)
-const columns: DataTableColumns<PROJECT> = [
+const columns: DataTableColumns<IProject> = [
   {
     type: "selection",
     align: "center",
@@ -69,11 +69,11 @@ const condition = ref<PageReq>({
   pageNumber: 1,
   pageSize: 10,
 })
-const tableInfo = ref<ITableDataInfo<PROJECT[]>>({
+const tableInfo = ref<ITableDataInfo<IProject[]>>({
   data: [],
   total: 0,
 })
-const rowKey = (row: PROJECT) => row.id as unknown as string
+const rowKey = (row: IProject) => row.id as unknown as string
 const { loading, send, onSuccess } = useRequest(loadData(condition.value), {
   immediate: false,
 })
@@ -89,7 +89,7 @@ const handleAdd = () => {
   }
   projectEdit.value?.open()
 }
-const handleEdit = (rowData: PROJECT) => {
+const handleEdit = (rowData: IProject) => {
   projectEdit.value?.open(rowData)
 }
 
@@ -99,10 +99,10 @@ const { send: deleteProject, onSuccess: deleteSuccess } = useRequest(
     immediate: false,
   },
 )
-const handleDelete = (rowData: PROJECT) => {
+const handleDelete = (rowData: IProject) => {
   deleteConfirm.value?.open(rowData)
 }
-const _handleDelete = (val: PROJECT) => {
+const _handleDelete = (val: IProject) => {
   window.$dialog.warning({
     title: "",
     maskClosable: false,

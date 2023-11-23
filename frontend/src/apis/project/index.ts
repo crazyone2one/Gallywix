@@ -4,7 +4,7 @@ import alovaInstance from ".."
 import { IPage, PageReq } from "../interface"
 import { SelectOption } from "naive-ui"
 
-export interface PROJECT {
+export interface IProject {
   id: string | undefined
   name: string
   description: string
@@ -12,9 +12,9 @@ export interface PROJECT {
   memberSize?: number
 }
 export const loadData = (param: PageReq) =>
-  alovaInstance.Post<IPage<PROJECT[]>>(`/system/project/page`, param)
+  alovaInstance.Post<IPage<IProject[]>>(`/system/project/page`, param)
 export const loadProjectList = () =>
-  alovaInstance.Get<PROJECT[]>(`/system/project/list`)
+  alovaInstance.Get<IProject[]>(`/system/project/list`)
 /**
  * 查询项目数据
  * @returns select option
@@ -22,7 +22,7 @@ export const loadProjectList = () =>
 export const loadProjectOption = () =>
   alovaInstance.Get<SelectOption[]>(`/system/project/list`, {
     transformData(data) {
-      return list2SelectOption(data as Array<PROJECT>)
+      return list2SelectOption(data as Array<IProject>)
     },
   })
 /**
@@ -30,14 +30,14 @@ export const loadProjectOption = () =>
  * @param param project
  * @returns
  */
-export const saveData = (param: PROJECT) =>
-  alovaInstance.Post<PROJECT>("/system/project/save", param)
+export const saveData = (param: IProject) =>
+  alovaInstance.Post<IProject>("/system/project/save", param)
 /**
  * edit project
  * @param param project
  * @returns
  */
-export const updateData = (param: PROJECT) =>
+export const updateData = (param: IProject) =>
   alovaInstance.Put(`/system/project/update`, param)
 /**
  * delete project by id
