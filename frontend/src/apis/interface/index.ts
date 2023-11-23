@@ -1,3 +1,5 @@
+import { IGroupDTO } from "../group"
+import { IGroupResourceDTO } from "../permission"
 import { IProject } from "../project"
 import { IWorkspace } from "../workspace"
 import { SelectOption } from "naive-ui"
@@ -57,4 +59,11 @@ export interface ICustomGroup {
   workspaceOptions?: Array<SelectOption>
   projectOptions?: Array<SelectOption>
   selects?: Array<string> | undefined
+}
+
+export interface IUserGroup {}
+export interface IUserGroupPermission {
+  list: Array<IGroupResourceDTO>
+  groups: Array<IGroupDTO>
+  userGroups: Array<IUserGroup>
 }

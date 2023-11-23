@@ -4,10 +4,16 @@ import { h, onMounted, ref } from "vue"
 import UserEdit from "./components/UserEdit.vue"
 import BaseCard from "/@/components/BaseCard.vue"
 import BaseSearch from "/@/components/BaseSearch.vue"
+import GaRolesTag from "/@/components/GaRolesTag.vue"
 import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
-import { loadUserData, updateUserData, USER } from "/@/apis/user"
+import {
+  loadUserData,
+  specialGetUserGroup,
+  updateUserData,
+  USER,
+} from "/@/apis/user"
 import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
 import { DataTableColumns, NDataTable, NSkeleton, NSwitch } from "naive-ui"
@@ -26,6 +32,9 @@ const columns: DataTableColumns<USER> = [
   {
     title: i18n.t("commons.group"),
     key: "x",
+    render(row) {
+      return h(GaRolesTag, { roles: row.roles ? row.roles : [] }, {})
+    },
   },
   {
     title: i18n.t("commons.email"),
@@ -92,13 +101,16 @@ const tableInfo = ref<ITableDataInfo<USER[]>>({
   total: 0,
 })
 const rowKey = (row: USER) => row.id as unknown as string
-const { loading, send, onSuccess } = useRequest(loadUserData(condition.value), {
+const { loading, send } = useRequest(loadUserData(condition.value), {
   immediate: false,
 })
-onSuccess((resp) => {
-  loading.value = false
-  tableInfo.value.data = resp.data.records
+const { send: loadUserGroup } = useRequest((id) => specialGetUserGroup(id), {
+  immediate: false,
 })
+// onSuccess((resp) => {
+//   loading.value = false
+//   tableInfo.value.data = resp.data.records
+// })
 const handleAdd = () => {
   userEdit.value?.open("Add", i18n.t("user.create"))
 }
@@ -119,7 +131,17 @@ const handleChangeStatus = (rowData: USER) => {
     })
 }
 onMounted(() => {
-  send()
+  send().then((resp) => {
+    loading.value = false
+    tableInfo.value.data = resp.records
+    tableInfo.value.data.forEach((item) => {
+      loadUserGroup(item.id).then((result) => {
+        let data = result
+        let groups = data.groups
+        item.roles = groups
+      })
+    })
+  })
 })
 </script>
 <template>

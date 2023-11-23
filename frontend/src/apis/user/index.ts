@@ -1,5 +1,11 @@
 import alovaInstance from ".."
-import { ICustomGroup, IPage, PageReq } from "../interface"
+import { IGroupDTO } from "../group"
+import {
+  ICustomGroup,
+  IPage,
+  IUserGroupPermission,
+  PageReq,
+} from "../interface"
 
 export interface USER {
   id: string | undefined
@@ -11,6 +17,7 @@ export interface USER {
   phone: string
   createTime?: number
   groups: Array<ICustomGroup>
+  roles: Array<IGroupDTO>
 }
 export const loadUserData = (param: PageReq) =>
   alovaInstance.Post<IPage<USER[]>>(`/system/user/page`, param)
@@ -55,3 +62,8 @@ export const getWorkspaceMemberListSpecial = (param: PageReq) =>
   )
 
 export const getUserList = () => alovaInstance.Get<USER[]>(`/system/user/list`)
+
+export const specialGetUserGroup = (userId: string) =>
+  alovaInstance.Get<IUserGroupPermission>(
+    `/system/user/special/user/group/${userId}`,
+  )

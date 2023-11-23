@@ -161,6 +161,21 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
                 ).as("temp");
         return mapper.paginate(request, query);
     }
+
+    @Override
+    public UserGroupPermissionDTO getUserGroup(String userId) {
+        UserGroupPermissionDTO userGroupPermissionDTO = new UserGroupPermissionDTO();
+        List<UserGroup> userGroups = userGroupMapper.selectListByQuery(QueryChain.of(UserGroup.class).where(USER_GROUP.USER_ID.eq(userId)));
+        if (CollectionUtils.isEmpty(userGroups)) {
+            return userGroupPermissionDTO;
+        }
+        userGroupPermissionDTO.setUserGroups(userGroups);
+        List<String> groupId = userGroups.stream().map(UserGroup::getGroupId).toList();
+        List<SystemGroup> groups = systemGroupMapper.selectListByQuery(QueryChain.of(SystemGroup.class).where(SYSTEM_GROUP.ID.in(groupId)));
+        userGroupPermissionDTO.setGroups(groups);
+        return userGroupPermissionDTO;
+    }
+
     @Override
     public UserDTO getUserDTO(String id) {
         SystemUser user = QueryChain.of(SystemUser.class).where(SYSTEM_USER.ID.eq(id)).one();

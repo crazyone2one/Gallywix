@@ -2,6 +2,7 @@ package cn.master.gallywix.service;
 
 import cn.master.gallywix.controller.vo.user.AddOrgMemberRequestVO;
 import cn.master.gallywix.controller.vo.user.UserPageReqVO;
+import cn.master.gallywix.dto.UserGroupPermissionDTO;
 import cn.master.gallywix.dto.user.UserDTO;
 import cn.master.gallywix.entity.SystemUser;
 import com.mybatisflex.core.paginate.Page;
@@ -39,4 +40,6 @@ public interface ISystemUserService extends IService<SystemUser> {
     Page<SystemUser> findWsMemberByPage(UserPageReqVO page);
 
     Page<SystemUser> getProjectMemberList(UserPageReqVO request);
+
+    UserGroupPermissionDTO getUserGroup(String userId);
 }

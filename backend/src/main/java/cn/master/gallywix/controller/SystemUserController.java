@@ -3,6 +3,7 @@ package cn.master.gallywix.controller;
 import cn.master.gallywix.common.result.ResponseResult;
 import cn.master.gallywix.controller.vo.user.AddOrgMemberRequestVO;
 import cn.master.gallywix.controller.vo.user.UserPageReqVO;
+import cn.master.gallywix.dto.UserGroupPermissionDTO;
 import cn.master.gallywix.dto.user.UserDTO;
 import cn.master.gallywix.entity.SystemUser;
 import cn.master.gallywix.service.ISystemUserService;
@@ -118,5 +119,9 @@ public class SystemUserController {
     @PostMapping("/ws/project/member/list")
     public ResponseResult<Page<SystemUser>> getProjectMemberListForWorkspace( @RequestBody UserPageReqVO request) {
         return ResponseResult.success(iSystemUserService.getProjectMemberList(request));
+    }
+    @GetMapping("/special/user/group/{userId}")
+    public ResponseResult<UserGroupPermissionDTO> getUserGroup(@PathVariable("userId") String userId) {
+        return ResponseResult.success(iSystemUserService.getUserGroup(userId));
     }
 }
