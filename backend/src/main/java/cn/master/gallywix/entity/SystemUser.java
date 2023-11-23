@@ -1,7 +1,6 @@
 package cn.master.gallywix.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -50,7 +49,7 @@ public class SystemUser implements Serializable {
      */
     private String email;
 
-    @JsonIgnore
+//    @JsonIgnore
     private String password;
 
     /**

@@ -19,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +46,8 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     private final UserGroupMapper userGroupMapper;
     private final SystemGroupMapper systemGroupMapper;
     private final UserGroupPermissionMapper userGroupPermissionMapper;
+    @Lazy
+    final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -195,6 +199,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     }
     public void createUser(SystemUser user) {
 //        user.setStatus(true);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         mapper.insert(user);
     }
 

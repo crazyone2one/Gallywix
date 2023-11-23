@@ -69,6 +69,7 @@ const {
   // 响应式的表单数据，内容由initialForm决定
   form: formData,
   onSuccess,
+  onError: saveUserDataError,
 } = useForm(
   (formData: USER) => {
     return formData.id ? updateUserData(formData) : saveUserData(formData)
@@ -92,6 +93,7 @@ const {
 const handleSave = () => {
   formRef.value?.validate((error) => {
     if (!error) {
+      console.log(`output->ormData.value`, formData.value)
       if (formData.value.id) {
         window.$dialog.warning({
           title: "提示",
@@ -111,7 +113,9 @@ onSuccess(() => {
   window.$message.success("success")
   emits("refresh")
 })
-
+saveUserDataError((error) => {
+  window.$message.error(error.error.message)
+})
 // 获取group数据
 const { send: loadGroup, onSuccess: loadGroupSuccess } = useRequest(
   (val) => getAllUserGroupByType(val),
@@ -421,7 +425,9 @@ defineExpose({ open })
           path="password">
           <n-input
             v-model:value="formData.password"
-            :placeholder="$t('user.input_password')" />
+            :placeholder="$t('user.input_password')"
+            type="password"
+            show-password-on="mousedown" />
         </n-form-item>
         <div v-for="(group, index) in formData.groups" :key="index">
           <n-form-item :label="getLabel(index)">
