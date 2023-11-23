@@ -1,6 +1,7 @@
 package cn.master.gallywix.service;
 
 import cn.master.gallywix.auth.config.CustomUserDetail;
+import cn.master.gallywix.common.config.SpringContextHolder;
 import cn.master.gallywix.dto.GroupResourceDTO;
 import cn.master.gallywix.dto.user.UserDTO;
 import cn.master.gallywix.entity.SystemUser;
@@ -30,8 +31,6 @@ import static cn.master.gallywix.entity.table.SystemUserTableDef.SYSTEM_USER;
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-    private final ISystemUserService systemUserService;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         val user = QueryChain.of(SystemUser.class).where(SYSTEM_USER.USERNAME.eq(username)).one();
@@ -41,7 +40,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (!user.getStatus()) {
             throw new RuntimeException("user_has_been_disabled");
         }
-        UserDTO userDTO = systemUserService.getUserDTO(user.getId());
+        UserDTO userDTO = SpringContextHolder.getBean(ISystemUserService.class).getUserDTO(user.getId());
         List<String> roles = new ArrayList<>();
         List<GroupResourceDTO> groupPermissions = userDTO.getGroupPermissions();
         if (CollectionUtils.isNotEmpty(groupPermissions)) {
