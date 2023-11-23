@@ -95,12 +95,9 @@ const alovaInstance = createAlova({
         },
       })
       return false
-    } else if (json.code >= 400) {
+    } else if (json.code !== 200) {
       // 账号/密码不正确
       // 403 无访问权限
-      window.$message.error(json.message)
-      return false
-    } else if (json.code !== 200) {
       // 抛出错误或返回reject状态的Promise实例时，此请求将抛出错误
       throw new Error(json.message)
     } else {
