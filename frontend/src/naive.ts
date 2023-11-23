@@ -4,6 +4,7 @@ import {
   // component
   NButton,
   NCheckbox,
+  NCheckboxGroup,
   NDataTable,
   NDropdown,
   NForm,
@@ -30,6 +31,7 @@ const naive = create({
     NDataTable,
     NCheckbox,
     NSpace,
+    NCheckboxGroup,
   ],
 })
 

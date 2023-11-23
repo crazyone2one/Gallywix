@@ -171,7 +171,7 @@ onMounted(() => {
     <template #header>
       <base-search
         :condition="condition"
-        :popover-text="$t('group.create')"
+        :create-tip="$t('group.create')"
         @create="handleAdd" />
     </template>
     <template #content>

@@ -36,4 +36,6 @@ public interface ISystemGroupService extends IService<SystemGroup> {
     List<SystemGroup> getGroupsByType(GroupRequest request);
 
     String addMember(AddMemberRequest request);
+
+    String editGroupPermission(EditGroupRequest editGroupRequest);
 }

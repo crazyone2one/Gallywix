@@ -30,8 +30,18 @@ const isReadOnly = (val: IPermissionDTO) => {
     props.group.id === "admin" && isSystemGroupPermission
   return props.readOnly || isDefaultSystemGroup
 }
-const handleUpdateValue = (value: boolean) => {
-  console.log(`output->value`, value)
+
+const change = (val: boolean, permission: IPermissionDTO) => {
+  let id = permission.id.split(":")[1]
+  if (id === "READ" && !val) {
+    props.permissions.map((p) => (p.checked = val))
+  } else {
+    let p = props.permissions.filter((p) => p.id.split(":")[1] === "READ")
+    if (p.length > 0) {
+      p[0].checked = val
+    }
+    permission.checked = val
+  }
 }
 </script>
 <template>
@@ -41,7 +51,7 @@ const handleUpdateValue = (value: boolean) => {
       :key="index"
       v-model:checked="permission['checked']"
       :disabled="isReadOnly(permission)"
-      @update:value="handleUpdateValue">
+      @update:checked="change($event, permission)">
       {{ $t(permission.name) }}
     </n-checkbox>
   </n-space>

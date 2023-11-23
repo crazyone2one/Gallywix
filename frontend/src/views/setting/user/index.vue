@@ -150,6 +150,7 @@ onMounted(() => {
       <base-search
         :condition="condition"
         :create-tip="$t('user.create')"
+        :create-permission="['SYSTEM_USER:READ+CREATE']"
         @create="handleAdd" />
     </template>
     <template #content>

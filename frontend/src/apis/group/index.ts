@@ -1,5 +1,6 @@
 import alovaInstance from ".."
 import { IPage, PageReq } from "../interface"
+import { IPermissionDTO } from "../permission"
 import { IProject } from "../project"
 import { IWorkspace } from "../workspace"
 export interface IGroupDTO {
@@ -15,6 +16,10 @@ export interface IGroupDTO {
   createTime?: number
   creator?: string
   memberSize?: number
+}
+export interface IModifyPermission {
+  userGroupId: string
+  permissions:Array<IPermissionDTO>
 }
 export const loadTableData = (param: PageReq) =>
   alovaInstance.Post<IPage<IGroupDTO[]>>(`/system/group/page`, param)
@@ -43,3 +48,6 @@ export const getGroupsByType = (param: {
   projectId: string
   type: string
 }) => alovaInstance.Post<Array<IGroupDTO>>(`/system/group/list`, param)
+
+export const modifyUserGroupPermission = (param: IModifyPermission) =>
+  alovaInstance.Post(`/system/group/permission/edit`, param)

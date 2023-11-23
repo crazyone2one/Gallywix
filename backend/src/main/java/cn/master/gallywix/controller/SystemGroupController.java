@@ -108,4 +108,9 @@ public class SystemGroupController {
     public ResponseResult<String> addMemberByAdmin(@RequestBody AddMemberRequest request) {
         return ResponseResult.success(iSystemGroupService.addMember(request));
     }
+
+    @PostMapping("/permission/edit")
+    public ResponseResult<String> editGroupPermission(@RequestBody EditGroupRequest editGroupRequest) {
+        return ResponseResult.success(iSystemGroupService.editGroupPermission(editGroupRequest));
+    }
 }

@@ -8,6 +8,7 @@ import cn.master.gallywix.controller.vo.group.GroupPageReqVO;
 import cn.master.gallywix.controller.vo.group.GroupRequest.GroupRequest;
 import cn.master.gallywix.controller.vo.workspace.AddMemberRequest.AddMemberRequest;
 import cn.master.gallywix.dto.GroupDTO;
+import cn.master.gallywix.dto.GroupPermission;
 import cn.master.gallywix.dto.WorkspaceResource;
 import cn.master.gallywix.entity.SystemGroup;
 import cn.master.gallywix.entity.SystemUser;
@@ -178,7 +179,7 @@ public class SystemGroupServiceImpl extends ServiceImpl<SystemGroupMapper, Syste
         List<String> allUserIds = systemUserMapper.selectListByQuery(QueryChain.of(SystemUser.class)).stream().map(SystemUser::getId).toList();
         List<String> wsGroupIds = systemGroupMapper.selectListByQuery(QueryChain.of(SystemGroup.class).where(SYSTEM_GROUP.TYPE.eq(UserGroupType.WORKSPACE)))
                 .stream().map(SystemGroup::getId).toList();
-        request.getUserIds().forEach(userId->{
+        request.getUserIds().forEach(userId -> {
             if (!allUserIds.contains(userId)) {
                 log.warn("user id {} not exist.", userId);
                 return;
@@ -197,6 +198,31 @@ public class SystemGroupServiceImpl extends ServiceImpl<SystemGroupMapper, Syste
                         .sourceId(request.getWorkspaceId())
                         .userId(userId).build();
                 userGroupMapper.insert(userGroup);
+            }
+        });
+        return "success";
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String editGroupPermission(EditGroupRequest request) {
+        // 超级用户组禁止修改权限
+        if (StringUtils.equals(request.getUserGroupId(), UserGroupConstants.SUPER_GROUP)) {
+            return "超级用户组禁止修改权限";
+        }
+        List<GroupPermission> permissions = request.getPermissions();
+        if (CollectionUtils.isEmpty(permissions)) {
+            return "权限为空";
+        }
+        userGroupPermissionMapper.deleteByQuery(QueryChain.of(UserGroupPermission.class)
+                .where(USER_GROUP_PERMISSION.GROUP_ID.eq(request.getUserGroupId())));
+        String groupId = request.getUserGroupId();
+        permissions.forEach(permission -> {
+            if (BooleanUtils.isTrue(permission.getChecked())) {
+                UserGroupPermission build = UserGroupPermission.builder().permissionId(permission.getId())
+                        .moduleId(permission.getResourceId())
+                        .groupId(groupId).build();
+                userGroupPermissionMapper.insert(build);
             }
         });
         return "success";

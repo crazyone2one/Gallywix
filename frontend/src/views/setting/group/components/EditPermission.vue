@@ -7,8 +7,16 @@ import ModalDialog from "/@/components/ModalDialog.vue"
 import { GROUP_TYPE, SUPER_GROUP } from "/@/utils/constants"
 import { USER_GROUP_SCOPE } from "/@/utils/table-constants"
 
-import { IGroupDTO } from "/@/apis/group"
-import { getUserGroupPermission, IGroupResourceDTO } from "/@/apis/permission"
+import {
+  IGroupDTO,
+  IModifyPermission,
+  modifyUserGroupPermission,
+} from "/@/apis/group"
+import {
+  getUserGroupPermission,
+  IGroupResourceDTO,
+  IPermissionDTO,
+} from "/@/apis/permission"
 import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
 import { DataTableColumns, NCheckbox } from "naive-ui"
@@ -30,10 +38,10 @@ const isReadOnly = (data: IGroupResourceDTO) => {
   return readOnly.value || isDefaultSystemGroup
 }
 const columns: DataTableColumns<IGroupResourceDTO> = [
-  {
-    type: "selection",
-    align: "center",
-  },
+  // {
+  //   type: "selection",
+  //   align: "center",
+  // },
   {
     title: i18n.t("permission.common.first_level_menu"),
     key: "type",
@@ -101,7 +109,23 @@ const { send: loadPersission, onSuccess: loadPersissionSuccess } = useRequest(
 loadPersissionSuccess((resp) => {
   tableInfo.value = resp.data.permissions
 })
-const handleSave = () => {}
+const { send: modifyPermission } = useRequest(
+  (val) => modifyUserGroupPermission(val),
+  { immediate: false },
+)
+const handleSave = () => {
+  let param: IModifyPermission = { userGroupId: "", permissions: [] }
+  let permissions: Array<IPermissionDTO> = []
+  tableInfo.value?.forEach((td) => {
+    permissions.push(...td.permissions)
+  })
+  param.userGroupId = group.value.code
+  param.permissions = permissions
+  modifyPermission(param).then(() => {
+    window.$message.success(i18n.t("commons.save_success"))
+    modalDialog.value?.toggleModal()
+  })
+}
 const open = (row: IGroupDTO, _readOnly?: boolean, _title?: string) => {
   readOnly.value = _readOnly || false
   title.value = _title || i18n.t("group.set_permission")
