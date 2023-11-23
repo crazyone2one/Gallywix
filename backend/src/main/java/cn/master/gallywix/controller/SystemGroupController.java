@@ -3,6 +3,8 @@ package cn.master.gallywix.controller;
 import cn.master.gallywix.common.result.ResponseResult;
 import cn.master.gallywix.controller.vo.group.EditGroupRequest;
 import cn.master.gallywix.controller.vo.group.GroupPageReqVO;
+import cn.master.gallywix.controller.vo.group.GroupRequest.GroupRequest;
+import cn.master.gallywix.controller.vo.workspace.AddMemberRequest.AddMemberRequest;
 import cn.master.gallywix.dto.GroupDTO;
 import cn.master.gallywix.entity.SystemGroup;
 import cn.master.gallywix.service.ISystemGroupService;
@@ -65,9 +67,9 @@ public class SystemGroupController {
      *
      * @return 所有数据
      */
-    @GetMapping("list")
-    public List<SystemGroup> list() {
-        return iSystemGroupService.list();
+    @PostMapping("/list")
+    public ResponseResult<List<SystemGroup>> list(@RequestBody GroupRequest request) {
+        return ResponseResult.success(iSystemGroupService.getGroupsByType(request));
     }
 
     @PostMapping("/list-by-type")
@@ -100,5 +102,10 @@ public class SystemGroupController {
     @GetMapping("/all/{userId}")
     public ResponseResult<List<Map<String, Object>>> getAllUserGroup(@PathVariable("userId") String userId) {
         return ResponseResult.success(iSystemGroupService.getAllUserGroup(userId));
+    }
+
+    @PostMapping("/special/ws/member/add")
+    public ResponseResult<String> addMemberByAdmin(@RequestBody AddMemberRequest request) {
+        return ResponseResult.success(iSystemGroupService.addMember(request));
     }
 }

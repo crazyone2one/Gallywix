@@ -7,6 +7,8 @@ import BaseSearch from "/@/components/BaseSearch.vue"
 import ModalDialog from "/@/components/ModalDialog.vue"
 import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 
+import { GROUP_TYPE } from "/@/utils/constants"
+
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
 import { getWorkspaceMemberListSpecial, USER } from "/@/apis/user"
 import { IWorkspace } from "/@/apis/workspace"
@@ -15,6 +17,7 @@ import { useRequest } from "alova"
 import { DataTableColumns, NDataTable } from "naive-ui"
 const modalDialog = ref<InstanceType<typeof ModalDialog> | null>(null)
 const addMember = ref<InstanceType<typeof AddMember> | null>(null)
+const groupScopeId = ref("")
 const condition = ref<PageReq>({
   name: "",
   workspaceId: "",
@@ -76,6 +79,7 @@ const open = (val: IWorkspace) => {
   modalDialog.value?.showModal()
   condition.value.workspaceId = val.id
   loadWsMember(condition.value)
+  groupScopeId.value = val.id as string
 }
 loadWsMemberSucccess((resp) => {
   tableInfo.value.data = resp.data.records
@@ -99,7 +103,7 @@ defineExpose({ open })
         <template #header>
           <base-search
             :condition="condition"
-            :popover-text="$t('member.create')"
+            :create-tip="$t('member.create')"
             @create="handleOpenAdd" />
         </template>
         <template #content>
@@ -111,7 +115,10 @@ defineExpose({ open })
       </base-card>
     </template>
   </modal-dialog>
-  <add-member ref="addMember" />
+  <add-member
+    ref="addMember"
+    :group-type="GROUP_TYPE.WORKSPACE"
+    :group-scope-id="groupScopeId" />
 </template>
 
 <style></style>

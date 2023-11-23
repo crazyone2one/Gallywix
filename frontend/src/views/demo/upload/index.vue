@@ -5,7 +5,7 @@ import GaUpload from "/@/components/GaUpload.vue"
 
 import { list2SelectOption } from "/@/utils/list-2-select"
 
-import { SelectOption } from "naive-ui"
+import { FormRules, SelectOption } from "naive-ui"
 import { NButton } from "naive-ui"
 
 const result = ref<SelectOption[]>([])
@@ -20,6 +20,21 @@ const test1 = () => {
   ]
   result.value = list2SelectOption(_data)
 }
+const model = ref({ multipleSelectValue: null })
+const generalOptions = ["groode", "veli good", "emazing", "lidiculous"].map(
+  (v) => ({
+    label: v,
+    value: v,
+  }),
+)
+const rules: FormRules = {
+  multipleSelectValue: {
+    type: "array",
+    required: true,
+    trigger: ["blur", "change"],
+    message: "请选择 multipleSelectValue",
+  },
+}
 </script>
 <template>
   upload
@@ -30,6 +45,21 @@ const test1 = () => {
   <n-button v-permissions="['AD1MIN']"> 错误v-permission </n-button>
   <n-button v-debounce="debounceClick"> 防抖测试 </n-button>
   <ga-upload ref="gaUpload" />
+  <div>
+    <n-form
+      ref="formRef"
+      :rules="rules"
+      label-placement="left"
+      label-width="auto"
+      require-mark-placement="right-hanging">
+      <n-form-item label="Multiple Select" path="multipleSelectValue">
+        <n-select
+          v-model:value="model.multipleSelectValue"
+          :options="generalOptions"
+          multiple />
+      </n-form-item>
+    </n-form>
+  </div>
 </template>
 
 <style></style>

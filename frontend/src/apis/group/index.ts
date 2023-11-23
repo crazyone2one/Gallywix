@@ -37,3 +37,9 @@ export const getUserAllGroups = (userId: string) =>
       projects?: Array<IProject>
     }>
   >(`/system/group/all/${userId}`)
+
+export const getGroupsByType = (param: {
+  resourceId: string
+  projectId: string
+  type: string
+}) => alovaInstance.Post<Array<IGroupDTO>>(`/system/group/list`, param)

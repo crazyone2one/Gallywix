@@ -3,9 +3,15 @@ import { ref } from "vue"
 
 import ModalDialog from "/@/components/ModalDialog.vue"
 
-import { userList2SelectOption } from "/@/utils/list-2-select"
+import { useAuthStore } from "/@/store/auth-store"
 
-import { getUserList, USER } from "/@/apis/user"
+import {
+  list2SelectOption,
+  userList2SelectOption,
+} from "/@/utils/list-2-select"
+
+import { getGroupsByType } from "/@/apis/group"
+import { addWorkspaceMemberSpecial, getUserList, USER } from "/@/apis/user"
 import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
 import { FormInst, FormRules, SelectOption } from "naive-ui"
@@ -16,7 +22,7 @@ interface IProp {
   projectId?: string
   userResourceUrl?: string
 }
-withDefaults(defineProps<IProp>(), {
+const props = withDefaults(defineProps<IProp>(), {
   groupType: "",
   groupScopeId: "",
   projectId: "",
@@ -25,7 +31,11 @@ withDefaults(defineProps<IProp>(), {
 
 const modalDialog = ref<InstanceType<typeof ModalDialog> | null>(null)
 const formRef = ref<FormInst | null>(null)
-const model = ref({
+const model = ref<{
+  userIds: Array<string>
+  groupIds: Array<string>
+  groups: Array<SelectOption>
+}>({
   userIds: [],
   groupIds: [],
   groups: [],
@@ -33,13 +43,13 @@ const model = ref({
 const rules: FormRules = {
   userIds: {
     type: "array",
-    required: true,
+    required: false,
+    trigger: ["blur", "change"],
     message: i18n.t("member.please_choose_member"),
-    trigger: ["blur"],
   },
   groupIds: {
     type: "array",
-    required: true,
+    required: false,
     message: i18n.t("group.please_select_group"),
     trigger: ["blur", "change"],
   },
@@ -49,14 +59,10 @@ const showUserSearchGetMore = ref(false)
 const userList = ref<Array<SelectOption>>([])
 const userListCopy = ref<Array<SelectOption>>([])
 // load user list
-const { send: loadUserList, onSuccess: loadUserSuccess } = useRequest(
-  getUserList(),
-  { immediate: false },
-)
-loadUserSuccess((resp) => {
-  //   userList.value = userList2SelectOption(resp.data)
-  handleUserOption(resp.data)
-  userListCopy.value = userList2SelectOption(resp.data)
+const { send: loadUserList } = useRequest(getUserList(), { immediate: false })
+// getGroupsByType
+const { send: loadGroupsByType } = useRequest((val) => getGroupsByType(val), {
+  immediate: false,
 })
 const handleUserOption = (users: Array<USER>) => {
   if (!users) {
@@ -85,13 +91,46 @@ const _handleSelectOption = (
 }
 const open = () => {
   modalDialog.value?.showModal()
-  loadUserList()
+  loadUserList().then((resp) => {
+    handleUserOption(resp)
+    userListCopy.value = userList2SelectOption(resp)
+  })
+  let param = {
+    type: props.groupType,
+    resourceId: props.groupScopeId,
+    projectId: "",
+  }
+  if (props.groupType === "PROJECT") {
+    param.projectId = props.projectId || (useAuthStore().project_id as string)
+  }
+  loadGroupsByType(param).then((resp) => {
+    model.value.groups = list2SelectOption(resp)
+  })
 }
-
+const { send: addWsMember } = useRequest(
+  (val) => addWorkspaceMemberSpecial(val),
+  {
+    immediate: false,
+  },
+)
+const handleSave = () => {
+  let param = {
+    userIds: model.value.userIds,
+    groupIds: model.value.groupIds,
+    workspaceId: props.groupScopeId,
+  }
+  addWsMember(param)
+    .then(() => {
+      modalDialog.value?.toggleModal()
+    })
+    .catch((err) => {
+      window.$message.error(err.message)
+    })
+}
 defineExpose({ open })
 </script>
 <template>
-  <modal-dialog ref="modalDialog">
+  <modal-dialog ref="modalDialog" @confirm="handleSave">
     <template #content>
       <n-form
         ref="formRef"
@@ -103,10 +142,10 @@ defineExpose({ open })
         <n-form-item :label="$t('commons.member')" path="userIds">
           <n-select
             v-model:value="model.userIds"
+            :options="userList"
             multiple
             filterable
-            :placeholder="$t('member.please_choose_member')"
-            :options="userList" />
+            :placeholder="$t('member.please_choose_member')" />
         </n-form-item>
         <n-form-item :label="$t('commons.group')" path="groupIds">
           <n-select

@@ -5,6 +5,8 @@ import cn.master.gallywix.common.constants.UserGroupType;
 import cn.master.gallywix.common.exception.CustomException;
 import cn.master.gallywix.controller.vo.group.EditGroupRequest;
 import cn.master.gallywix.controller.vo.group.GroupPageReqVO;
+import cn.master.gallywix.controller.vo.group.GroupRequest.GroupRequest;
+import cn.master.gallywix.controller.vo.workspace.AddMemberRequest.AddMemberRequest;
 import cn.master.gallywix.dto.GroupDTO;
 import cn.master.gallywix.dto.WorkspaceResource;
 import cn.master.gallywix.entity.SystemGroup;
@@ -12,6 +14,7 @@ import cn.master.gallywix.entity.SystemUser;
 import cn.master.gallywix.entity.UserGroup;
 import cn.master.gallywix.entity.UserGroupPermission;
 import cn.master.gallywix.mapper.SystemGroupMapper;
+import cn.master.gallywix.mapper.SystemUserMapper;
 import cn.master.gallywix.mapper.UserGroupMapper;
 import cn.master.gallywix.mapper.UserGroupPermissionMapper;
 import cn.master.gallywix.service.ISystemGroupService;
@@ -22,6 +25,8 @@ import com.mybatisflex.core.query.QueryChain;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -41,11 +46,14 @@ import static cn.master.gallywix.entity.table.UserGroupTableDef.USER_GROUP;
  * @since 1.0.0
  */
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class SystemGroupServiceImpl extends ServiceImpl<SystemGroupMapper, SystemGroup> implements ISystemGroupService {
     private final UserGroupMapper userGroupMapper;
     private final UserGroupPermissionMapper userGroupPermissionMapper;
     private final ISystemWorkspaceService workspaceService;
+    private final SystemUserMapper systemUserMapper;
+    private final SystemGroupMapper systemGroupMapper;
     private static final String GLOBAL = "global";
     private static final Map<String, List<String>> MAP = new HashMap<>(4) {{
         put(UserGroupType.SYSTEM, Arrays.asList(UserGroupType.SYSTEM, UserGroupType.WORKSPACE, UserGroupType.PROJECT));
@@ -131,7 +139,7 @@ public class SystemGroupServiceImpl extends ServiceImpl<SystemGroupMapper, Syste
         List<UserGroup> userGroups = userGroupMapper.selectListByQuery(QueryChain.of(UserGroup.class)
                 .where(USER_GROUP.USER_ID.eq(userId)));
         List<String> groupsIds = userGroups.stream().map(UserGroup::getGroupId).distinct().toList();
-        groupsIds.forEach(id->{
+        groupsIds.forEach(id -> {
             SystemGroup group = mapper.selectOneByQuery(queryChain().where(SYSTEM_GROUP.CODE.eq(id)));
             String type = group.getType();
             Map<String, Object> map = new HashMap<>(2);
@@ -148,6 +156,50 @@ public class SystemGroupServiceImpl extends ServiceImpl<SystemGroupMapper, Syste
             list.add(map);
         });
         return list;
+    }
+
+    @Override
+    public List<SystemGroup> getGroupsByType(GroupRequest request) {
+        String resourceId = request.getResourceId();
+        String type = request.getType();
+        List<String> scopeList = Arrays.asList(GLOBAL, resourceId);
+        if (StringUtils.equals(type, UserGroupType.PROJECT) && StringUtils.isNotBlank(request.getProjectId())) {
+            scopeList = Arrays.asList(GLOBAL, resourceId, request.getProjectId());
+        }
+        return mapper.selectListByQuery(queryChain().where(SYSTEM_GROUP.SCOPE_ID.in(scopeList)).and(SYSTEM_GROUP.TYPE.eq(type)));
+    }
+
+    @Override
+    public String addMember(AddMemberRequest request) {
+        if (CollectionUtils.isEmpty(request.getUserIds()) || CollectionUtils.isEmpty(request.getGroupIds())) {
+            log.warn("user ids or group ids is empty.");
+            return "user ids or group ids is empty";
+        }
+        List<String> allUserIds = systemUserMapper.selectListByQuery(QueryChain.of(SystemUser.class)).stream().map(SystemUser::getId).toList();
+        List<String> wsGroupIds = systemGroupMapper.selectListByQuery(QueryChain.of(SystemGroup.class).where(SYSTEM_GROUP.TYPE.eq(UserGroupType.WORKSPACE)))
+                .stream().map(SystemGroup::getId).toList();
+        request.getUserIds().forEach(userId->{
+            if (!allUserIds.contains(userId)) {
+                log.warn("user id {} not exist.", userId);
+                return;
+            }
+            List<UserGroup> userGroups = userGroupMapper.selectListByQuery(QueryChain.of(UserGroup.class)
+                    .where(USER_GROUP.USER_ID.eq(userId).and(USER_GROUP.SOURCE_ID.in(request.getWorkspaceId()))));
+            if (!userGroups.isEmpty()) {
+                CustomException.throwException("user_already_exists");
+            }
+            for (String groupId : request.getGroupIds()) {
+                if (!wsGroupIds.contains(groupId)) {
+                    log.warn("group id {} is not exist or not belong to workspace level.", groupId);
+                    continue;
+                }
+                UserGroup userGroup = UserGroup.builder().groupId(groupId)
+                        .sourceId(request.getWorkspaceId())
+                        .userId(userId).build();
+                userGroupMapper.insert(userGroup);
+            }
+        });
+        return "success";
     }
 
     private Page<GroupDTO> getGroups(List<String> groupTypeList, GroupPageReqVO page) {

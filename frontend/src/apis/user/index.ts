@@ -67,3 +67,9 @@ export const specialGetUserGroup = (userId: string) =>
   alovaInstance.Get<IUserGroupPermission>(
     `/system/user/special/user/group/${userId}`,
   )
+
+export const addWorkspaceMemberSpecial = (param: {
+  groupIds: Array<string>
+  userIds: Array<string>
+  workspaceId: string
+}) => alovaInstance.Post(`/system/group/special/ws/member/add`, param)
