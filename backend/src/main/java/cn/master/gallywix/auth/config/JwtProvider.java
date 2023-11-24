@@ -65,7 +65,7 @@ public class JwtProvider {
         Claims claims = Jwts.claims().setSubject(user.getUsername());
         Map<String, Object> userInfo = new LinkedHashMap<>();
         userInfo.put("id", user.getId());
-        userInfo.put("authorities", user.getAuthorities());
+//        userInfo.put("authorities", user.getAuthorities());
         Date tokenCreateTime = new Date(System.currentTimeMillis());
         Date tokenValidity = new Date(tokenCreateTime.getTime() + expiration);
         return Jwts.builder()
