@@ -1,4 +1,6 @@
 export const GROUP_SYSTEM: string = "SYSTEM"
+export const GROUP_WORKSPACE = "WORKSPACE"
+export const GROUP_PROJECT = "PROJECT"
 export const ROLE_ADMIN = "admin"
 export const ROLE_ORG_ADMIN = "org_admin"
 export const ROLE_TEST_MANAGER = "test_manager"

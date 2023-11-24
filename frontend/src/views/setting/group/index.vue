@@ -3,6 +3,7 @@ import { computed, h, onMounted, ref } from "vue"
 
 import EditPermission from "./components/EditPermission.vue"
 import EditUserGroup from "./components/EditUserGroup.vue"
+import GroupMember from "./components/GroupMember.vue"
 import BaseCard from "/@/components/BaseCard.vue"
 import BaseSearch from "/@/components/BaseSearch.vue"
 import GaTableOperation from "/@/components/table/GaTableOperation.vue"
@@ -15,10 +16,11 @@ import { IGroupDTO, loadTableData } from "/@/apis/group"
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
 import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
-import { DataTableColumns, NDataTable, NSkeleton } from "naive-ui"
+import { DataTableColumns, NButton, NDataTable, NSkeleton } from "naive-ui"
 
 const editUserGroup = ref<InstanceType<typeof EditUserGroup> | null>(null)
 const editPermission = ref<InstanceType<typeof EditPermission> | null>(null)
+const groupMember = ref<InstanceType<typeof GroupMember> | null>(null)
 const userGroupType = computed(() => {
   return USER_GROUP_SCOPE
 })
@@ -53,6 +55,15 @@ const columns: DataTableColumns<IGroupDTO> = [
     title: i18n.t("commons.member"),
     key: "memberSize",
     align: "center",
+    render(rowData) {
+      return h(
+        NButton,
+        { text: true, type: "primary", onClick: () => memberClick(rowData) },
+        {
+          default: () => rowData.memberSize,
+        },
+      )
+    },
   },
   {
     title: i18n.t("group.scope"),
@@ -162,6 +173,10 @@ const handleEdit = (val: IGroupDTO) => {
 const setPermission = (val: IGroupDTO) => {
   editPermission.value?.open(val)
 }
+
+const memberClick = (val: IGroupDTO) => {
+  groupMember.value?.openModal(val)
+}
 onMounted(() => {
   send()
 })
@@ -185,6 +200,7 @@ onMounted(() => {
   </base-card>
   <edit-user-group ref="editUserGroup" @refresh="send" />
   <edit-permission ref="editPermission" />
+  <group-member ref="groupMember" @refresh="send" />
 </template>
 
 <style></style>

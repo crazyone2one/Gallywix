@@ -199,7 +199,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         }
         permissionDTO.setUserGroups(userGroups);
         List<String> groupList = userGroups.stream().map(UserGroup::getGroupId).toList();
-        List<SystemGroup> groups = systemGroupMapper.selectListByQuery(QueryChain.of(SystemGroup.class).where(SYSTEM_GROUP.ID.in(groupList)));
+        List<SystemGroup> groups = systemGroupMapper.selectListByQuery(QueryChain.of(SystemGroup.class).where(SYSTEM_GROUP.CODE.in(groupList)));
         permissionDTO.setGroups(groups);
         groups.forEach(gp->{
             GroupResourceDTO dto = new GroupResourceDTO();

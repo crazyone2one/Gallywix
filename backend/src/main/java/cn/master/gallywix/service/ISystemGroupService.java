@@ -1,11 +1,14 @@
 package cn.master.gallywix.service;
 
 import cn.master.gallywix.controller.vo.group.EditGroupRequest;
+import cn.master.gallywix.controller.vo.group.EditGroupUserRequest.EditGroupUserRequest;
 import cn.master.gallywix.controller.vo.group.GroupPageReqVO;
 import cn.master.gallywix.controller.vo.group.GroupRequest.GroupRequest;
+import cn.master.gallywix.controller.vo.user.UserPageReqVO;
 import cn.master.gallywix.controller.vo.workspace.AddMemberRequest.AddMemberRequest;
 import cn.master.gallywix.dto.GroupDTO;
 import cn.master.gallywix.entity.SystemGroup;
+import cn.master.gallywix.entity.SystemUser;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
 
@@ -38,4 +41,8 @@ public interface ISystemGroupService extends IService<SystemGroup> {
     String addMember(AddMemberRequest request);
 
     String editGroupPermission(EditGroupRequest editGroupRequest);
+
+    Page<SystemUser> getGroupUser(UserPageReqVO request);
+
+    String addGroupUser(EditGroupUserRequest request);
 }

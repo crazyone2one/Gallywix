@@ -2,11 +2,14 @@ package cn.master.gallywix.controller;
 
 import cn.master.gallywix.common.result.ResponseResult;
 import cn.master.gallywix.controller.vo.group.EditGroupRequest;
+import cn.master.gallywix.controller.vo.group.EditGroupUserRequest.EditGroupUserRequest;
 import cn.master.gallywix.controller.vo.group.GroupPageReqVO;
 import cn.master.gallywix.controller.vo.group.GroupRequest.GroupRequest;
+import cn.master.gallywix.controller.vo.user.UserPageReqVO;
 import cn.master.gallywix.controller.vo.workspace.AddMemberRequest.AddMemberRequest;
 import cn.master.gallywix.dto.GroupDTO;
 import cn.master.gallywix.entity.SystemGroup;
+import cn.master.gallywix.entity.SystemUser;
 import cn.master.gallywix.service.ISystemGroupService;
 import com.mybatisflex.core.paginate.Page;
 import lombok.RequiredArgsConstructor;
@@ -112,5 +115,15 @@ public class SystemGroupController {
     @PostMapping("/permission/edit")
     public ResponseResult<String> editGroupPermission(@RequestBody EditGroupRequest editGroupRequest) {
         return ResponseResult.success(iSystemGroupService.editGroupPermission(editGroupRequest));
+    }
+
+    @PostMapping("/user")
+    public ResponseResult<Page<SystemUser>> getGroupUser(@RequestBody UserPageReqVO request) {
+        return ResponseResult.success(iSystemGroupService.getGroupUser(request));
+    }
+
+    @PostMapping("/add/member")
+    public ResponseResult<String> addGroupUser(@RequestBody EditGroupUserRequest request) {
+        return ResponseResult.success(iSystemGroupService.addGroupUser(request));
     }
 }

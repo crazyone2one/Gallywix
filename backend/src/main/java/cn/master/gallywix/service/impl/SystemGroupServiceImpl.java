@@ -4,12 +4,15 @@ import cn.master.gallywix.common.constants.UserGroupConstants;
 import cn.master.gallywix.common.constants.UserGroupType;
 import cn.master.gallywix.common.exception.CustomException;
 import cn.master.gallywix.controller.vo.group.EditGroupRequest;
+import cn.master.gallywix.controller.vo.group.EditGroupUserRequest.EditGroupUserRequest;
 import cn.master.gallywix.controller.vo.group.GroupPageReqVO;
 import cn.master.gallywix.controller.vo.group.GroupRequest.GroupRequest;
+import cn.master.gallywix.controller.vo.user.UserPageReqVO;
 import cn.master.gallywix.controller.vo.workspace.AddMemberRequest.AddMemberRequest;
 import cn.master.gallywix.dto.GroupDTO;
 import cn.master.gallywix.dto.GroupPermission;
 import cn.master.gallywix.dto.WorkspaceResource;
+import cn.master.gallywix.dto.user.UserDTO;
 import cn.master.gallywix.entity.SystemGroup;
 import cn.master.gallywix.entity.SystemUser;
 import cn.master.gallywix.entity.UserGroup;
@@ -19,6 +22,7 @@ import cn.master.gallywix.mapper.SystemUserMapper;
 import cn.master.gallywix.mapper.UserGroupMapper;
 import cn.master.gallywix.mapper.UserGroupPermissionMapper;
 import cn.master.gallywix.service.ISystemGroupService;
+import cn.master.gallywix.service.ISystemUserService;
 import cn.master.gallywix.service.ISystemWorkspaceService;
 import cn.master.gallywix.utils.SessionUtils;
 import com.mybatisflex.core.paginate.Page;
@@ -37,6 +41,7 @@ import java.io.Serializable;
 import java.util.*;
 
 import static cn.master.gallywix.entity.table.SystemGroupTableDef.SYSTEM_GROUP;
+import static cn.master.gallywix.entity.table.SystemUserTableDef.SYSTEM_USER;
 import static cn.master.gallywix.entity.table.UserGroupPermissionTableDef.USER_GROUP_PERMISSION;
 import static cn.master.gallywix.entity.table.UserGroupTableDef.USER_GROUP;
 
@@ -55,6 +60,7 @@ public class SystemGroupServiceImpl extends ServiceImpl<SystemGroupMapper, Syste
     private final ISystemWorkspaceService workspaceService;
     private final SystemUserMapper systemUserMapper;
     private final SystemGroupMapper systemGroupMapper;
+    final ISystemUserService systemUserService;
     private static final String GLOBAL = "global";
     private static final Map<String, List<String>> MAP = new HashMap<>(4) {{
         put(UserGroupType.SYSTEM, Arrays.asList(UserGroupType.SYSTEM, UserGroupType.WORKSPACE, UserGroupType.PROJECT));
@@ -226,6 +232,81 @@ public class SystemGroupServiceImpl extends ServiceImpl<SystemGroupMapper, Syste
             }
         });
         return "success";
+    }
+
+    @Override
+    public Page<SystemUser> getGroupUser(UserPageReqVO request) {
+        return systemUserMapper.paginate(request, QueryChain.of(SystemUser.class)
+                .select("DISTINCT `tb_system_user`.`id`,\n" +
+                        "       `tb_system_user`.`username`,\n" +
+                        "       `tb_system_user`.`email`,\n" +
+                        "       `tb_system_user`.`phone`,\n" +
+                        "       `tb_user_group`.update_time")
+                .join(USER_GROUP).on(USER_GROUP.USER_ID.eq(SYSTEM_USER.ID))
+                .where(USER_GROUP.GROUP_ID.eq(request.getUserGroupId()))
+                .where(SYSTEM_USER.USERNAME.like(request.getName()))
+                .where(USER_GROUP.SOURCE_ID.eq(request.getProjectId()))
+                .orderBy(USER_GROUP.UPDATE_TIME, false));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String addGroupUser(EditGroupUserRequest request) {
+        if (StringUtils.isBlank(request.getGroupId()) || CollectionUtils.isEmpty(request.getUserIds())) {
+            return "add group user warning, please check param";
+        }
+        SystemGroup group = mapper.selectOneById(request.getGroupId());
+        if (Objects.isNull(group)) {
+            return "add group user warning, group is null. group id: " + request.getGroupId();
+        }
+        if (StringUtils.equals(group.getType(), UserGroupType.SYSTEM)) {
+            SystemUser user = Objects.requireNonNull(SessionUtils.sessionUserInfo());
+            UserDTO userDTO = systemUserService.getUserDTO(user.getId());
+            long count = userDTO.getGroups().stream().filter(g -> StringUtils.equals(g.getType(), UserGroupType.SYSTEM)).count();
+            if (count > 0) {
+                addSystemGroupUser(group, request.getUserIds());
+            } else {
+                return "no permission to add system group!";
+            }
+        } else {
+            if (CollectionUtils.isNotEmpty(request.getSourceIds())) {
+                addNotSystemGroupUser(group, request.getUserIds(), request.getSourceIds());
+            }
+        }
+        return "success";
+    }
+
+    private void addNotSystemGroupUser(SystemGroup group, List<String> userIds, List<String> sourceIds) {
+        for (String userId : userIds) {
+            SystemUser user = systemUserMapper.selectOneById(userId);
+            if (user == null) {
+                continue;
+            }
+            List<UserGroup> userGroups = userGroupMapper.selectListByQuery(QueryChain.of(UserGroup.class).where(USER_GROUP.USER_ID.eq(userId))
+                    .and(USER_GROUP.GROUP_ID.eq(group.getId())));
+            List<String> existSourceIds = userGroups.stream().map(UserGroup::getSourceId).toList();
+            List<String> toAddSourceIds = new ArrayList<>(sourceIds);
+            toAddSourceIds.removeAll(existSourceIds);
+            for (String sourceId : toAddSourceIds) {
+                UserGroup userGroup = UserGroup.builder().userId(userId).groupId(group.getId()).sourceId(sourceId).build();
+                userGroupMapper.insert(userGroup);
+            }
+        }
+    }
+
+    private void addSystemGroupUser(SystemGroup group, List<String> userIds) {
+        for (String userId : userIds) {
+            SystemUser user = systemUserMapper.selectOneById(userId);
+            if (user == null) {
+                continue;
+            }
+            List<UserGroup> userGroups = userGroupMapper.selectListByQuery(QueryChain.of(UserGroup.class).where(USER_GROUP.USER_ID.eq(userId))
+                    .and(USER_GROUP.GROUP_ID.eq(group.getId())));
+            if (userGroups.isEmpty()) {
+                UserGroup userGroup = UserGroup.builder().userId(userId).groupId(group.getId()).sourceId("system").build();
+                userGroupMapper.insert(userGroup);
+            }
+        }
     }
 
     private Page<GroupDTO> getGroups(List<String> groupTypeList, GroupPageReqVO page) {

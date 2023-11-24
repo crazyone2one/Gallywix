@@ -15,4 +15,5 @@ public class UserPageReqVO extends Page<SystemUser> {
     private String name;
     private String workspaceId;
     private String projectId;
+    private String userGroupId;
 }
