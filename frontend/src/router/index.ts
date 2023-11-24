@@ -1,55 +1,30 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router"
 
 import { useAuthStore } from "../store/auth-store"
+
+import { i18n } from "../i18n"
+import Setting from "./modules/setting"
 // 路由信息
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    redirect: "/dashboard",
+    redirect: "/workstation",
     component: () => import(`/@/components/layout/BaseLayout.vue`),
     children: [
       {
-        path: "/dashboard",
-        name: "dashboard",
+        path: "/workstation",
+        name: "workstation",
         component: () => import(`/@/views/home/HomeView.vue`),
-        meta: { title: "首页", requiresAuth: true },
+        meta: { title: "commons.my_workstation", requiresAuth: true },
       },
-      {
-        path: "/user",
-        name: "user",
-        component: () => import(`/@/views/setting/user/index.vue`),
-        meta: { title: "用户管理", requiresAuth: true },
-      },
-      {
-        path: "/workspace",
-        name: "workspace",
-        component: () => import(`/@/views/setting/workspace/WorkspaceView.vue`),
-        meta: { title: "工作空间管理", requiresAuth: true },
-      },
-      {
-        path: "/organization",
-        name: "organization",
-        component: () => import(`/@/views/setting/organization/index.vue`),
-        meta: { title: "organization", requiresAuth: true },
-      },
-      {
-        path: "/setting/group",
-        name: "group",
-        component: () => import(`/@/views/setting/group/index.vue`),
-        meta: { title: "group", requiresAuth: true },
-      },
+      ...Setting,
       {
         path: "/demo/upload",
         name: "upload",
         component: () => import(`/@/views/demo/upload/index.vue`),
         meta: { title: "上传", roles: ["admin"] },
       },
-      {
-        path: "/project/:type",
-        name: "project",
-        component: () => import(`/@/views/setting/project/index.vue`),
-        meta: { title: "项目管理", requiresAuth: true },
-      },
+
       {
         path: "/createTest",
         component: () => import(`/@/views/test-plan/index.vue`),
@@ -101,7 +76,7 @@ router.afterEach((to) => {
   // const current = to.matched[to.matched.length - 1].components.default
   // const title = current.title ?? current.name
   const items = [import.meta.env.VITE_APP_TITLE]
-  to.meta.title != null && items.unshift(to.meta.title)
+  to.meta.title != null && items.unshift(i18n.t(to.meta.title as string))
   document.title = items.join(" | ")
 })
 
