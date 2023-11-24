@@ -60,9 +60,14 @@ const menuOptions: MenuOption[] = [
       }),
   },
   {
-    label: i18n.t("commons.project_setting"),
+    // label: i18n.t("commons.project_setting"),
+    label: () =>
+      h(
+        RouterLink,
+        { to: { path: "/project" } },
+        { default: () => i18n.t("commons.project_setting") },
+      ),
     key: "project-setting",
-    disabled: true,
     icon: () =>
       h(NIcon, null, {
         default: () => h("span", { class: "i-tabler:folder-cog" }),

@@ -3,6 +3,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router"
 import { useAuthStore } from "../store/auth-store"
 
 import { i18n } from "../i18n"
+import Project from "./modules/project"
 import Setting from "./modules/setting"
 // 路由信息
 const routes: Array<RouteRecordRaw> = [
@@ -18,6 +19,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: "commons.my_workstation", requiresAuth: true },
       },
       ...Setting,
+      ...Project,
       {
         path: "/demo/upload",
         name: "upload",
