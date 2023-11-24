@@ -1,4 +1,6 @@
 // uno.config.ts
+import { FileSystemIconLoader } from "@iconify/utils/lib/loader/node-loaders"
+
 import {
   defineConfig,
   presetAttributify,
@@ -9,7 +11,6 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from "unocss"
-
 export default defineConfig({
   shortcuts: [
     // ...
@@ -31,6 +32,9 @@ export default defineConfig({
       collections: {
         tabler: () =>
           import("@iconify-json/tabler/icons.json").then((i) => i.default),
+        "my-local": FileSystemIconLoader("./src/assets/icons", (svg) => {
+          return svg.replace(/#fff/, "currentColor")
+        }),
       },
     }),
     presetTypography(),

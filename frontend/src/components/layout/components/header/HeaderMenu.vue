@@ -3,7 +3,7 @@ import { h, ref, watchEffect } from "vue"
 import { RouterLink, useRoute } from "vue-router"
 
 import { i18n } from "/@/i18n"
-import { MenuOption, NMenu } from "naive-ui"
+import { MenuOption, NIcon, NMenu } from "naive-ui"
 
 const activeKey = ref<string | null>(null)
 const expandedKeys = ref<string[]>([])
@@ -17,36 +17,64 @@ const menuOptions: MenuOption[] = [
         { to: { path: "/workstation" } },
         { default: () => i18n.t("commons.my_workstation") },
       ),
+    icon: () =>
+      h(NIcon, null, {
+        default: () => h("span", { class: "i-my-local-workspace" }),
+      }),
     key: "my_workstation",
   },
   {
     label: i18n.t("test_track.test_track"),
     key: "test_track",
     disabled: true,
+    icon: () =>
+      h(NIcon, null, {
+        default: () => h("span", { class: "i-tabler:clipboard-list" }),
+      }),
   },
   {
     label: i18n.t("commons.api"),
     key: "api",
     disabled: true,
+    icon: () =>
+      h(NIcon, null, {
+        default: () => h("span", { class: "i-my-local-api" }),
+      }),
   },
   {
     label: i18n.t("commons.performance"),
     key: "performance",
     disabled: true,
+    icon: () =>
+      h(NIcon, null, {
+        default: () => h("span", { class: "i-my-local-performance" }),
+      }),
   },
   {
     label: i18n.t("commons.report_statistics.title"),
     key: "report-statistics",
     disabled: true,
+    icon: () =>
+      h(NIcon, null, {
+        default: () => h("span", { class: "i-tabler:report" }),
+      }),
   },
   {
     label: i18n.t("commons.project_setting"),
     key: "project-setting",
     disabled: true,
+    icon: () =>
+      h(NIcon, null, {
+        default: () => h("span", { class: "i-tabler:folder-cog" }),
+      }),
   },
   {
     label: i18n.t("commons.system_setting"),
     key: "pinball-1973",
+    icon: () =>
+      h(NIcon, null, {
+        default: () => h("span", { class: "i-my-local-settings" }),
+      }),
     children: [
       {
         type: "group",
