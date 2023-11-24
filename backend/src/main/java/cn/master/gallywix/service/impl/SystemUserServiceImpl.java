@@ -177,6 +177,13 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    public SystemUser updateUser(SystemUser systemUser) {
+        mapper.update(systemUser);
+        return systemUser;
+    }
+
+    @Override
     public UserDTO getUserDTO(String id) {
         SystemUser user = QueryChain.of(SystemUser.class).where(SYSTEM_USER.ID.eq(id)).one();
         if (Objects.isNull(user)) {

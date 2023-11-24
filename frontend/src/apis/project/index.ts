@@ -25,6 +25,16 @@ export const loadProjectOption = () =>
       return list2SelectOption(data as Array<IProject>)
     },
   })
+
+export const getUserProjectList = (param: {
+  userId: string
+  workspaceId: string
+}) =>
+  alovaInstance.Post<SelectOption[]>(`/system/project/list/related`, param, {
+    transformData(data) {
+      return list2SelectOption(data as Array<IProject>)
+    },
+  })
 /**
  * save project
  * @param param project

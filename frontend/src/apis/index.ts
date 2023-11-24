@@ -77,6 +77,10 @@ const alovaInstance = createAlova({
   async responded(response, method) {
     // 请求成功的拦截器
     logOnDev(`🚀 [API] ${method.url}  | Response ${response.status}`)
+    if (response.status === 405) {
+      window.$message.error(response.statusText)
+      // throw new Error(response.statusText)
+    }
     if (response.status === 500) {
       window.$message.error("服务器内部错误")
       // throw new Error(response.statusText)

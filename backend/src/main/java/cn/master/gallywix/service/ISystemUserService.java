@@ -42,4 +42,6 @@ public interface ISystemUserService extends IService<SystemUser> {
     Page<SystemUser> getProjectMemberList(UserPageReqVO request);
 
     UserGroupPermissionDTO getUserGroup(String userId);
+
+    SystemUser updateUser(SystemUser systemUser);
 }

@@ -127,4 +127,18 @@ public class SystemProjectServiceImpl extends ServiceImpl<SystemProjectMapper, S
         return paginate;
     }
 
+    @Override
+    public List<SystemProject> getUserProject(ProjectPageReqVO request) {
+        boolean isSuper = QueryChain.of(UserGroup.class).where(USER_GROUP.USER_ID.eq(request.getUserId()).and(USER_GROUP.GROUP_ID.eq("super_group"))).exists();
+        if (isSuper) {
+            return mapper.selectListByQuery(QueryChain.create()
+                    .where(SYSTEM_PROJECT.NAME.like(request.getName()))
+                    .where(SYSTEM_PROJECT.WORKSPACE_ID.eq(request.getWorkspaceId()))
+                    .orderBy(SYSTEM_PROJECT.UPDATE_TIME, false));
+        }
+        return mapper.selectListByQuery(QueryChain.create()
+                .where(SYSTEM_PROJECT.NAME.like(request.getName()))
+                .orderBy(SYSTEM_PROJECT.UPDATE_TIME, false));
+    }
+
 }

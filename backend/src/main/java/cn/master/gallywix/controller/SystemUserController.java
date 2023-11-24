@@ -57,8 +57,8 @@ public class SystemUserController {
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
-    public ResponseResult<Boolean> update(@RequestBody SystemUser systemUser) {
-        return ResponseResult.success(iSystemUserService.updateById(systemUser));
+    public ResponseResult<SystemUser> update(@RequestBody SystemUser systemUser) {
+        return ResponseResult.success(iSystemUserService.updateUser(systemUser));
     }
 
     /**

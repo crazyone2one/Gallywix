@@ -2,7 +2,7 @@ import { RouteRecordRaw } from "vue-router"
 const Project: Array<RouteRecordRaw> = [
   {
     path: "/project",
-    name: "project",
+    name: "project-manage",
     redirect: "/project/home",
     component: () => import(`/@/views/project/ProjectSetting.vue`),
     meta: {

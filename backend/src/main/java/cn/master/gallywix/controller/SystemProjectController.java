@@ -4,6 +4,7 @@ import cn.master.gallywix.common.result.ResponseResult;
 import cn.master.gallywix.controller.vo.project.ProjectPageReqVO;
 import cn.master.gallywix.entity.SystemProject;
 import cn.master.gallywix.service.ISystemProjectService;
+import cn.master.gallywix.utils.SessionUtils;
 import com.mybatisflex.core.paginate.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -57,14 +58,20 @@ public class SystemProjectController {
         return ResponseResult.success(iSystemProjectService.updateById(systemProject));
     }
 
+    @GetMapping("list")
+    public ResponseResult<List<SystemProject>> list() {
+        return ResponseResult.success(iSystemProjectService.list());
+    }
+
     /**
      * 查询所有项目信息。
      *
      * @return 所有数据
      */
-    @GetMapping("list")
-    public ResponseResult<List<SystemProject>> list() {
-        return ResponseResult.success(iSystemProjectService.list());
+    @PostMapping("/list/related")
+    public ResponseResult<List<SystemProject>> list(@RequestBody ProjectPageReqVO request) {
+        request.setUserId(SessionUtils.getUserId());
+        return ResponseResult.success(iSystemProjectService.getUserProject(request));
     }
 
     /**

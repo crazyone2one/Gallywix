@@ -5,6 +5,8 @@ import cn.master.gallywix.entity.SystemProject;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
 
+import java.util.List;
+
 /**
  * 项目信息 服务层。
  *
@@ -20,4 +22,6 @@ public interface ISystemProjectService extends IService<SystemProject> {
     int deleteProject(String id);
 
     Page<SystemProject> getProjectPageList(ProjectPageReqVO page);
+
+    List<SystemProject> getUserProject(ProjectPageReqVO request);
 }

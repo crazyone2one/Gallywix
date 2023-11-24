@@ -18,6 +18,8 @@ export interface USER {
   createTime?: number
   groups: Array<ICustomGroup>
   roles: Array<IGroupDTO>
+  lastProjectId: string
+  lastWorkspaceId: string
 }
 export const loadUserData = (param: PageReq) =>
   alovaInstance.Post<IPage<USER[]>>(`/system/user/page`, param)
@@ -34,7 +36,7 @@ export const saveUserData = (param: USER) =>
  * @returns
  */
 export const updateUserData = (param: USER) =>
-  alovaInstance.Put(`/system/user/update`, param)
+  alovaInstance.Put<USER>(`/system/user/update`, param)
 /**
  * delete user by id
  * @param param user id
