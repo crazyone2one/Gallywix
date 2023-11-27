@@ -7,6 +7,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
+import java.util.function.BiFunction;
 
 /**
  * @author 11's papa
@@ -58,5 +59,10 @@ public class ServiceUtils {
             nameMap.put(k, v.getUsername());
         });
         return nameMap;
+    }
+
+    public static Long getNextOrder(String groupId, BiFunction<String, Long, Long> getLastOrderFunc) {
+        Long lastOrder = getLastOrderFunc.apply(groupId, null);
+        return (lastOrder == null ? 0 : lastOrder) + ServiceUtils.ORDER_STEP;
     }
 }
