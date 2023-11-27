@@ -1,5 +1,6 @@
 package cn.master.gallywix.entity;
 
+import cn.master.gallywix.listener.IssueTemplateListener;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -13,7 +14,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 项目信息 实体类。
+ * 实体类。
  *
  * @author 11's papa
  * @since 1.0.0
@@ -22,31 +23,46 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "tb_system_project")
-public class SystemProject implements Serializable {
+@Table(value = "issue_template", onInsert = IssueTemplateListener.class, onUpdate = IssueTemplateListener.class)
+public class IssueTemplate implements Serializable {
 
-    /**
-     * Project ID
-     */
     @Id(keyType = KeyType.Generator, value = "flexId")
     private String id;
 
     /**
-     * Workspace ID this project belongs to
-     */
-    private String workspaceId;
-
-    /**
-     * Project name
+     * Field template name
      */
     private String name;
 
     /**
-     * Project description
+     * Field template type
+     */
+    private String platform;
+
+    /**
+     * Field template description
      */
     private String description;
 
-    private String systemId;
+    /**
+     * Issue title
+     */
+    private String title;
+
+    /**
+     * Is system field template
+     */
+    private Boolean system;
+
+    /**
+     * Is global template
+     */
+    private Boolean global;
+
+    /**
+     * Issue content
+     */
+    private String content;
 
     /**
      * Create timestamp
@@ -60,15 +76,16 @@ public class SystemProject implements Serializable {
     @Column(onInsertValue = "now()", onUpdateValue = "now()")
     private LocalDateTime updateTime;
 
-    @Column(ignore = true)
-    private long memberSize;
-
-    private String caseTemplateId;
-    private String issueTemplateId;
-    private String apiTemplateId;
     /**
      * delete flag
      */
     @Column(isLogicDelete = true)
     private Boolean delFlag;
+
+    private String projectId;
+
+    private String createUser;
+
+    private String updateUser;
+
 }

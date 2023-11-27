@@ -86,8 +86,8 @@ public class SystemWorkspaceController {
      * @return 分页对象
      */
     @PostMapping("page")
-    public ResponseResult<Page<SystemWorkspace>> page(@RequestBody WorkspacePageReqVO page) {
-        return ResponseResult.success(iSystemWorkspaceService.findDataByPage(page));
+    public Page<SystemWorkspace> page(@RequestBody WorkspacePageReqVO page) {
+        return iSystemWorkspaceService.findDataByPage(page);
     }
 
     @GetMapping("/list/resource/{groupId}/{type}")

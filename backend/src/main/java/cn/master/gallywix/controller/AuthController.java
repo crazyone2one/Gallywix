@@ -15,11 +15,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,30 +44,26 @@ public class AuthController {
 
     @ResponseBody
     @PostMapping("/authenticate")
-    public ResponseResult<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
-        try {
-            val authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-            SessionUtils.setAuthentication(authenticate);
-            //  处理用户权限
-            Collection<? extends GrantedAuthority> authorities = authenticate.getAuthorities();
-            List<String> collect = authorities.stream().map(GrantedAuthority::getAuthority).toList();
-            CustomUserDetail principal = (CustomUserDetail) authenticate.getPrincipal();
-            val accessToken = jwtProvider.generateToken(principal);
-            val refreshToken = jwtProvider.generateRefreshToken(principal);
-            AuthenticationResponse response = AuthenticationResponse.builder()
-                    .accessToken(accessToken)
-                    .refreshToken(refreshToken)
-                    .user(principal.getSystemUser())
-                    .roles(collect)
-                    .userId(principal.getId())
-                    .build();
-            // 将token存放在redis，并设置超时时间
-            redisUtils.setString("accessToken", JsonUtils.toJsonString(authenticate), jwtExpiration, TimeUnit.MILLISECONDS);
-            redisUtils.setString("refreshToken", JsonUtils.toJsonString(authenticate), refreshExpiration, TimeUnit.MILLISECONDS);
-            return ResponseResult.success(response);
-        } catch (AuthenticationException e) {
-            return ResponseResult.fail(HttpStatus.BAD_REQUEST.value(), "invalid username or password");
-        }
+    public AuthenticationResponse login(@RequestBody AuthenticationRequest request) {
+        val authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        SessionUtils.setAuthentication(authenticate);
+        //  处理用户权限
+        Collection<? extends GrantedAuthority> authorities = authenticate.getAuthorities();
+        List<String> collect = authorities.stream().map(GrantedAuthority::getAuthority).toList();
+        CustomUserDetail principal = (CustomUserDetail) authenticate.getPrincipal();
+        val accessToken = jwtProvider.generateToken(principal);
+        val refreshToken = jwtProvider.generateRefreshToken(principal);
+        AuthenticationResponse response = AuthenticationResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .user(principal.getSystemUser())
+                .roles(collect)
+                .userId(principal.getId())
+                .build();
+        // 将token存放在redis，并设置超时时间
+        redisUtils.setString("accessToken", JsonUtils.toJsonString(authenticate), jwtExpiration, TimeUnit.MILLISECONDS);
+        redisUtils.setString("refreshToken", JsonUtils.toJsonString(authenticate), refreshExpiration, TimeUnit.MILLISECONDS);
+        return response;
     }
 
     @GetMapping("demo1")

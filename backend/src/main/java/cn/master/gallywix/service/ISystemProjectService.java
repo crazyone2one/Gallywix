@@ -24,4 +24,10 @@ public interface ISystemProjectService extends IService<SystemProject> {
     Page<SystemProject> getProjectPageList(ProjectPageReqVO page);
 
     List<SystemProject> getUserProject(ProjectPageReqVO request);
+
+    void updateCaseTemplate(String originId, String templateId, String projectId);
+
+    void updateIssueTemplate(String originId, String templateId, String projectId);
+
+    void updateApiTemplate(String originId, String templateId, String projectId);
 }

@@ -4,6 +4,7 @@ import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+import com.mybatisflex.core.handler.JacksonTypeHandler;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +12,10 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 /**
- * 项目信息 实体类。
+ *  实体类。
  *
  * @author 11's papa
  * @since 1.0.0
@@ -22,31 +24,55 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "tb_system_project")
-public class SystemProject implements Serializable {
+@Table(value = "custom_field")
+public class CustomField implements Serializable {
 
     /**
-     * Project ID
+     * Custom field ID
      */
     @Id(keyType = KeyType.Generator, value = "flexId")
     private String id;
 
     /**
-     * Workspace ID this project belongs to
-     */
-    private String workspaceId;
-
-    /**
-     * Project name
+     * Custom field name
      */
     private String name;
 
     /**
-     * Project description
+     * Custom field use scene
      */
-    private String description;
+    private String scene;
 
-    private String systemId;
+    /**
+     * Custom field type
+     */
+    private String type;
+
+    /**
+     * Custom field remark
+     */
+    private String remark;
+
+    /**
+     * Test resource pool status
+     */
+    @Column(typeHandler = JacksonTypeHandler.class)
+    private Map<String, Object> options;
+
+    /**
+     * Is system custom field
+     */
+    private Boolean system;
+
+    /**
+     * Is global custom field
+     */
+    private Boolean global;
+
+    /**
+     * Workspace ID this custom field belongs to
+     */
+    private String workspaceId;
 
     /**
      * Create timestamp
@@ -60,15 +86,15 @@ public class SystemProject implements Serializable {
     @Column(onInsertValue = "now()", onUpdateValue = "now()")
     private LocalDateTime updateTime;
 
-    @Column(ignore = true)
-    private long memberSize;
+    private String createUser;
 
-    private String caseTemplateId;
-    private String issueTemplateId;
-    private String apiTemplateId;
+    private String projectId;
+
+    private Boolean thirdPart;
     /**
      * delete flag
      */
     @Column(isLogicDelete = true)
     private Boolean delFlag;
+
 }

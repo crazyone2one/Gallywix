@@ -1,5 +1,6 @@
 package cn.master.gallywix.entity;
 
+import cn.master.gallywix.listener.ApiTemplateListener;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -13,7 +14,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 项目信息 实体类。
+ * api模版表 实体类。
  *
  * @author 11's papa
  * @since 1.0.0
@@ -22,31 +23,31 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "tb_system_project")
-public class SystemProject implements Serializable {
+@Table(value = "api_template", onInsert = ApiTemplateListener.class, onUpdate = ApiTemplateListener.class)
+public class ApiTemplate implements Serializable {
 
-    /**
-     * Project ID
-     */
     @Id(keyType = KeyType.Generator, value = "flexId")
     private String id;
 
     /**
-     * Workspace ID this project belongs to
-     */
-    private String workspaceId;
-
-    /**
-     * Project name
+     * Field template name
      */
     private String name;
 
     /**
-     * Project description
+     * Field template description
      */
     private String description;
 
-    private String systemId;
+    /**
+     * Is system field template
+     */
+    private Boolean system;
+
+    /**
+     * Is global template
+     */
+    private Boolean global;
 
     /**
      * Create timestamp
@@ -60,15 +61,13 @@ public class SystemProject implements Serializable {
     @Column(onInsertValue = "now()", onUpdateValue = "now()")
     private LocalDateTime updateTime;
 
-    @Column(ignore = true)
-    private long memberSize;
+    private String createUser;
 
-    private String caseTemplateId;
-    private String issueTemplateId;
-    private String apiTemplateId;
-    /**
-     * delete flag
-     */
+    private String updateUser;
+
+    private String projectId;
+
     @Column(isLogicDelete = true)
     private Boolean delFlag;
+
 }

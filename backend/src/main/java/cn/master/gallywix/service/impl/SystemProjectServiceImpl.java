@@ -141,4 +141,37 @@ public class SystemProjectServiceImpl extends ServiceImpl<SystemProjectMapper, S
                 .orderBy(SYSTEM_PROJECT.UPDATE_TIME, false));
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateCaseTemplate(String originId, String templateId, String projectId) {
+        UpdateChain.of(SystemProject.class).set(SystemProject::getCaseTemplateId, templateId)
+                .where(SYSTEM_PROJECT.ID.eq(projectId)
+                        .and(SYSTEM_PROJECT.CASE_TEMPLATE_ID.eq(originId)
+                                .or(SYSTEM_PROJECT.CASE_TEMPLATE_ID.eq("")
+                                        .or(SYSTEM_PROJECT.CASE_TEMPLATE_ID.isNull()))))
+                .update();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateIssueTemplate(String originId, String templateId, String projectId) {
+        UpdateChain.of(SystemProject.class).set(SystemProject::getIssueTemplateId, templateId)
+                .where(SYSTEM_PROJECT.ID.eq(projectId)
+                        .and(SYSTEM_PROJECT.ISSUE_TEMPLATE_ID.eq(originId)
+                                .or(SYSTEM_PROJECT.ISSUE_TEMPLATE_ID.eq("")
+                                        .or(SYSTEM_PROJECT.ISSUE_TEMPLATE_ID.isNull()))))
+                .update();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateApiTemplate(String originId, String templateId, String projectId) {
+        UpdateChain.of(SystemProject.class).set(SystemProject::getApiTemplateId, templateId)
+                .where(SYSTEM_PROJECT.ID.eq(projectId)
+                        .and(SYSTEM_PROJECT.API_TEMPLATE_ID.eq(originId)
+                                .or(SYSTEM_PROJECT.API_TEMPLATE_ID.eq("")
+                                        .or(SYSTEM_PROJECT.API_TEMPLATE_ID.isNull()))))
+                .update();
+    }
+
 }
