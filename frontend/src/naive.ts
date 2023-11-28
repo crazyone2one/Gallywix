@@ -12,6 +12,7 @@ import {
   NIcon,
   NInput,
   NSelect,
+  NSkeleton,
   NSpace,
   NSwitch,
   NTooltip,
@@ -32,6 +33,7 @@ const naive = create({
     NCheckbox,
     NSpace,
     NCheckboxGroup,
+    NSkeleton,
   ],
 })
 
