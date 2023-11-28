@@ -45,6 +45,7 @@ public class CustomFieldServiceImpl extends ServiceImpl<CustomFieldMapper, Custo
     final ITestCaseTemplateService testCaseTemplateService;
     final IIssueTemplateService iIssueTemplateService;
     final IApiTemplateService apiTemplateService;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String add(CustomField customField) {
@@ -72,7 +73,7 @@ public class CustomFieldServiceImpl extends ServiceImpl<CustomFieldMapper, Custo
                                                 .where("cf_child.name = cf.name")
                                                 .and("cf_child.scene = cf.scene")
                                                 .and("cf_child.global != 1")
-                                                .and("cf_child.workspace_id=" + request.getWorkspaceId())
+                                                .and("cf_child.workspace_id='" + request.getWorkspaceId() + "'")
                                 ))
                 ).when(Objects.nonNull(request.getWorkspaceId())))
                 .and(CUSTOM_FIELD.PROJECT_ID.eq(request.getProjectId())
@@ -83,18 +84,20 @@ public class CustomFieldServiceImpl extends ServiceImpl<CustomFieldMapper, Custo
                                                         .where("cf_child.name = cf.name")
                                                         .and("cf_child.scene = cf.scene")
                                                         .and("cf_child.global != 1")
-                                                        .and("cf_child.project_id=" + request.getProjectId())
+                                                        .and("cf_child.project_id='" + request.getProjectId() + "'")
                                         )
                                 )).when(Objects.nonNull(request.getProjectId())))
                 .and(CUSTOM_FIELD.ID.in(request.getIds()))
                 .and(CUSTOM_FIELD.ID.notIn(request.getTemplateId()));
-        Set<Map.Entry<String, List<String>>> entries = request.getFilters().entrySet();
-        for (Map.Entry<String, List<String>> entry : entries) {
-            if (Objects.nonNull(entry.getValue())) {
-                if ("scene".equals(entry.getKey())) {
-                    wrapper.and(CUSTOM_FIELD.SCENE.in(entry.getValue()));
-                } else if ("type".equals(entry.getKey())) {
-                    wrapper.and(CUSTOM_FIELD.TYPE.in(entry.getValue()));
+        if (Objects.nonNull(request.getFilters())) {
+            Set<Map.Entry<String, List<String>>> entries = request.getFilters().entrySet();
+            for (Map.Entry<String, List<String>> entry : entries) {
+                if (Objects.nonNull(entry.getValue())) {
+                    if ("scene".equals(entry.getKey())) {
+                        wrapper.and(CUSTOM_FIELD.SCENE.in(entry.getValue()));
+                    } else if ("type".equals(entry.getKey())) {
+                        wrapper.and(CUSTOM_FIELD.TYPE.in(entry.getValue()));
+                    }
                 }
             }
         }
@@ -104,7 +107,7 @@ public class CustomFieldServiceImpl extends ServiceImpl<CustomFieldMapper, Custo
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String updateCustomField(CustomField customField) {
-        if ( Objects.nonNull(customField.getGlobal()) && customField.getGlobal()) {
+        if (Objects.nonNull(customField.getGlobal()) && customField.getGlobal()) {
             CustomFieldDao customFieldDao = new CustomFieldDao();
             BeanUtils.copyProperties(customField, customFieldDao);
             customFieldDao.setOriginGlobalId(customField.getId());
@@ -114,11 +117,11 @@ public class CustomFieldServiceImpl extends ServiceImpl<CustomFieldMapper, Custo
                 testCaseTemplateService.handleSystemFieldCreate(customFieldDao);
             } else if (StringUtils.equals(customField.getScene(), TemplateConstants.FieldTemplateScene.API.name())) {
                 apiTemplateService.handleSystemFieldCreate(customFieldDao);
-            }else{
+            } else {
                 iIssueTemplateService.handleSystemFieldCreate(customFieldDao);
             }
 
-        }else {
+        } else {
             checkExist(customField);
             mapper.update(customField);
         }
