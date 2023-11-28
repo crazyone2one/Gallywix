@@ -17,6 +17,15 @@ const Project: Array<RouteRecordRaw> = [
           title: "project.info",
         },
       },
+      {
+        path: "/project/template",
+        name: "template",
+        component: () =>
+          import(`/@/views/project/template/TemplateSetting.vue`),
+        meta: {
+          title: "workspace.template_manage",
+        },
+      },
     ],
   },
 ]
