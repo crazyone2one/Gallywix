@@ -16,7 +16,6 @@ const menuOptions: MenuOption[] = [
         { to: { path: "/project/home" } },
         { default: () => i18n.t("project.info") },
       ),
-
     key: "project.info",
   },
   {
@@ -45,9 +44,14 @@ const menuOptions: MenuOption[] = [
     disabled: true,
   },
   {
-    label: i18n.t("workspace.template_manage"),
+    label: () =>
+      h(
+        RouterLink,
+        { to: { path: "/project/template" } },
+        { default: () => i18n.t("workspace.template_manage") },
+      ),
+    // label: i18n.t("workspace.template_manage"),
     key: "workspace.template_manage",
-    disabled: true,
   },
   {
     label: i18n.t("organization.message_settings"),
