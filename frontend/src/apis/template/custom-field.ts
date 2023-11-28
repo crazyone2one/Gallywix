@@ -1,5 +1,11 @@
 import alovaInst from ".."
-import { PageReq } from "../interface"
+import { IPage, PageReq } from "../interface"
+
+export interface ICustomFieldOption {
+  label: string
+  value: string
+  system: boolean
+}
 export interface ICustomField {
   id: string | undefined
   name: string
@@ -8,6 +14,7 @@ export interface ICustomField {
   remark: string
   system: boolean
   global: boolean
+  options?: ICustomFieldOption[]
 }
 /**
  * 列表数据查询
@@ -15,4 +22,4 @@ export interface ICustomField {
  * @returns
  */
 export const getCustomFieldPages = (param: PageReq) =>
-  alovaInst.Post(`/custom/field/page`, param)
+  alovaInst.Post<IPage<Array<ICustomField>>>(`/custom/field/page`, param)

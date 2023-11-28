@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,7 +58,7 @@ public class CustomField implements Serializable {
      * Test resource pool status
      */
     @Column(typeHandler = JacksonTypeHandler.class)
-    private Map<String, Object> options;
+    private List<Map<String, Object>> options;
 
     /**
      * Is system custom field

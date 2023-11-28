@@ -1,11 +1,17 @@
 <script setup lang="ts">
-import { h, onMounted, ref } from "vue"
+import { computed, h, onMounted, ref } from "vue"
 
 import BaseCard from "/@/components/BaseCard.vue"
 import BaseSearch from "/@/components/BaseSearch.vue"
 import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 
 import { useAuthStore } from "/@/store/auth-store"
+
+import {
+  FIELD_TYPE_MAP,
+  SCENE_MAP,
+  SYSTEM_FIELD_NAME_MAP,
+} from "/@/utils/table-constants"
 
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
 import {
@@ -35,21 +41,44 @@ const columns: DataTableColumns<ICustomField> = [
     title: i18n.t("custom_field.field_name"),
     key: "name",
     align: "center",
+    render(rowData) {
+      return h("span", null, {
+        default: () =>
+          rowData.system
+            ? i18n.t(systemNameMap.value[rowData.name])
+            : rowData.name,
+      })
+    },
   },
   {
     title: i18n.t("custom_field.scene"),
     key: "scene",
     align: "center",
+    render(rowData) {
+      return h("span", null, {
+        default: () => i18n.t(sceneMap.value[rowData.scene]),
+      })
+    },
   },
   {
     title: i18n.t("custom_field.field_type"),
     key: "type",
     align: "center",
+    render(rowData) {
+      return h("span", null, {
+        default: () => i18n.t(fieldTypeMap.value[rowData.type]),
+      })
+    },
   },
   {
     title: i18n.t("custom_field.system_field"),
     key: "system",
     align: "center",
+    render(rowData) {
+      return h("span", null, {
+        default: () => i18n.t(rowData.system ? "commons.yes" : "commons.no"),
+      })
+    },
   },
   {
     title: i18n.t("custom_field.field_remark"),
@@ -72,8 +101,6 @@ const columns: DataTableColumns<ICustomField> = [
       return h(
         GaTableOperation,
         {
-          type: "default",
-
           onEditClick: () => handleEdit(rowData),
         },
         {},
@@ -81,6 +108,15 @@ const columns: DataTableColumns<ICustomField> = [
     },
   },
 ]
+const fieldTypeMap = computed(() => {
+  return FIELD_TYPE_MAP
+})
+const sceneMap = computed(() => {
+  return SCENE_MAP
+})
+const systemNameMap = computed(() => {
+  return SYSTEM_FIELD_NAME_MAP
+})
 const { loading, send: loadTableData } = useRequest(
   (val) => getCustomFieldPages(val),
   {
@@ -92,7 +128,11 @@ const handleEdit = (rowData: ICustomField) => {
 }
 onMounted(() => {
   condition.value.projectId = useAuthStore().project_id
-  loadTableData(condition.value).then((res) => console.log(`output->res`, res))
+  loadTableData(condition.value).then((res) => {
+    const { records, totalRow } = res
+    tableInfo.value.data = records
+    tableInfo.value.total = totalRow
+  })
 })
 </script>
 <template>
