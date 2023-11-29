@@ -1,10 +1,11 @@
 import alovaInst from ".."
 import { IPage, PageReq } from "../interface"
+import { SelectOption } from "naive-ui"
 
-export interface ICustomFieldOption {
+export interface ICustomFieldOption extends SelectOption {
   label: string
   value: string
-  system: boolean
+  system?: boolean
 }
 export interface ICustomField {
   id: string | undefined
@@ -14,7 +15,8 @@ export interface ICustomField {
   remark: string
   system: boolean
   global: boolean
-  options?: ICustomFieldOption[]
+  projectId: string
+  options?: ICustomFieldOption[] | string
 }
 /**
  * 列表数据查询
@@ -23,3 +25,6 @@ export interface ICustomField {
  */
 export const getCustomFieldPages = (param: PageReq) =>
   alovaInst.Post<IPage<Array<ICustomField>>>(`/custom/field/page`, param)
+
+export const saveCustomField = (param: ICustomField) => alovaInst.Post<string>(`/custom/field/save`, param)
+export const updateCustomField = (param: ICustomField) => alovaInst.Put<string>(`/custom/field/update`, param)

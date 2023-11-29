@@ -60,14 +60,14 @@ public class CustomFieldServiceImpl extends ServiceImpl<CustomFieldMapper, Custo
     @Override
     public Page<CustomField> queryPage(QueryCustomFieldRequest request) {
         QueryWrapper wrapper = buildWrapper(request);
-        return mapper.paginate(request, wrapper);
+        return mapper.paginate(request.getPageNumber(),request.getPageSize(), wrapper);
     }
 
     private static QueryWrapper buildWrapper(QueryCustomFieldRequest request) {
         QueryWrapper wrapper = QueryChain.create().from(CUSTOM_FIELD.as("cf"))
                 .where(CUSTOM_FIELD.NAME.like(request.getName()))
                 .and(CUSTOM_FIELD.WORKSPACE_ID.eq(request.getWorkspaceId()).or(
-                        CUSTOM_FIELD.GLOBAL.eq(1)
+                        CUSTOM_FIELD.GLOBAL.eq(true)
                                 .and(notExists(
                                         select(CUSTOM_FIELD.ID).from(CUSTOM_FIELD.as("cf_child"))
                                                 .where("cf_child.name = cf.name")
@@ -77,7 +77,7 @@ public class CustomFieldServiceImpl extends ServiceImpl<CustomFieldMapper, Custo
                                 ))
                 ).when(Objects.nonNull(request.getWorkspaceId())))
                 .and(CUSTOM_FIELD.PROJECT_ID.eq(request.getProjectId())
-                        .or(CUSTOM_FIELD.GLOBAL.eq(1)
+                        .or(CUSTOM_FIELD.GLOBAL.eq(true)
                                 .and(
                                         notExists(
                                                 select(CUSTOM_FIELD.ID).from(CUSTOM_FIELD.as("cf_child"))
