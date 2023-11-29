@@ -1,3 +1,6 @@
+import { i18n } from "../i18n"
+import { SelectOption } from "naive-ui"
+
 export const USER_GROUP_SCOPE: { [key: string]: string } = {
   SYSTEM: "group.system",
   WORKSPACE: "group.workspace",
@@ -5,37 +8,48 @@ export const USER_GROUP_SCOPE: { [key: string]: string } = {
   PERSONAL: "group.personal",
 }
 
-export const CUSTOM_FIELD_TYPE_OPTION: Array<{
-  label: string
-  value: string
-  hasOption?: boolean
-}> = [
-  { value: "input", label: "workspace.custom_filed.input" },
-  { value: "textarea", label: "workspace.custom_filed.textarea" },
-  { value: "select", label: "workspace.custom_filed.select", hasOption: true },
+export const CUSTOM_FIELD_TYPE_OPTION: Array<SelectOption> = [
+  { value: "input", label: i18n.t("workspace.custom_filed.input") },
+  { value: "textarea", label: i18n.t("workspace.custom_filed.textarea") },
+  {
+    value: "select",
+    label: i18n.t("workspace.custom_filed.select"),
+    hasOption: true,
+  },
   {
     value: "multipleSelect",
-    label: "workspace.custom_filed.multipleSelect",
+    label: i18n.t("workspace.custom_filed.multipleSelect"),
     hasOption: true,
   },
-  { value: "radio", label: "workspace.custom_filed.radio", hasOption: true },
+  {
+    value: "radio",
+    label: i18n.t("workspace.custom_filed.radio"),
+    hasOption: true,
+  },
   {
     value: "checkbox",
-    label: "workspace.custom_filed.checkbox",
+    label: i18n.t("workspace.custom_filed.checkbox"),
     hasOption: true,
   },
-  { value: "member", label: "workspace.custom_filed.member", hasOption: true },
+  {
+    value: "member",
+    label: i18n.t("workspace.custom_filed.member"),
+    hasOption: true,
+  },
   {
     value: "multipleMember",
-    label: "workspace.custom_filed.multipleMember",
+    label: i18n.t("workspace.custom_filed.multipleMember"),
     hasOption: true,
   },
-  { value: "date", label: "workspace.custom_filed.date" },
-  { value: "datetime", label: "workspace.custom_filed.datetime" },
-  { value: "richText", label: "workspace.custom_filed.richText" },
-  { value: "int", label: "workspace.custom_filed.int" },
-  { value: "float", label: "workspace.custom_filed.float" },
-  { value: "multipleInput", label: "workspace.custom_filed.multipleInput" },
+  { value: "date", label: i18n.t("workspace.custom_filed.date") },
+  { value: "datetime", label: i18n.t("workspace.custom_filed.datetime") },
+  { value: "richText", label: i18n.t("workspace.custom_filed.richText") },
+  { value: "int", label: i18n.t("workspace.custom_filed.int") },
+  { value: "float", label: i18n.t("workspace.custom_filed.float") },
+  {
+    value: "multipleInput",
+    label: i18n.t("workspace.custom_filed.multipleInput"),
+  },
 ]
 
 export const FIELD_TYPE_MAP: { [key: string]: string } = {
