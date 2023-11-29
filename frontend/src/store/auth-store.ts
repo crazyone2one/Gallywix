@@ -9,7 +9,7 @@ export const useAuthStore = defineStore(
     const refreshToken = ref<string>("")
     const userId = ref<string | null>()
     const workspace_id = ref<string | undefined>()
-    const project_id = ref<string | null>()
+    const project_id = ref<string | undefined>()
     const roles = ref<Array<string>>([])
     const userInfo = ref()
     /**
