@@ -4,11 +4,7 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:vue/vue3-recommended",
-  ],
+  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:vue/vue3-recommended"],
   overrides: [
     {
       env: {
@@ -40,10 +36,10 @@ module.exports = {
       "error",
       {
         singleline: {
-          max: 4,
+          max: 7,
         },
         multiline: {
-          max: 1,
+          max: 2,
         },
       },
     ],
