@@ -29,7 +29,7 @@ public interface ISystemUserService extends IService<SystemUser> {
 
     void delOrganizationMember(String organizationId, String userId);
 
-    void switchUserRole(String sign, String sourceId);
+    void switchUserResource(String sign, String sourceId);
 
     Map<String, SystemUser> queryNameByIds(List<String> userIds);
 

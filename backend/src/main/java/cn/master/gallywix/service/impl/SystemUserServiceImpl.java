@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 import static cn.master.gallywix.entity.table.SystemGroupTableDef.SYSTEM_GROUP;
+import static cn.master.gallywix.entity.table.SystemProjectTableDef.SYSTEM_PROJECT;
 import static cn.master.gallywix.entity.table.SystemUserTableDef.SYSTEM_USER;
 import static cn.master.gallywix.entity.table.UserGroupPermissionTableDef.USER_GROUP_PERMISSION;
 import static cn.master.gallywix.entity.table.UserGroupTableDef.USER_GROUP;
@@ -46,6 +47,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     private final UserGroupMapper userGroupMapper;
     private final SystemGroupMapper systemGroupMapper;
     private final UserGroupPermissionMapper userGroupPermissionMapper;
+    final SystemProjectMapper projectMapper;
     @Lazy
     final PasswordEncoder passwordEncoder;
 
@@ -87,18 +89,37 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void switchUserRole(String sign, String sourceId) {
+    public void switchUserResource(String sign, String sourceId) {
         SystemUser user = SessionUtils.sessionUserInfo();
         if (StringUtils.equals("organization", sign)) {
             user.setLastProjectId(sourceId);
             user.setLastWorkspaceId("");
         }
         if (StringUtils.equals("workspace", sign)) {
-            SystemWorkspace workspace = workspaceMapper.selectOneById(sourceId);
-            user.setLastProjectId(workspace.getOrganizationId());
+            user.setLastProjectId(StringUtils.EMPTY);
             user.setLastWorkspaceId(sourceId);
+            List<SystemProject> projects = getProjectListByWsAndUserId(user.getId(), sourceId);
+            if (CollectionUtils.isNotEmpty(projects)) {
+                user.setLastProjectId(projects.get(0).getId());
+            }
         }
         mapper.update(user);
+    }
+
+    private List<SystemProject> getProjectListByWsAndUserId(String userId, String workspaceId) {
+        List<SystemProject> projects = projectMapper.selectListByQuery(QueryChain.of(SystemProject.class)
+                .where(SYSTEM_PROJECT.WORKSPACE_ID.eq(workspaceId)));
+        List<UserGroup> userGroups = userGroupMapper.selectListByQuery(QueryChain.of(UserGroup.class)
+                .where(USER_GROUP.USER_ID.eq(userId)));
+        List<SystemProject> projectList = new ArrayList<>();
+        userGroups.forEach(userGroup -> projects.forEach(project -> {
+            if (StringUtils.equals(userGroup.getSourceId(), project.getId())) {
+                if (!projectList.contains(project)) {
+                    projectList.add(project);
+                }
+            }
+        }));
+        return projectList;
     }
 
     @Override
@@ -197,6 +218,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         userDTO.setGroupPermissions(dto.getList());
         return userDTO;
     }
+
     private UserGroupPermissionDTO getUserGroupPermission(String id) {
         UserGroupPermissionDTO permissionDTO = new UserGroupPermissionDTO();
         List<GroupResourceDTO> list = new ArrayList<>();
@@ -208,7 +230,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         List<String> groupList = userGroups.stream().map(UserGroup::getGroupId).toList();
         List<SystemGroup> groups = systemGroupMapper.selectListByQuery(QueryChain.of(SystemGroup.class).where(SYSTEM_GROUP.CODE.in(groupList)));
         permissionDTO.setGroups(groups);
-        groups.forEach(gp->{
+        groups.forEach(gp -> {
             GroupResourceDTO dto = new GroupResourceDTO();
             dto.setGroup(gp);
             List<UserGroupPermission> userGroupPermissions = userGroupPermissionMapper
@@ -219,6 +241,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         permissionDTO.setList(list);
         return permissionDTO;
     }
+
     public void createUser(SystemUser user) {
 //        user.setStatus(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));

@@ -105,9 +105,9 @@ public class SystemUserController {
         iSystemUserService.delOrganizationMember(organizationId, userId);
     }
 
-    @PostMapping("/switch/source/{sign}/{sourceId}")
+    @GetMapping("/switch/source/{sign}/{sourceId}")
     public ResponseResult<SystemUser> switchUserRole(@PathVariable String sign, @PathVariable(value = "sourceId") String sourceId) {
-        iSystemUserService.switchUserRole(sign, sourceId);
+        iSystemUserService.switchUserResource(sign, sourceId);
         return ResponseResult.success(SessionUtils.sessionUserInfo());
     }
 

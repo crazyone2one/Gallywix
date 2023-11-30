@@ -9,6 +9,7 @@ export const useAuthStore = defineStore(
     const refreshToken = ref<string>("")
     const userId = ref<string | null>()
     const workspace_id = ref<string | undefined>()
+    const workspace_name = ref<string>()
     const project_id = ref<string | undefined>()
     const roles = ref<Array<string>>([])
     const userInfo = ref()
@@ -23,6 +24,7 @@ export const useAuthStore = defineStore(
       userInfo.value = {}
       workspace_id.value = undefined
       project_id.value = undefined
+      workspace_name.value = ""
     }
     const saveSessionStorage = () => {
       const currentProjectId = project_id.value
@@ -43,6 +45,7 @@ export const useAuthStore = defineStore(
       saveSessionStorage,
       project_id,
       workspace_id,
+      workspace_name,
     }
   },
   { persist: true },
