@@ -93,7 +93,7 @@ public class SystemProjectController {
      */
     @PostMapping("page")
 //    @PreAuthorize("hasAnyAuthority('ADMIN1','project_query')")
-    public ResponseResult<Page<SystemProject>> page(ProjectPageReqVO page) {
+    public ResponseResult<Page<SystemProject>> page(@RequestBody ProjectPageReqVO page) {
         return ResponseResult.success(iSystemProjectService.getProjectPageList(page));
     }
 }

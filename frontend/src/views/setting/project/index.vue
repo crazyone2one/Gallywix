@@ -68,6 +68,7 @@ const condition = ref<PageReq>({
   ids: [],
   pageNumber: 1,
   pageSize: 10,
+  workspaceId: "",
 })
 const tableInfo = ref<ITableDataInfo<IProject[]>>({
   data: [],
@@ -93,12 +94,9 @@ const handleEdit = (rowData: IProject) => {
   projectEdit.value?.open(rowData)
 }
 
-const { send: deleteProject, onSuccess: deleteSuccess } = useRequest(
-  (wsId) => deleteData(wsId),
-  {
-    immediate: false,
-  },
-)
+const { send: deleteProject, onSuccess: deleteSuccess } = useRequest((wsId) => deleteData(wsId), {
+  immediate: false,
+})
 const handleDelete = (rowData: IProject) => {
   deleteConfirm.value?.open(rowData)
 }
@@ -119,6 +117,7 @@ deleteSuccess(() => {
   // todo 删除项目后更新用户信息，若删除的是当前用户的项目，则更新当前用户的lastproject 为空
 })
 onMounted(() => {
+  condition.value.workspaceId = useAuthStore().workspace_id
   send()
   if (route.path.split("/")[2] === "create") {
     projectEdit.value?.open()
@@ -137,11 +136,7 @@ onMounted(() => {
     </template>
     <template #content>
       <n-skeleton v-if="loading" :sharp="false" height="550px" />
-      <n-data-table
-        v-else
-        :columns="columns"
-        :data="tableInfo.data"
-        :row-key="rowKey" />
+      <n-data-table v-else :columns="columns" :data="tableInfo.data" :row-key="rowKey" />
     </template>
   </base-card>
   <project-edit ref="projectEdit" @refresh="send()" />
