@@ -2,6 +2,7 @@ package cn.master.gallywix.service.impl;
 
 import cn.master.gallywix.common.constants.TemplateConstants;
 import cn.master.gallywix.common.exception.CustomException;
+import cn.master.gallywix.controller.vo.BaseQueryVO;
 import cn.master.gallywix.controller.vo.template.UpdateCaseFieldTemplateRequest;
 import cn.master.gallywix.dto.CustomFieldDao;
 import cn.master.gallywix.entity.CustomFieldTemplate;
@@ -11,7 +12,9 @@ import cn.master.gallywix.service.ICustomFieldTemplateService;
 import cn.master.gallywix.service.ISystemProjectService;
 import cn.master.gallywix.service.ITestCaseTemplateService;
 import cn.master.gallywix.utils.SessionUtils;
+import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryChain;
+import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
@@ -25,6 +28,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static cn.master.gallywix.entity.table.TestCaseTemplateTableDef.TEST_CASE_TEMPLATE;
+import static com.mybatisflex.core.query.QueryMethods.notExists;
+import static com.mybatisflex.core.query.QueryMethods.select;
 
 /**
  * 服务层实现。
@@ -111,6 +116,27 @@ public class TestCaseTemplateServiceImpl extends ServiceImpl<TestCaseTemplateMap
             customFieldTemplateService.create(request.getCustomFields(), template.getId(),
                     TemplateConstants.FieldTemplateScene.TEST_CASE.name());
         }
+    }
+
+    @Override
+    public Page<TestCaseTemplate> queryPage(BaseQueryVO<TestCaseTemplate> page) {
+        QueryWrapper wrapper = QueryChain.create().from(TEST_CASE_TEMPLATE.as("tcft"))
+                .where(TEST_CASE_TEMPLATE.NAME.like(page.getName()))
+                .and(TEST_CASE_TEMPLATE.PROJECT_ID.eq(page.getProjectId())
+                        .or(
+                                TEST_CASE_TEMPLATE.GLOBAL.eq(true)
+                                        .and(notExists(select(TEST_CASE_TEMPLATE.ID).from(TEST_CASE_TEMPLATE.as("tcft_child"))
+                                                .where(" tcft_child.name = tcft.name")
+                                                .and("tcft_child.global != 1")
+                                                .and("tcft_child.project_id='" + page.getProjectId() + "'")))).when(Objects.nonNull(page.getProjectId())))
+                .and(TEST_CASE_TEMPLATE.WORKSPACE_ID.eq(page.getWorkspaceId())
+                        .or(
+                                TEST_CASE_TEMPLATE.GLOBAL.eq(true)
+                                        .and(notExists(select(TEST_CASE_TEMPLATE.ID).from(TEST_CASE_TEMPLATE.as("tcft_child"))
+                                                .where(" tcft_child.name = tcft.name")
+                                                .and("tcft_child.global != 1")
+                                                .and("tcft_child.workspace_id='" + page.getWorkspaceId() + "'")))).when(Objects.nonNull(page.getWorkspaceId())));
+        return mapper.paginate(page.getPageNumber(), page.getPageSize(), wrapper);
     }
 
     private void checkExist(TestCaseTemplate testCaseTemplate) {

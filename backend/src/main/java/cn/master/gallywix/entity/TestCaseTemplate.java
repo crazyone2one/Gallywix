@@ -96,6 +96,8 @@ public class TestCaseTemplate implements Serializable {
 
     private String projectId;
 
+    private String workspaceId;
+
     /**
      * Step model
      */

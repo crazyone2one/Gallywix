@@ -1,5 +1,6 @@
 package cn.master.gallywix.controller;
 
+import cn.master.gallywix.controller.vo.BaseQueryVO;
 import cn.master.gallywix.controller.vo.template.UpdateCaseFieldTemplateRequest;
 import cn.master.gallywix.entity.TestCaseTemplate;
 import cn.master.gallywix.service.ITestCaseTemplateService;
@@ -82,9 +83,9 @@ public class TestCaseTemplateController {
      * @param page 分页对象
      * @return 分页对象
      */
-    @GetMapping("page")
-    public Page<TestCaseTemplate> page(Page<TestCaseTemplate> page) {
-        return iTestCaseTemplateService.page(page);
+    @PostMapping("page")
+    public Page<TestCaseTemplate> page(@RequestBody BaseQueryVO<TestCaseTemplate> page) {
+        return iTestCaseTemplateService.queryPage(page);
     }
 
 }

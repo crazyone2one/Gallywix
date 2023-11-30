@@ -1,7 +1,9 @@
 package cn.master.gallywix.service;
 
+import cn.master.gallywix.controller.vo.BaseQueryVO;
 import cn.master.gallywix.controller.vo.template.UpdateCaseFieldTemplateRequest;
 import cn.master.gallywix.dto.CustomFieldDao;
+import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
 import cn.master.gallywix.entity.TestCaseTemplate;
 
@@ -18,4 +20,6 @@ public interface ITestCaseTemplateService extends IService<TestCaseTemplate> {
     String add(UpdateCaseFieldTemplateRequest request);
 
     void update(UpdateCaseFieldTemplateRequest testCaseTemplate);
+
+    Page<TestCaseTemplate> queryPage(BaseQueryVO<TestCaseTemplate> page);
 }

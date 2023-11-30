@@ -1,6 +1,6 @@
 import alovaInst from ".."
+import { IPage, PageReq } from "../interface"
 import { ICustomFieldTemp } from "./template"
-// import { IPage, PageReq } from "../interface"
 export interface ITestCaseStep {
   num: number
   desc: string
@@ -30,6 +30,8 @@ export interface ITestCaseTemplate {
  * @param param 查询参数
  * @returns
  */
+export const getCaseFieldTemplatePages = (param: PageReq) =>
+  alovaInst.Post<IPage<Array<ITestCaseTemplate>>>(`/field/template/case/page`, param)
 export const handleResourceSave = (param: ITestCaseTemplate) =>
   alovaInst.Post<string>(`/field/template/case/save`, param)
 export const handleResourceUpdate = (param: ITestCaseTemplate) =>
