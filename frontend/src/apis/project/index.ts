@@ -50,3 +50,5 @@ export const updateData = (param: IProject) => alovaInstance.Put(`/system/projec
  * @returns
  */
 export const deleteData = (param: string) => alovaInstance.Delete(`/system/project/remove/${param}`)
+
+export const getProject = (projectId: string) => alovaInstance.Get<IProject>(`/system/project/getInfo/${projectId}`)
