@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue"
-import { useRoute } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 
 import { useAuthStore } from "../store/auth-store"
 
@@ -14,6 +14,7 @@ const route = useRoute()
 const store = useAuthStore()
 const value = ref("")
 const currentProject = ref("")
+const router = useRouter()
 const items = ref<Array<SelectOption>>([])
 const searchArray = ref<Array<SelectOption>>()
 const userId = computed(() => {
@@ -48,10 +49,7 @@ const init = () => {
         change(route.params.projectId)
       }
       // 保存的 projectId 在当前项目列表是否存在; 切换工作空间后
-      if (
-        searchArray.value.length > 0 &&
-        searchArray.value.map((p) => p.value).indexOf(projectId) === -1
-      ) {
+      if (searchArray.value.length > 0 && searchArray.value.map((p) => p.value).indexOf(projectId) === -1) {
         change(items.value[0].value as string)
       }
     } else {
@@ -82,6 +80,12 @@ const changeProjectName = (projectId: string) => {
     currentProject.value = i18n.t("project.select")
   }
 }
+const handleCreateProject = () => {
+  router.push({ path: "/project/create" })
+}
+const handleAllProject = () => {
+  router.push({ path: "/project/:type" })
+}
 onMounted(() => {
   init()
 })
@@ -90,9 +94,7 @@ onMounted(() => {
   <n-popselect v-model:value="value" :options="items" trigger="click">
     <n-tooltip trigger="hover">
       <template #trigger>
-        <span class="project-name">
-          {{ $t("commons.project") }}: {{ currentProject }}
-        </span>
+        <span class="project-name"> {{ $t("commons.project") }}: {{ currentProject }} </span>
       </template>
       {{ currentProject }}
     </n-tooltip>
@@ -101,13 +103,9 @@ onMounted(() => {
     </template>
     <template #action>
       <n-space vertical class="ml-2">
-        <n-input
-          v-model:value="value"
-          type="text"
-          :placeholder="$t('project.search_by_name')"
-          size="small" />
+        <n-input v-model:value="value" type="text" :placeholder="$t('project.search_by_name')" size="small" />
         <n-space>
-          <n-button size="tiny" disabled>
+          <n-button v-permissions="['WORKSPACE_PROJECT_MANAGER:READ+CREATE']" size="tiny" @click="handleCreateProject">
             <template #icon>
               <n-icon>
                 <span class="i-tabler:plus" />
@@ -115,7 +113,7 @@ onMounted(() => {
             </template>
             {{ $t("project.create") }}
           </n-button>
-          <n-button size="tiny" disabled>
+          <n-button v-permissions="['WORKSPACE_PROJECT_MANAGER:READ']" size="tiny" @click="handleAllProject">
             <template #icon>
               <n-icon>
                 <span class="i-tabler:list" />

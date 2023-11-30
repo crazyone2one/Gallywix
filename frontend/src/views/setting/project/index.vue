@@ -119,8 +119,11 @@ deleteSuccess(() => {
 onMounted(() => {
   condition.value.workspaceId = useAuthStore().workspace_id
   send()
-  if (route.path.split("/")[2] === "create") {
+  const tmpPath = route.path.split("/")[2]
+  if (tmpPath === "create") {
     projectEdit.value?.open()
+    router.push("/project/list")
+  } else {
     router.push("/project/list")
   }
 })

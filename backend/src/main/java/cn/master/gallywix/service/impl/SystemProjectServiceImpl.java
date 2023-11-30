@@ -28,9 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static cn.master.gallywix.entity.table.SystemGroupTableDef.SYSTEM_GROUP;
 import static cn.master.gallywix.entity.table.SystemProjectTableDef.SYSTEM_PROJECT;
 import static cn.master.gallywix.entity.table.SystemUserTableDef.SYSTEM_USER;
 import static cn.master.gallywix.entity.table.UserGroupTableDef.USER_GROUP;
+import static com.mybatisflex.core.query.QueryMethods.distinct;
 
 /**
  * 项目信息 服务层实现。
@@ -136,8 +138,14 @@ public class SystemProjectServiceImpl extends ServiceImpl<SystemProjectMapper, S
                     .where(SYSTEM_PROJECT.WORKSPACE_ID.eq(request.getWorkspaceId()))
                     .orderBy(SYSTEM_PROJECT.UPDATE_TIME, false));
         }
-        return mapper.selectListByQuery(QueryChain.create()
-                .where(SYSTEM_PROJECT.NAME.like(request.getName()))
+        return mapper.selectListByQuery(QueryChain.create().select(distinct(SYSTEM_PROJECT.ALL_COLUMNS))
+                .from(SYSTEM_GROUP)
+                .join(USER_GROUP).on(USER_GROUP.GROUP_ID.eq(SYSTEM_GROUP.CODE))
+                .join(SYSTEM_PROJECT).on(USER_GROUP.SOURCE_ID.eq(SYSTEM_PROJECT.ID))
+                .where(SYSTEM_GROUP.TYPE.eq("PROJECT")
+                        .and(USER_GROUP.USER_ID.eq(request.getUserId()))
+                        .and(SYSTEM_PROJECT.NAME.like(request.getName()))
+                        .and(SYSTEM_PROJECT.WORKSPACE_ID.eq(request.getWorkspaceId())))
                 .orderBy(SYSTEM_PROJECT.UPDATE_TIME, false));
     }
 
