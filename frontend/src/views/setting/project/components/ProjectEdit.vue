@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue"
 
+import TemplateSelect from "./TemplateSelect.vue"
 import ModalDialog from "/@/components/ModalDialog.vue"
 import { useForm } from "@alova/scene-vue"
 
@@ -92,6 +93,13 @@ defineExpose({ open })
         </n-form-item>
         <n-form-item :label="$t('commons.description')" path="description">
           <n-input v-model:value="formData.description" type="textarea" />
+        </n-form-item>
+        <n-form-item :label="$t('workspace.case_template_manage')" path="caseTemplateId">
+          <template-select
+            :project-id="formData.id as string"
+            scene="API_CASE"
+            :data="formData"
+            prop="caseTemplateId" />
         </n-form-item>
       </n-form>
     </template>

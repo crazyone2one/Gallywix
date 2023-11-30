@@ -7,8 +7,10 @@ import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
 import cn.master.gallywix.entity.TestCaseTemplate;
 
+import java.util.List;
+
 /**
- *  服务层。
+ * 服务层。
  *
  * @author 11's papa
  * @since 1.0.0
@@ -22,4 +24,8 @@ public interface ITestCaseTemplateService extends IService<TestCaseTemplate> {
     void update(UpdateCaseFieldTemplateRequest testCaseTemplate);
 
     Page<TestCaseTemplate> queryPage(BaseQueryVO<TestCaseTemplate> page);
+
+    List<TestCaseTemplate> getOption(String projectId);
+
+    TestCaseTemplate getDefaultTemplate(String projectId);
 }

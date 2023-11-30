@@ -36,3 +36,8 @@ export const handleResourceSave = (param: ITestCaseTemplate) =>
   alovaInst.Post<string>(`/field/template/case/save`, param)
 export const handleResourceUpdate = (param: ITestCaseTemplate) =>
   alovaInst.Put<string>(`/field/template/case/update`, param)
+
+export const getFieldTemplateCaseOption = (projectId?: string) =>
+  alovaInst.Get<Array<ITestCaseTemplate>>(
+    projectId ? `/field/template/case/option/${projectId}` : `/field/template/case/option`,
+  )

@@ -24,6 +24,7 @@ const form = ref({
     },
   ],
   type: "functional",
+  system: true,
 } as ITestCaseTemplate)
 const handleUpdateShowDialog = (value: boolean) => {
   showDialog.value = value

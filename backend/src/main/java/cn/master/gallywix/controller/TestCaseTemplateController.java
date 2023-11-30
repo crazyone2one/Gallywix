@@ -65,7 +65,10 @@ public class TestCaseTemplateController {
     public List<TestCaseTemplate> list() {
         return iTestCaseTemplateService.list();
     }
-
+    @GetMapping({"/option/{projectId}", "/option"})
+    public List<TestCaseTemplate> getFieldTemplateOption(@PathVariable(required = false) String projectId) {
+        return iTestCaseTemplateService.getOption(projectId);
+    }
     /**
      * 根据主键获取详细信息。
      *

@@ -18,6 +18,7 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -137,6 +138,32 @@ public class TestCaseTemplateServiceImpl extends ServiceImpl<TestCaseTemplateMap
                                                 .and("tcft_child.global != 1")
                                                 .and("tcft_child.workspace_id='" + page.getWorkspaceId() + "'")))).when(Objects.nonNull(page.getWorkspaceId())));
         return mapper.paginate(page.getPageNumber(), page.getPageSize(), wrapper);
+    }
+
+    @Override
+    public List<TestCaseTemplate> getOption(String projectId) {
+        List<TestCaseTemplate> testCaseTemplates;
+        QueryWrapper wrapper = QueryChain.create();
+        if (StringUtils.isBlank(projectId)) {
+            wrapper.where(TEST_CASE_TEMPLATE.GLOBAL.eq(true).and(TEST_CASE_TEMPLATE.SYSTEM.eq(true)));
+            return mapper.selectListByQuery(wrapper);
+        }
+        wrapper.where(TEST_CASE_TEMPLATE.PROJECT_ID.eq(projectId).and(TEST_CASE_TEMPLATE.SYSTEM.ne(true)));
+        testCaseTemplates = mapper.selectListByQuery(wrapper);
+        testCaseTemplates.add(getDefaultTemplate(projectId));
+        return testCaseTemplates;
+    }
+
+    @Override
+    public TestCaseTemplate getDefaultTemplate(String projectId) {
+        List<TestCaseTemplate> testCaseTemplates = QueryChain.of(TestCaseTemplate.class)
+                .where(TEST_CASE_TEMPLATE.PROJECT_ID.eq(projectId)
+                        .and(TEST_CASE_TEMPLATE.SYSTEM.eq(true))).list();
+        if (CollectionUtils.isNotEmpty(testCaseTemplates)) {
+            return testCaseTemplates.get(0);
+        } else {
+            return QueryChain.of(TestCaseTemplate.class).where(TEST_CASE_TEMPLATE.GLOBAL.eq(true)).list().get(0);
+        }
     }
 
     private void checkExist(TestCaseTemplate testCaseTemplate) {
