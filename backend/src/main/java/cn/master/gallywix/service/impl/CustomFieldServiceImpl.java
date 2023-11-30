@@ -60,7 +60,7 @@ public class CustomFieldServiceImpl extends ServiceImpl<CustomFieldMapper, Custo
     @Override
     public Page<CustomField> queryPage(QueryCustomFieldRequest request) {
         QueryWrapper wrapper = buildWrapper(request);
-        return mapper.paginate(request.getPageNumber(),request.getPageSize(), wrapper);
+        return mapper.paginate(request.getPageNumber(), request.getPageSize(), wrapper);
     }
 
     private static QueryWrapper buildWrapper(QueryCustomFieldRequest request) {
@@ -137,6 +137,27 @@ public class CustomFieldServiceImpl extends ServiceImpl<CustomFieldMapper, Custo
     @Override
     public List<String> listIds(QueryCustomFieldRequest request) {
         return null;
+    }
+
+    @Override
+    public List<CustomField> getDefaultField(QueryCustomFieldRequest request) {
+        List<CustomField> customFields = mapper.selectListByQuery(QueryWrapper.create()
+                .where(CUSTOM_FIELD.SYSTEM.eq(true))
+                .and(CUSTOM_FIELD.SCENE.eq(request.getScene()))
+                .and(CUSTOM_FIELD.PROJECT_ID.eq(request.getProjectId())));
+        List<String> fieldNames = customFields.stream().map(CustomField::getName).toList();
+        List<CustomField> globalFields = getGlobalField(request.getScene());
+        globalFields.forEach(item -> {
+            if (!fieldNames.contains(item.getName())) {
+                customFields.add(item);
+            }
+        });
+        return customFields;
+    }
+
+    private List<CustomField> getGlobalField(String scene) {
+        return mapper.selectListByQuery(QueryWrapper.create()
+                .where(CUSTOM_FIELD.GLOBAL.eq(true)).and(CUSTOM_FIELD.SCENE.eq(scene)));
     }
 
     private void checkExist(CustomField customField) {

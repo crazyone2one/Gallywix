@@ -24,4 +24,6 @@ public interface ICustomFieldService extends IService<CustomField> {
     List<CustomField> queryList(QueryCustomFieldRequest request);
 
     List<String> listIds(QueryCustomFieldRequest request);
+
+    List<CustomField> getDefaultField(QueryCustomFieldRequest request);
 }

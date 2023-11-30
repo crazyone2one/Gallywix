@@ -1,5 +1,6 @@
 package cn.master.gallywix.service;
 
+import cn.master.gallywix.controller.vo.template.UpdateCaseFieldTemplateRequest;
 import cn.master.gallywix.dto.CustomFieldDao;
 import com.mybatisflex.core.service.IService;
 import cn.master.gallywix.entity.TestCaseTemplate;
@@ -13,4 +14,8 @@ import cn.master.gallywix.entity.TestCaseTemplate;
 public interface ITestCaseTemplateService extends IService<TestCaseTemplate> {
 
     void handleSystemFieldCreate(CustomFieldDao customFieldDao);
+
+    String add(UpdateCaseFieldTemplateRequest request);
+
+    void update(UpdateCaseFieldTemplateRequest testCaseTemplate);
 }

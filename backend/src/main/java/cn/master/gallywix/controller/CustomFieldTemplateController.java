@@ -1,17 +1,12 @@
 package cn.master.gallywix.controller;
 
-import com.mybatisflex.core.paginate.Page;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.beans.factory.annotation.Autowired;
+import cn.master.gallywix.dto.CustomFieldTemplateDao;
 import cn.master.gallywix.entity.CustomFieldTemplate;
 import cn.master.gallywix.service.ICustomFieldTemplateService;
-import org.springframework.web.bind.annotation.RestController;
+import com.mybatisflex.core.paginate.Page;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -22,11 +17,10 @@ import java.util.List;
  * @since 1.0.0
  */
 @RestController
-@RequestMapping("/customFieldTemplate")
+@RequestMapping("/custom/field/template")
+@RequiredArgsConstructor
 public class CustomFieldTemplateController {
-
-    @Autowired
-    private ICustomFieldTemplateService iCustomFieldTemplateService;
+    private final ICustomFieldTemplateService iCustomFieldTemplateService;
 
     /**
      * 添加。
@@ -66,9 +60,9 @@ public class CustomFieldTemplateController {
      *
      * @return 所有数据
      */
-    @GetMapping("list")
-    public List<CustomFieldTemplate> list() {
-        return iCustomFieldTemplateService.list();
+    @PostMapping("list")
+    public List<CustomFieldTemplateDao> list(@RequestBody CustomFieldTemplate request) {
+        return iCustomFieldTemplateService.list(request);
     }
 
     /**

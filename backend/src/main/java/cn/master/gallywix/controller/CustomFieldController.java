@@ -92,5 +92,8 @@ public class CustomFieldController {
     public Page<CustomField> page(@RequestBody QueryCustomFieldRequest page) {
         return iCustomFieldService.queryPage(page);
     }
-
+    @PostMapping("/default")
+    public List<CustomField> getDefaultList(@RequestBody QueryCustomFieldRequest request) {
+        return iCustomFieldService.getDefaultField(request);
+    }
 }

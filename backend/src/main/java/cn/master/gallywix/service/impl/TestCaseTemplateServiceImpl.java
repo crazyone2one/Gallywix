@@ -1,6 +1,8 @@
 package cn.master.gallywix.service.impl;
 
 import cn.master.gallywix.common.constants.TemplateConstants;
+import cn.master.gallywix.common.exception.CustomException;
+import cn.master.gallywix.controller.vo.template.UpdateCaseFieldTemplateRequest;
 import cn.master.gallywix.dto.CustomFieldDao;
 import cn.master.gallywix.entity.CustomFieldTemplate;
 import cn.master.gallywix.entity.TestCaseTemplate;
@@ -8,6 +10,7 @@ import cn.master.gallywix.mapper.TestCaseTemplateMapper;
 import cn.master.gallywix.service.ICustomFieldTemplateService;
 import cn.master.gallywix.service.ISystemProjectService;
 import cn.master.gallywix.service.ITestCaseTemplateService;
+import cn.master.gallywix.utils.SessionUtils;
 import com.mybatisflex.core.query.QueryChain;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static cn.master.gallywix.entity.table.TestCaseTemplateTableDef.TEST_CASE_TEMPLATE;
@@ -68,6 +72,57 @@ public class TestCaseTemplateServiceImpl extends ServiceImpl<TestCaseTemplateMap
         if (CollectionUtils.isNotEmpty(projectTemplates)) {
             customFieldTemplateService.updateProjectTemplateGlobalField(customField,
                     projectTemplates.stream().map(TestCaseTemplate::getId).collect(Collectors.toList()));
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String add(UpdateCaseFieldTemplateRequest request) {
+        checkExist(request);
+        TestCaseTemplate template = new TestCaseTemplate();
+        BeanUtils.copyProperties(request, template);
+        template.setGlobal(false);
+        template.setUpdateUser(SessionUtils.getUserId());
+        template.setCreateUser(SessionUtils.getUserId());
+        if (Objects.isNull(template.getSystem())) {
+            template.setSystem(false);
+        }
+        mapper.insert(template);
+        customFieldTemplateService.create(request.getCustomFields(), template.getId(),
+                TemplateConstants.FieldTemplateScene.TEST_CASE.name());
+        return template.getId();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void update(UpdateCaseFieldTemplateRequest request) {
+        if (request.getGlobal() != null && request.getGlobal()) {
+            String originId = request.getId();
+            // 如果是全局字段，则创建对应工作空间字段
+            String id = add(request);
+            projectService.updateCaseTemplate(originId, id, request.getProjectId());
+        } else {
+            checkExist(request);
+            customFieldTemplateService.deleteByTemplateId(request.getId());
+            TestCaseTemplate template = new TestCaseTemplate();
+            BeanUtils.copyProperties(request, template);
+            template.setUpdateUser(SessionUtils.getUserId());
+            mapper.update(template);
+            customFieldTemplateService.create(request.getCustomFields(), template.getId(),
+                    TemplateConstants.FieldTemplateScene.TEST_CASE.name());
+        }
+    }
+
+    private void checkExist(TestCaseTemplate testCaseTemplate) {
+        if (Objects.nonNull(testCaseTemplate.getName())) {
+            boolean exists = QueryChain.of(TestCaseTemplate.class)
+                    .where(TEST_CASE_TEMPLATE.NAME.eq(testCaseTemplate.getName())
+                            .and(TEST_CASE_TEMPLATE.PROJECT_ID.eq(testCaseTemplate.getProjectId())))
+                    .where(TEST_CASE_TEMPLATE.ID.ne(testCaseTemplate.getId()))
+                    .exists();
+            if (exists) {
+                CustomException.throwException("工作空间下已存在该模板:" + testCaseTemplate.getName());
+            }
         }
     }
 }

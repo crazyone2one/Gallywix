@@ -1,6 +1,7 @@
 package cn.master.gallywix.service;
 
 import cn.master.gallywix.dto.CustomFieldDao;
+import cn.master.gallywix.dto.CustomFieldTemplateDao;
 import cn.master.gallywix.entity.CustomFieldTemplate;
 import com.mybatisflex.core.service.IService;
 
@@ -19,4 +20,8 @@ public interface ICustomFieldTemplateService extends IService<CustomFieldTemplat
     void create(List<CustomFieldTemplate> customFieldTemplate, String id, String name);
 
     int updateProjectTemplateGlobalField(CustomFieldDao customField, List<String> collect);
+
+    void deleteByTemplateId(String templateId);
+
+    List<CustomFieldTemplateDao> list(CustomFieldTemplate request);
 }

@@ -1,6 +1,7 @@
 package cn.master.gallywix.service.impl;
 
 import cn.master.gallywix.dto.CustomFieldDao;
+import cn.master.gallywix.dto.CustomFieldTemplateDao;
 import cn.master.gallywix.entity.CustomFieldTemplate;
 import cn.master.gallywix.mapper.CustomFieldTemplateMapper;
 import cn.master.gallywix.service.ICustomFieldTemplateService;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static cn.master.gallywix.entity.table.CustomFieldTableDef.CUSTOM_FIELD;
 import static cn.master.gallywix.entity.table.CustomFieldTemplateTableDef.CUSTOM_FIELD_TEMPLATE;
 
 /**
@@ -70,5 +72,26 @@ public class CustomFieldTemplateServiceImpl extends ServiceImpl<CustomFieldTempl
         return mapper.updateByQuery(customFieldTemplate, QueryWrapper.create()
                 .where(CUSTOM_FIELD_TEMPLATE.FIELD_ID.eq(customField.getOriginGlobalId()))
                 .and(CUSTOM_FIELD_TEMPLATE.TEMPLATE_ID.in(templateIds)));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteByTemplateId(String templateId) {
+        mapper.deleteByQuery(QueryChain.of(CustomFieldTemplate.class).where(CUSTOM_FIELD_TEMPLATE.TEMPLATE_ID.eq(templateId)));
+    }
+
+    @Override
+    public List<CustomFieldTemplateDao> list(CustomFieldTemplate request) {
+        QueryChain<CustomFieldTemplate> queryChain = QueryChain.of(CustomFieldTemplate.class)
+                .select(CUSTOM_FIELD_TEMPLATE.FIELD_ID, CUSTOM_FIELD_TEMPLATE.TEMPLATE_ID, CUSTOM_FIELD_TEMPLATE.REQUIRED,
+                        CUSTOM_FIELD_TEMPLATE.DEFAULT_VALUE, CUSTOM_FIELD_TEMPLATE.CUSTOM_DATA,
+                        CUSTOM_FIELD_TEMPLATE.ID.as("id"),
+                        CUSTOM_FIELD.NAME.as("name"),CUSTOM_FIELD.TYPE.as("type"),CUSTOM_FIELD.REMARK.as("remark"),
+                        CUSTOM_FIELD.SYSTEM.as("system"),CUSTOM_FIELD.OPTIONS.as("options"))
+                .from(CUSTOM_FIELD_TEMPLATE.as("cft"))
+                .innerJoin(CUSTOM_FIELD.as("cf").getClass()).on(CUSTOM_FIELD_TEMPLATE.FIELD_ID.eq(CUSTOM_FIELD.ID))
+                .where(CUSTOM_FIELD_TEMPLATE.TEMPLATE_ID.eq(request.getTemplateId()))
+                .orderBy(CUSTOM_FIELD_TEMPLATE.ORDER.asc());
+        return mapper.selectListByQueryAs(queryChain, CustomFieldTemplateDao.class);
     }
 }

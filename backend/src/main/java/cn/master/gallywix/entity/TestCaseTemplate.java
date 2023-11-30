@@ -5,6 +5,7 @@ import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+import com.mybatisflex.core.handler.JacksonTypeHandler;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +13,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 实体类。
@@ -101,7 +104,8 @@ public class TestCaseTemplate implements Serializable {
     /**
      * Test case step
      */
-    private String steps;
+    @Column(typeHandler = JacksonTypeHandler.class)
+    private List<Map<String, Object>> steps;
 
     private String createUser;
 
