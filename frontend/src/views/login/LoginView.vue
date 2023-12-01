@@ -5,6 +5,7 @@ import { useRoute, useRouter } from "vue-router"
 import { useAuthStore } from "/@/store/auth-store"
 
 import { LOGIN, loginFunction } from "/@/apis/auth"
+import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
 import { NButton, NCard, NForm, NFormItemRow, NH1, NInput } from "naive-ui"
 
@@ -16,46 +17,50 @@ const store = useAuthStore()
 const rules = {
   username: {
     required: true,
-    message: "Username is required.",
+    message: i18n.t("organization.integration.input_api_account"),
     trigger: "blur",
   },
-  password: {
-    required: true,
-    message: "Password is required.",
-    trigger: "blur",
-  },
+  password: [
+    {
+      required: true,
+      message: i18n.t("commons.input_password"),
+      trigger: "blur",
+    },
+    { min: 6, max: 30, message: i18n.t("commons.input_limit", [6, 30]), trigger: "blur" },
+  ],
 }
 const route = useRoute()
 const router = useRouter()
 const disabled = computed<boolean>(() => model.value.username === "" || model.value.password === "")
-const { loading, send, onSuccess } = useRequest(loginFunction(model.value), {
+const { loading, send } = useRequest(loginFunction(model.value), {
   immediate: false,
 })
 const handleLogin = () => {
   send()
-}
-onSuccess((resp) => {
-  const { access_token, refresh_token, roles, userId, user } = resp.data
-  store.accessToken = access_token
-  store.refreshToken = refresh_token
-  store.roles = roles
-  store.userInfo = user
-  store.userId = userId
-  store.saveSessionStorage()
-  // 路由跳转
-  if (route.query?.redirect) {
-    router.push({
-      path: <string>route.query?.redirect,
-      query: route.query?.params
-        ? Object.keys(<string>route.query?.params).length > 0
-          ? JSON.parse(<string>route.query?.params)
-          : ""
-        : "",
+    .then((res) => {
+      const { access_token, refresh_token, roles, userId, user } = res
+      store.accessToken = access_token
+      store.refreshToken = refresh_token
+      store.roles = roles
+      store.userInfo = user
+      store.userId = userId
+      store.saveSessionStorage()
+      // 路由跳转
+      if (route.query?.redirect) {
+        router.push({
+          path: <string>route.query?.redirect,
+          query: route.query?.params
+            ? Object.keys(<string>route.query?.params).length > 0
+              ? JSON.parse(<string>route.query?.params)
+              : ""
+            : "",
+        })
+      } else {
+        router.push("/")
+      }
     })
-  } else {
-    router.push("/")
-  }
-})
+    .catch((error) => window.$message.error(error.toString()))
+}
 </script>
 <template>
   <n-h1 style="--font-size: 60px; --font-weight: 100">Sign in to your account </n-h1>
@@ -63,9 +68,9 @@ onSuccess((resp) => {
     <!-- <n-h2 style="--font-weight: 400">Sign-in</n-h2> -->
     <n-form size="large" :rules="rules" :model="model">
       <n-form-item-row path="username">
-        <n-input v-model:value="model.username" placeholder="Input your username">
+        <n-input v-model:value="model.username" :placeholder="$t('organization.integration.input_api_account')">
           <template #prefix>
-            <span class="i-carbon:group-security" />
+            <span class="i-tabler:lock-square" />
           </template>
         </n-input>
       </n-form-item-row>
@@ -73,18 +78,18 @@ onSuccess((resp) => {
         <n-input
           v-model:value="model.password"
           type="password"
-          placeholder="Input your password"
-          show-password-on="mousedown">
+          :placeholder="$t('commons.password')"
+          show-password-on="mousedown"
+          @keyup.enter="handleLogin">
           <template #prefix>
-            <span class="i-carbon:ibm-cloud-hyper-protect-crypto-services" />
+            <span class="i-tabler:lock-star" />
           </template>
         </n-input>
       </n-form-item-row>
     </n-form>
-    <n-button type="primary" size="large" block :loading="loading" :disabled="disabled" @click="handleLogin">
-      Sign in
+    <n-button type="primary" block :loading="loading" :disabled="disabled" @click="handleLogin">
+      {{ $t("commons.login") }}
     </n-button>
-    <br />
   </n-card>
 </template>
 

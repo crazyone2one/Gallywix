@@ -38,7 +38,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "login",
     component: () => import(`/@/views/login/LoginView.vue`),
     meta: {
-      title: "登录页",
+      title: "commons.login",
       requiresAuth: false,
     },
   },
@@ -61,11 +61,7 @@ router.beforeEach((to, _from, next) => {
   } else {
     if (!isAuthenticated) {
       store.restAuthStore()
-      next(
-        `/login?redirect=${to.path}&params=${JSON.stringify(
-          to.query ? to.query : to.params,
-        )}`,
-      )
+      next(`/login?redirect=${to.path}&params=${JSON.stringify(to.query ? to.query : to.params)}`)
     } else if (isAuthenticated && to.path === "login") {
       next("/")
     } else {
