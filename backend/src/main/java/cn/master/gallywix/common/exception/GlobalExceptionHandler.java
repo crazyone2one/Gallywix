@@ -2,8 +2,8 @@ package cn.master.gallywix.common.exception;
 
 import cn.master.gallywix.common.result.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author 11's papa
  * @since 11/07/2023
@@ -22,14 +19,11 @@ import java.util.Map;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler({AuthenticationException.class})
     @ResponseBody
-    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<Object> handleAuthenticationException(Exception ex) {
-        Map<String, String> error = new HashMap<>();
-        error.put("code", HttpStatus.UNAUTHORIZED.toString());
-        error.put("message", "Authentication failed at controller advice");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    @ExceptionHandler({AuthenticationException.class})
+    public ResponseResult<Exception> handleAuthenticationException(Exception ex) {
+        log.error("handleAccessDeniedException ", ex);
+        return ResponseResult.fail(HttpStatus.UNAUTHORIZED.value(),ex.getLocalizedMessage());
     }
 
     @ResponseStatus(code = HttpStatus.FORBIDDEN)
@@ -46,9 +40,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     // global exceptions
+    @ResponseBody
     @ExceptionHandler(Exception.class)
     public ResponseResult<Exception> handleGlobalException(Exception exception) {
         log.error("handleGlobalException : {}", exception.getMessage());
-        return ResponseResult.fail(exception.getLocalizedMessage(), exception);
+        log.error("handleGlobalException : ", exception);
+        return ResponseResult.fail(StringUtils.isNoneBlank(exception.getLocalizedMessage()) ? exception.getLocalizedMessage() : "系统内部错误", exception);
     }
 }

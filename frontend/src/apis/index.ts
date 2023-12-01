@@ -86,24 +86,31 @@ const alovaInstance = createAlova({
       // throw new Error(response.statusText)
     }
     const json = await response.json()
+
     if (json.code === 401) {
+      if ("/auth/authenticate" === method.url) {
+        window.$message.error(json.message)
+        throw new Error(json.message)
+      } else {
+        window.$dialog.warning({
+          title: json.message,
+          maskClosable: false,
+          content: () => "重新登录",
+          positiveText: "确定",
+          negativeText: "不确定",
+          onPositiveClick() {
+            useAuthStore().restAuthStore()
+            window.location.reload()
+          },
+        })
+      }
       // token失效
-      window.$dialog.warning({
-        title: json.message,
-        maskClosable: false,
-        content: () => "重新登录",
-        positiveText: "确定",
-        negativeText: "不确定",
-        onPositiveClick() {
-          useAuthStore().restAuthStore()
-          window.location.reload()
-        },
-      })
       return false
     } else if (json.code !== 200) {
       // 账号/密码不正确
       // 403 无访问权限
       // 抛出错误或返回reject状态的Promise实例时，此请求将抛出错误
+      window.$message.error(json.message)
       throw new Error(json.message)
     } else {
       // 解析的响应数据将传给method实例的transformData钩子函数，这些函数将在后续讲解

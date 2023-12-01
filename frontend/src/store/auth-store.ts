@@ -1,5 +1,6 @@
 import { ref } from "vue"
 
+import { USER } from "../apis/user"
 import { defineStore } from "pinia"
 
 export const useAuthStore = defineStore(
@@ -12,7 +13,7 @@ export const useAuthStore = defineStore(
     const workspace_name = ref<string>()
     const project_id = ref<string | undefined>()
     const roles = ref<Array<string>>([])
-    const userInfo = ref()
+    const userInfo = ref<USER>({} as USER)
     /**
      * 重置token信息
      */
@@ -21,7 +22,7 @@ export const useAuthStore = defineStore(
       refreshToken.value = ""
       userId.value = null
       roles.value = []
-      userInfo.value = {}
+      userInfo.value = {} as USER
       workspace_id.value = undefined
       project_id.value = undefined
       workspace_name.value = ""

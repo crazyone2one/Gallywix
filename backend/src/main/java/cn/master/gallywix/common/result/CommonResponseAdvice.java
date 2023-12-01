@@ -3,6 +3,7 @@ package cn.master.gallywix.common.result;
 import cn.master.gallywix.utils.JsonUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -25,8 +26,7 @@ public class CommonResponseAdvice implements ResponseBodyAdvice<Object> {
         // 3. 返回体已经是ResponseResult类型
 
         return !(returnType.getContainingClass().isAnnotationPresent(IgnoreResponseAdvice.class) ||
-                Objects.requireNonNull(returnType.getMethod()).isAnnotationPresent(IgnoreResponseAdvice.class) ||
-                returnType.getParameterType().isAssignableFrom(ResponseResult.class));
+                Objects.requireNonNull(returnType.getMethod()).isAnnotationPresent(IgnoreResponseAdvice.class));
     }
 
     /**
@@ -47,6 +47,12 @@ public class CommonResponseAdvice implements ResponseBodyAdvice<Object> {
             // 设置响应头
             response.getHeaders().add("Content-Type", "application/json");
             return JsonUtils.toJsonPrettyString(ResponseResult.success(body));
+        }
+        if (body instanceof ResponseResult) {
+            return body;
+        }
+        if (body instanceof ResponseEntity) {
+            return body;
         }
         return ResponseResult.success(body);
     }
