@@ -1,25 +1,22 @@
 import { DirectiveBinding } from "vue"
 
-import { useAuthStore } from "/@/store/auth-store"
+import { hasPermission } from "../utils/permission"
+
 interface ElType extends HTMLElement {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   __handleClick__: () => any
 }
 
 const checkPermission = (el: ElType, binding: DirectiveBinding) => {
   const { value } = binding
-  const store = useAuthStore()
-  const roles = store.roles
   if (value && value instanceof Array) {
     if (value.length > 0) {
       const elRoles = value
-
-      const hasPermission = roles.some((role) => {
-        return elRoles.includes(role)
+      elRoles.forEach((role) => {
+        if (!hasPermission(role)) {
+          el.parentNode && el.parentNode.removeChild(el)
+        }
       })
-
-      if (!hasPermission) {
-        el.parentNode && el.parentNode.removeChild(el)
-      }
     }
   } else {
     throw new Error(`need a array like ['role1', 'role2']`)
