@@ -14,6 +14,7 @@ import {
   NSelect,
   NSkeleton,
   NSpace,
+  NSpin,
   NSwitch,
   NTooltip,
 } from "naive-ui"
@@ -34,6 +35,7 @@ const naive = create({
     NSpace,
     NCheckboxGroup,
     NSkeleton,
+    NSpin,
   ],
 })
 
