@@ -1,7 +1,8 @@
 import { list2SelectOption } from "/@/utils/list-2-select"
 
 import alovaInstance from ".."
-import { ICustomGroup, IPage, PageReq } from "../interface"
+import { IGroupDTO } from "../group"
+import { IPage, PageReq } from "../interface"
 import { USER } from "../user"
 import { SelectOption } from "naive-ui"
 
@@ -34,7 +35,7 @@ export const loadOptionList = () =>
 export const delWorkspaceSpecial = (id: string) => alovaInstance.Delete(`/workspace/remove/${id}`)
 
 export const getGroupResource = (groupId: string, groupType: string) =>
-  alovaInstance.Get<ICustomGroup>(`/workspace/list/resource/${groupId}/${groupType}`)
+  alovaInstance.Get<IGroupDTO>(`/workspace/list/resource/${groupId}/${groupType}`)
 
 export const switchWorkspace = (workspaceId?: string) =>
   alovaInstance.Get<USER>(`/system/user/switch/source/workspace/${workspaceId}`)

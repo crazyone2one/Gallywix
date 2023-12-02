@@ -53,6 +53,7 @@ export interface ITableDataInfo<T> {
 export interface ICustomGroup {
   ids: Array<string>
   type: string
+  groupId: string
   workspaces?: Array<IWorkspace>
   projects?: Array<IProject>
   showSearchGetMore?: boolean
@@ -61,7 +62,11 @@ export interface ICustomGroup {
   selects?: Array<string> | undefined
 }
 
-export interface IUserGroup {}
+export interface IUserGroup {
+  id: string
+  userId: string
+  groupId: string
+}
 export interface IUserGroupPermission {
   list: Array<IGroupResourceDTO>
   groups: Array<IGroupDTO>

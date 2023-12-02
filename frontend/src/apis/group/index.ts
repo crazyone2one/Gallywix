@@ -4,6 +4,7 @@ import { IPermissionDTO } from "../permission"
 import { IProject } from "../project"
 import { USER } from "../user"
 import { IWorkspace } from "../workspace"
+import { SelectOption } from "naive-ui"
 export interface IGroupDTO {
   id: string | undefined
   name: string
@@ -17,6 +18,13 @@ export interface IGroupDTO {
   createTime?: number
   creator?: string
   memberSize?: number
+  workspaces?: Array<IWorkspace>
+  projects?: Array<IProject>
+  ids?: Array<string>
+  workspaceOptions?: Array<SelectOption>
+  projectOptions?: Array<SelectOption>
+  selects?: Array<string>
+  showSearchGetMore?: boolean
 }
 export interface IUser2Group {
   userIds: Array<string>
@@ -27,33 +35,19 @@ export interface IModifyPermission {
   userGroupId: string
   permissions: Array<IPermissionDTO>
 }
-export const loadTableData = (param: PageReq) =>
-  alovaInstance.Post<IPage<IGroupDTO[]>>(`/system/group/page`, param)
+export const loadTableData = (param: PageReq) => alovaInstance.Post<IPage<IGroupDTO[]>>(`/system/group/page`, param)
 
-export const saveGroup = (param: IGroupDTO) =>
-  alovaInstance.Post<IGroupDTO>("/system/group/save", param)
+export const saveGroup = (param: IGroupDTO) => alovaInstance.Post<IGroupDTO>("/system/group/save", param)
 
-export const updateGroup = (param: IGroupDTO) =>
-  alovaInstance.Put<IGroupDTO>("/system/group/update", param)
+export const updateGroup = (param: IGroupDTO) => alovaInstance.Put<IGroupDTO>("/system/group/update", param)
 
 export const getAllUserGroupByType = (param: { type: string }) =>
   alovaInstance.Post<Array<IGroupDTO>>(`/system/group/list-by-type`, param)
 
-export const getUserAllGroups = (userId: string) =>
-  alovaInstance.Get<
-    Array<{
-      ids: Array<string>
-      type: string
-      workspaces?: Array<IWorkspace>
-      projects?: Array<IProject>
-    }>
-  >(`/system/group/all/${userId}`)
+export const getUserAllGroups = (userId: string) => alovaInstance.Get<Array<IGroupDTO>>(`/system/group/all/${userId}`)
 
-export const getGroupsByType = (param: {
-  resourceId: string
-  projectId: string
-  type: string
-}) => alovaInstance.Post<Array<IGroupDTO>>(`/system/group/list`, param)
+export const getGroupsByType = (param: { resourceId: string; projectId: string; type: string }) =>
+  alovaInstance.Post<Array<IGroupDTO>>(`/system/group/list`, param)
 
 export const modifyUserGroupPermission = (param: IModifyPermission) =>
   alovaInstance.Post(`/system/group/permission/edit`, param)
@@ -61,5 +55,4 @@ export const modifyUserGroupPermission = (param: IModifyPermission) =>
 export const getUserGroup = (param: { userGroupId: string }) =>
   alovaInstance.Post<IPage<USER[]>>(`/system/group/user`, param)
 
-export const addUser2Group = (param: IUser2Group) =>
-  alovaInstance.Post("/system/group/add/member", param)
+export const addUser2Group = (param: IUser2Group) => alovaInstance.Post("/system/group/add/member", param)
