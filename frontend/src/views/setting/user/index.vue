@@ -1,24 +1,22 @@
 <script setup lang="ts">
 import { h, onMounted, ref } from "vue"
 
+import EditUserPassword from "./components/EditUserPassword.vue"
 import UserEdit from "./components/UserEdit.vue"
 import BaseCard from "/@/components/BaseCard.vue"
 import BaseSearch from "/@/components/BaseSearch.vue"
+import GaButton from "/@/components/GaButton.vue"
 import GaRolesTag from "/@/components/GaRolesTag.vue"
 import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
-import {
-  loadUserData,
-  specialGetUserGroup,
-  updateUserData,
-  USER,
-} from "/@/apis/user"
+import { loadUserData, specialGetUserGroup, updateUserData, USER } from "/@/apis/user"
 import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
 import { DataTableColumns, NDataTable, NSkeleton, NSwitch } from "naive-ui"
 
 const userEdit = ref<InstanceType<typeof UserEdit> | null>(null)
+const editUserPassword = ref<InstanceType<typeof EditUserPassword> | null>(null)
 const columns: DataTableColumns<USER> = [
   {
     type: "selection",
@@ -33,7 +31,7 @@ const columns: DataTableColumns<USER> = [
     title: i18n.t("commons.group"),
     key: "x",
     render(row) {
-      return h(GaRolesTag, { roles: row.roles ? row.roles : [] }, {})
+      return h(GaRolesTag, { roles: row.groups ? row.groups : [] }, {})
     },
   },
   {
@@ -83,9 +81,27 @@ const columns: DataTableColumns<USER> = [
         {
           type: "default",
           editTip: i18n.t("commons.edit") + "(有bug，慎用)",
+          editPermission: ["SYSTEM_USER:READ+EDIT"],
+          deletePermission: ["SYSTEM_USER:READ+DELETE"],
           onEditClick: () => handleEdit(rowData),
         },
-        {},
+        {
+          behind: () => {
+            return h(
+              GaButton,
+              {
+                isPop: true,
+                text: true,
+                isIcon: true,
+                iconClass: "i-tabler:password-user",
+                popText: i18n.t("member.edit_password"),
+                permission: ["SYSTEM_USER:READ+EDIT_PASSWORD"],
+                onExec: () => editPassword(rowData),
+              },
+              {},
+            )
+          },
+        },
       )
     },
   },
@@ -130,6 +146,9 @@ const handleChangeStatus = (rowData: USER) => {
       window.$message.success("update user status success")
     })
 }
+const editPassword = (val: USER) => {
+  editUserPassword.value?.open(val)
+}
 onMounted(() => {
   send().then((resp) => {
     loading.value = false
@@ -138,7 +157,7 @@ onMounted(() => {
       loadUserGroup(item.id).then((result) => {
         let data = result
         let groups = data.groups
-        item.roles = groups
+        item.groups = groups
       })
     })
   })
@@ -155,14 +174,11 @@ onMounted(() => {
     </template>
     <template #content>
       <n-skeleton v-if="loading" :sharp="false" height="550px" />
-      <n-data-table
-        v-else
-        :columns="columns"
-        :data="tableInfo.data"
-        :row-key="rowKey" />
+      <n-data-table v-else :columns="columns" :data="tableInfo.data" :row-key="rowKey" />
     </template>
   </base-card>
   <user-edit ref="userEdit" @refresh="send()" />
+  <edit-user-password ref="editUserPassword" />
 </template>
 
 <style></style>

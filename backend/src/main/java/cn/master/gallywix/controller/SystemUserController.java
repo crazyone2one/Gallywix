@@ -3,6 +3,7 @@ package cn.master.gallywix.controller;
 import cn.master.gallywix.common.result.ResponseResult;
 import cn.master.gallywix.controller.vo.user.AddOrgMemberRequestVO;
 import cn.master.gallywix.controller.vo.user.UserPageReqVO;
+import cn.master.gallywix.controller.vo.user.UserPasswordVO;
 import cn.master.gallywix.dto.UserGroupPermissionDTO;
 import cn.master.gallywix.dto.user.UserDTO;
 import cn.master.gallywix.entity.SystemUser;
@@ -123,5 +124,9 @@ public class SystemUserController {
     @GetMapping("/special/user/group/{userId}")
     public ResponseResult<UserGroupPermissionDTO> getUserGroup(@PathVariable("userId") String userId) {
         return ResponseResult.success(iSystemUserService.getUserGroup(userId));
+    }
+    @PostMapping("/special/password")
+    public Boolean updatePassword(@RequestBody UserPasswordVO request) {
+        return iSystemUserService.updateUserPassword(request);
     }
 }

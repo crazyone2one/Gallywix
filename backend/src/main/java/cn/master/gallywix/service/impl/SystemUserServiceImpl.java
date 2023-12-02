@@ -4,6 +4,7 @@ import cn.master.gallywix.common.constants.RoleConstants;
 import cn.master.gallywix.common.exception.CustomException;
 import cn.master.gallywix.controller.vo.user.AddOrgMemberRequestVO;
 import cn.master.gallywix.controller.vo.user.UserPageReqVO;
+import cn.master.gallywix.controller.vo.user.UserPasswordVO;
 import cn.master.gallywix.dto.GroupResourceDTO;
 import cn.master.gallywix.dto.UserGroupPermissionDTO;
 import cn.master.gallywix.dto.user.UserDTO;
@@ -14,6 +15,7 @@ import cn.master.gallywix.utils.SessionUtils;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryChain;
 import com.mybatisflex.core.query.QueryWrapper;
+import com.mybatisflex.core.update.UpdateChain;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
@@ -192,7 +194,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         }
         userGroupPermissionDTO.setUserGroups(userGroups);
         List<String> groupId = userGroups.stream().map(UserGroup::getGroupId).toList();
-        List<SystemGroup> groups = systemGroupMapper.selectListByQuery(QueryChain.of(SystemGroup.class).where(SYSTEM_GROUP.ID.in(groupId)));
+        List<SystemGroup> groups = systemGroupMapper.selectListByQuery(QueryChain.of(SystemGroup.class).where(SYSTEM_GROUP.CODE.in(groupId)));
         userGroupPermissionDTO.setGroups(groups);
         return userGroupPermissionDTO;
     }
@@ -202,6 +204,12 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     public SystemUser updateUser(SystemUser systemUser) {
         mapper.update(systemUser);
         return systemUser;
+    }
+
+    @Override
+    public boolean updateUserPassword(UserPasswordVO request) {
+        return UpdateChain.of(SystemUser.class).set(SYSTEM_USER.PASSWORD, passwordEncoder.encode(request.getNewPassword()))
+                .where(SYSTEM_USER.ID.eq(request.getId())).update();
     }
 
     @Override
@@ -228,7 +236,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         }
         permissionDTO.setUserGroups(userGroups);
         List<String> groupList = userGroups.stream().map(UserGroup::getGroupId).toList();
-        List<SystemGroup> groups = systemGroupMapper.selectListByQuery(QueryChain.of(SystemGroup.class).where(SYSTEM_GROUP.CODE.in(groupList)));
+        List<SystemGroup> groups = systemGroupMapper.selectListByQuery(QueryChain.of(SystemGroup.class).where(SYSTEM_GROUP.ID.in(groupList)));
         permissionDTO.setGroups(groups);
         groups.forEach(gp -> {
             GroupResourceDTO dto = new GroupResourceDTO();

@@ -2,6 +2,7 @@ package cn.master.gallywix.service;
 
 import cn.master.gallywix.controller.vo.user.AddOrgMemberRequestVO;
 import cn.master.gallywix.controller.vo.user.UserPageReqVO;
+import cn.master.gallywix.controller.vo.user.UserPasswordVO;
 import cn.master.gallywix.dto.UserGroupPermissionDTO;
 import cn.master.gallywix.dto.user.UserDTO;
 import cn.master.gallywix.entity.SystemUser;
@@ -44,4 +45,6 @@ public interface ISystemUserService extends IService<SystemUser> {
     UserGroupPermissionDTO getUserGroup(String userId);
 
     SystemUser updateUser(SystemUser systemUser);
+
+    boolean updateUserPassword(UserPasswordVO request);
 }
