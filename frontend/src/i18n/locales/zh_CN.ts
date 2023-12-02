@@ -578,10 +578,8 @@ const zh_CN = {
     },
     apply_tip: "未开启工作台待更新设置",
     sync_case_tips: "注意: 忽略后，受影响的用例将不再有提醒，请谨慎操作",
-    batch_sync_api_tips:
-      "批量同步，有可能部分不需要同步的用例参数也被覆盖，导致测试不通过，请谨慎操作",
-    batch_ignore_case_tips:
-      "注意: 批量忽略后，受影响的用例将不再有提醒，请谨慎操作",
+    batch_sync_api_tips: "批量同步，有可能部分不需要同步的用例参数也被覆盖，导致测试不通过，请谨慎操作",
+    batch_ignore_case_tips: "注意: 批量忽略后，受影响的用例将不再有提醒，请谨慎操作",
   },
   display: {
     title: "显示设置",
@@ -648,8 +646,7 @@ const zh_CN = {
       "注意： 复制的模板会在目标项目中新增；此操作有可能会影响目标项目的历史缺陷，建议仅在新项目中使用。",
     copy_issue_template_tips2: "请谨慎操作，此操作不可逆！",
     copy_issue_template_model_tips1: "复制模式",
-    copy_issue_template_model_tips2:
-      "（系统字段选项值和自定义字段及字段选项值的设置）",
+    copy_issue_template_model_tips2: "（系统字段选项值和自定义字段及字段选项值的设置）",
     copy_issue_template_model_append: "追加",
     copy_issue_template_model_cover: "覆盖",
     target_project: "目标项目",
@@ -672,8 +669,7 @@ const zh_CN = {
     create: "创建工作空间",
     update: "修改工作空间",
     delete: "删除工作空间",
-    delete_confirm:
-      "删除该工作空间会关联删除该工作空间下的所有资源(如：相关项目，测试用例等），确定要删除吗?",
+    delete_confirm: "删除该工作空间会关联删除该工作空间下的所有资源(如：相关项目，测试用例等），确定要删除吗?",
     add: "添加工作空间",
     input_name: "请输入工作空间名称",
     search_by_name: "根据名称搜索",
@@ -682,8 +678,7 @@ const zh_CN = {
     please_select_a_workspace_first: "请先选择工作空间！",
     none: "无工作空间",
     select: "选择工作空间",
-    special_characters_are_not_supported:
-      "格式错误(不支持特殊字符，且不能以'-'开头结尾)",
+    special_characters_are_not_supported: "格式错误(不支持特殊字符，且不能以'-'开头结尾)",
     delete_warning:
       "删除该工作空间将同步删除该工作空间下所有项目，以及项目中的所有用例、接口测试、性能测试等,确定要删除吗?",
     template_manage: "模版管理",
@@ -710,8 +705,7 @@ const zh_CN = {
       name: "环境组",
       create: "创建环境组",
       not_intact: "项目与环境对应关系不完整！",
-      cascader_tip:
-        "若环境组中已经包含此次将要加入的项目，则该项目环境将被覆盖",
+      cascader_tip: "若环境组中已经包含此次将要加入的项目，则该项目环境将被覆盖",
       search_tip: "请输入名称搜索环境组",
       fast_create_tip: "请输入环境组名称快速创建",
       quickly_add: "快速添加",
@@ -741,13 +735,11 @@ const zh_CN = {
     create: "创建组织",
     modify: "修改组织",
     delete: "删除组织",
-    delete_confirm:
-      "删除该组织会关联删除该组织下的所有资源(如：相关工作空间，项目，测试用例等），确定要删除吗?",
+    delete_confirm: "删除该组织会关联删除该组织下的所有资源(如：相关工作空间，项目，测试用例等），确定要删除吗?",
     input_name: "请输入组织名称",
     select_organization: "请选择组织",
     search_by_name: "根据名称搜索",
-    special_characters_are_not_supported:
-      "格式错误(不支持特殊字符，且不能以'-'开头结尾)",
+    special_characters_are_not_supported: "格式错误(不支持特殊字符，且不能以'-'开头结尾)",
     none: "无组织",
     select: "选择组织",
     delete_warning:
@@ -776,8 +768,7 @@ const zh_CN = {
         "2.需要安全验证的机器人可以选择 “自定义关键词” 验证，关键词为 “消息通知”;<br/>" +
         "3.如需在通知中使用@功能，选择的接收人必须是机器人所在群里包含的用户，接收人手机号为必填项且为钉钉企业所使用的手机号",
       message: "事件，接收人，接收方式为必填项",
-      message_webhook:
-        "接收方式为钉钉、企业机器人、飞书及自定义Webhook时，Webhook为必填项",
+      message_webhook: "接收方式为钉钉、企业机器人、飞书及自定义Webhook时，Webhook为必填项",
       template: "模版",
       track: "测试跟踪任务通知",
       api: "接口测试任务通知",
@@ -812,20 +803,15 @@ const zh_CN = {
       zentao_info: "禅道信息",
       zentao_account: "禅道账户",
       zentao_password: "禅道密码",
-      zentao_prompt_information:
-        "该信息为通过禅道提交缺陷的的用户名、密码，若未填写，则使用工作空间中配置的默认信息",
+      zentao_prompt_information: "该信息为通过禅道提交缺陷的的用户名、密码，若未填写，则使用工作空间中配置的默认信息",
       zentao_config_tip: "参考禅道配置文件中 $config->requestType 的值 ",
-      zentao_config_path:
-        "配置文件参考路径：/opt/zbox/app/zentao/config/my.php",
+      zentao_config_path: "配置文件参考路径：/opt/zbox/app/zentao/config/my.php",
       use_tip: "使用指引：",
-      use_tip_tapd:
-        'Tapd Basic Auth 账号信息在"公司管理-安全与集成-开放平台"中查询',
+      use_tip_tapd: 'Tapd Basic Auth 账号信息在"公司管理-安全与集成-开放平台"中查询',
       use_tip_jira:
         "Jira software server 认证信息为 账号密码，Jira software cloud 认证信息为 账号+令牌(账户设置-安全-创建API令牌)",
-      use_tip_zentao:
-        "账号密码为具有相应权限的Zentao账号，账号需要具有 超级model调用接口权限",
-      use_tip_two:
-        "保存 Basic Auth 账号信息后，需要在 MeterSphere 项目中手动关联 ID/key 和缺陷模板",
+      use_tip_zentao: "账号密码为具有相应权限的Zentao账号，账号需要具有 超级model调用接口权限",
+      use_tip_two: "保存 Basic Auth 账号信息后，需要在 MeterSphere 项目中手动关联 ID/key 和缺陷模板",
       use_tip_three: "添加你的个人平台账号",
       link_the_project_now: "马上关联项目",
       link_the_info_now: "马上添加",
@@ -847,8 +833,7 @@ const zh_CN = {
       input_azure_url: "请输入 Azure Devops 地址",
       input_azure_organization_id: "请输入 Azure 组织ID",
       use_tip_azure: "Azure Devops 地址+令牌(账户设置-个人访问令牌-创建令牌)",
-      jira_prompt_information:
-        "该信息为通过Jira提交缺陷的用户认证信息，若未填写，则使用工作空间中配置的默认信息",
+      jira_prompt_information: "该信息为通过Jira提交缺陷的用户认证信息，若未填写，则使用工作空间中配置的默认信息",
       jira_information: "Jira 信息",
       azure_url_check: "请输入正确的Azure Devops地址",
     },
@@ -873,16 +858,14 @@ const zh_CN = {
     owning_workspace: "所属工作空间",
     please_choose_workspace: "请选择工作空间",
     batch_choose_workspace: "批量选择工作空间",
-    special_characters_are_not_supported:
-      "格式错误(不支持特殊字符，且不能以'-'开头结尾)",
+    special_characters_are_not_supported: "格式错误(不支持特殊字符，且不能以'-'开头结尾)",
     tapd_id: "TAPD项目ID",
     jira_key: "JIRA项目key",
     zentao_id: "Zentao项目ID",
     azureDevops_id: "AzureDevops项目ID",
     azureDevops_filter_id: "AzureDevops过滤ID",
     azureDevops_info: "AzureDevops 信息",
-    azureDevops_tip:
-      "该信息为通过Azure Devops提交缺陷的用户令牌信息，若未填写，则使用工作空间中配置的默认信息",
+    azureDevops_tip: "该信息为通过Azure Devops提交缺陷的用户令牌信息，若未填写，则使用工作空间中配置的默认信息",
     manager: "项目管理",
     group_permission: "用户组与权限",
     global: "全局",
@@ -965,8 +948,7 @@ const zh_CN = {
       checkout: "切换",
       compare: "对比",
       set_new: "设为最新版本",
-      change_latest_tip:
-        "此操作会修改接口，场景，测试用例等列表页面的默认展示，可能会消耗一些时间。请耐心等待！",
+      change_latest_tip: "此操作会修改接口，场景，测试用例等列表页面的默认展示，可能会消耗一些时间。请耐心等待！",
     },
     project_file: {
       file_module_type: {
@@ -1016,15 +998,13 @@ const zh_CN = {
     special_characters_are_not_supported: "不支持特殊字符",
     mobile_number_format_is_incorrect: "手机号码格式不正确",
     email_format_is_incorrect: "邮箱格式不正确",
-    password_format_is_incorrect:
-      "有效密码：8-30位，英文大小写字母+数字+特殊字符（可选）",
+    password_format_is_incorrect: "有效密码：8-30位，英文大小写字母+数字+特殊字符（可选）",
     old_password: "旧密码",
     new_password: "新密码",
     repeat_password: "确认密码",
     inconsistent_passwords: "两次输入的密码不一致",
     remove_member: "确定要移除该成员吗",
-    org_remove_member:
-      "将该用户从组织中移除，将同时移除该组织下所有工作空间的权限，确定要移除该成员吗？",
+    org_remove_member: "将该用户从组织中移除，将同时移除该组织下所有工作空间的权限，确定要移除该成员吗？",
     input_id_or_email: "请输入用户 ID, 或者 用户邮箱",
     input_id_or_email_or_name: "请输入用户 ID, 用户名, 或者 用户邮箱",
     no_such_user: "无此用户信息, 请输入正确的用户 ID 或者 用户邮箱！",
@@ -1114,8 +1094,7 @@ const zh_CN = {
     report_sharing_link: "报告分享链接",
     recent: "我最近的报告",
     search_by_name: "根据名称搜索",
-    batch_add_monitor_tips:
-      "格式：名称,IP,Port,描述<br/>如：项目1,192.168.1.52,9100,测试",
+    batch_add_monitor_tips: "格式：名称,IP,Port,描述<br/>如：项目1,192.168.1.52,9100,测试",
     test_name: "所属测试",
     test_overview: "测试概览",
     test_request_statistics: "请求统计",
@@ -1147,8 +1126,7 @@ const zh_CN = {
     run_status: "测试处于运行状态,请稍后查看报告！",
     user_name: "创建人",
     project_name: "所属项目",
-    force_stop_tips:
-      "<strong>强制停止</strong>测试会立刻结束当前测试并删除报告数据",
+    force_stop_tips: "<strong>强制停止</strong>测试会立刻结束当前测试并删除报告数据",
     stop_tips: "<strong>停止</strong>测试会结束当前测试并保留报告数据",
     force_stop_btn: "强制停止",
     stop_btn: "停止",
@@ -1220,12 +1198,10 @@ const zh_CN = {
     ramp_up_time_within: "在",
     ramp_up_time_minutes: "秒内，分",
     ramp_up_time_seconds: "秒内增加并发用户",
-    ramp_up_tips:
-      "RampUp 过大，图表渲染卡顿不予展示，这并不影响测试执行，请以实际结果为准",
+    ramp_up_tips: "RampUp 过大，图表渲染卡顿不予展示，这并不影响测试执行，请以实际结果为准",
     iterate_num: "迭代次数",
     by_iteration: "按迭代次数",
-    by_iteration_tip:
-      "按迭代次数执行需要配置执行时长，JMeter会按照迭代次数和执行时长来决定是否结束测试",
+    by_iteration_tip: "按迭代次数执行需要配置执行时长，JMeter会按照迭代次数和执行时长来决定是否结束测试",
     by_duration: "按持续时间",
     ramp_up_time_times: "次增加并发用户",
     advanced_config_error: "高级配置校验失败",
@@ -1423,8 +1399,7 @@ const zh_CN = {
       one_click_sync: "一键同步",
       change_notification: "变更通知",
       recipient: "接收人",
-      recipient_tips:
-        "当API发生变化时，关联的CASE创建人、自动化场景创建人会收到站内消息，可前往",
+      recipient_tips: "当API发生变化时，关联的CASE创建人、自动化场景创建人会收到站内消息，可前往",
       select_comp: {
         no_data: "无数据",
         add_data: "去添加",
@@ -1519,8 +1494,7 @@ const zh_CN = {
           not_required: "非必填",
         },
         esb_copy_confirm: "确认复制当前节点的数据结构",
-        esb_title:
-          "可以在报文模板中使用${参数名} 或 ${父节点参数名.子节点参数名}来生成xml数据结构",
+        esb_title: "可以在报文模板中使用${参数名} 或 ${父节点参数名.子节点参数名}来生成xml数据结构",
       },
       document: {
         open: "展开",
@@ -1634,8 +1608,7 @@ const zh_CN = {
       save_case_info: "请先保存用例",
       reference_deleted: "引用已删除",
       loop_name: "循环",
-      loop_content:
-        "默认为开启，当循环下只有一个请求时，可以开启/关闭;当循环下超过一个请求时，则只能开启。",
+      loop_content: "默认为开启，当循环下只有一个请求时，可以开启/关闭;当循环下超过一个请求时，则只能开启。",
       loop_return_val: "定义变量名称",
       loop_input_val: "变量前缀",
       loop_message: "当前循环下超过一个请求，不能关闭状态",
@@ -1766,8 +1739,7 @@ const zh_CN = {
       parameters_advance_add_func_error: "请先选择函数",
       parameters_advance_add_mock_error: "请先选择mock数据",
       parameters_advance_add_param_error: "请输入函数参数",
-      parameters_desc:
-        "参数追加到URL，例如https://fit2cloud.com/entries?key1=Value1&Key2=Value2",
+      parameters_desc: "参数追加到URL，例如https://fit2cloud.com/entries?key1=Value1&Key2=Value2",
       headers: "请求头",
       body: "请求体",
       body_kv: "键值对",
@@ -1863,8 +1835,7 @@ const zh_CN = {
         set_failure_status: "设置失败状态",
         set_failure_msg: "设置失败消息",
         suggest_tip: "点击便签添加JSONPath断言",
-        regex_info:
-          '特殊字符"$ ( ) * + . [ ] \\ ^ { } |"需转义为"\\ "+"特殊字符",如"\\$"',
+        regex_info: '特殊字符"$ ( ) * + . [ ] \\ ^ { } |"需转义为"\\ "+"特殊字符",如"\\$"',
         xpath_info: "根据请求响应内容格式，选择提取方式",
         assert_info: "根据请求响应内容格式，选择断言方式",
         regular_match: "正则匹配",
@@ -1889,8 +1860,7 @@ const zh_CN = {
         label: "提取",
         multiple_matching: "匹配多条",
         select_type: "请选择类型",
-        description:
-          "从响应结果中提取数据并将其存储在变量中，在后续请求中使用变量。",
+        description: "从响应结果中提取数据并将其存储在变量中，在后续请求中使用变量。",
         regex: "正则",
         regex_expression: "Perl型正则表达式",
         json_path_expression: "JSONPath表达式",
@@ -1974,8 +1944,7 @@ const zh_CN = {
       tip: "说明",
       export_tip: "导出方法",
       ms_tip: "支持 MeterSphere json 格式",
-      ms_export_tip:
-        "通过 MeterSphere 接口测试页面或者浏览器插件导出 json 格式文件",
+      ms_export_tip: "通过 MeterSphere 接口测试页面或者浏览器插件导出 json 格式文件",
       har_export_tip: "通过 浏览器的开发者工具 导出 HAR 格式文件",
       esb_export_tip: "暂时不支持 ESB 文件的导出",
       postman_tip: "只支持 Postman Collection v2.1 格式的 json 文件",
@@ -1997,19 +1966,15 @@ const zh_CN = {
       file_exceed_limit: "文件数量超出限制",
       import_tip: "导入说明",
       import_tip1: "注：导入文件包含多种协议，需切换协议多次导入",
-      import_tip2:
-        "开启 URL 可重复，接口名称+请求类型+请求路径一致则判断为同一接口",
+      import_tip2: "开启 URL 可重复，接口名称+请求类型+请求路径一致则判断为同一接口",
       import_tip3: "未开启 URL 可重复，请求类型+请求路径一致则判断为同一接口",
       cover_tip: "覆盖模式",
-      cover_tip_1:
-        "1. 如勾选“同步覆盖 API 模块”选项，则 API 模块为导入文件中指定的模块",
+      cover_tip_1: "1. 如勾选“同步覆盖 API 模块”选项，则 API 模块为导入文件中指定的模块",
       cover_tip_2: "2. 系统已存在的同一接口，内容不一致则覆盖系统原接口",
       cover_tip_3: "3. 系统已存在的同一接口，内容一致则不做变更",
       cover_tip_4: "4. 系统不存在的接口则新增",
-      cover_tip_scenario_1:
-        "1. 如勾选“同步覆盖场景模块”选项，则场景模块为导入文件中指定的模块",
-      cover_tip_scenario_2:
-        "2. 系统已存在的同一场景，内容不一致则覆盖系统原场景",
+      cover_tip_scenario_1: "1. 如勾选“同步覆盖场景模块”选项，则场景模块为导入文件中指定的模块",
+      cover_tip_scenario_2: "2. 系统已存在的同一场景，内容不一致则覆盖系统原场景",
       cover_tip_scenario_3: "3. 系统已存在的同一场景，内容一致则不做变更",
       cover_tip_scenario_4: "4. 系统不存在的场景则新增",
       no_cover_tip: "不覆盖模式",
@@ -2169,8 +2134,7 @@ const zh_CN = {
       host_config: "仅支持接口测试",
     },
     script: {
-      tip_3:
-        "脚本步骤会统计到场景执行结果中，执行报错时会影响场景的最终执行结果",
+      tip_3: "脚本步骤会统计到场景执行结果中，执行报错时会影响场景的最终执行结果",
       filter_request_type: "忽略请求",
       execution_order: "脚本执行顺序",
       associated_scene_results: "关联场景结果",
@@ -2179,11 +2143,9 @@ const zh_CN = {
       execute_post_step: "单个请求步骤后执行",
       execute_post_step_tip: "每一个API步骤执行后均执行一次，如响应内容解密",
       execute_before_all_steps: "所有场景步骤前执行",
-      execute_before_all_steps_tip:
-        "全部场景开始前执行一次，如token获取及场景初始化",
+      execute_before_all_steps_tip: "全部场景开始前执行一次，如token获取及场景初始化",
       execute_post_all_steps: "所有场景步骤后执行",
-      execute_post_all_steps_tip:
-        "全部場景结束后执行一次，如数据销毁及环境重置",
+      execute_post_all_steps_tip: "全部場景结束后执行一次，如数据销毁及环境重置",
       after_the_pre_script_step: "步骤内前置脚本后",
       before_the_pre_script_step: "步骤内前置脚本前",
       after_the_post_script_step: "步骤内后置脚本后",
@@ -2261,8 +2223,7 @@ const zh_CN = {
     cannot_empty: "资源池不能为空",
     fill_the_data: "请完善数据",
     delete_prompt: "此操作将永久删除该资源池, 是否继续?",
-    update_prompt:
-      "{0}  等测试正在使用此资源池，禁用可能会影响报告的监控部分，是否继续？",
+    update_prompt: "{0}  等测试正在使用此资源池，禁用可能会影响报告的监控部分，是否继续？",
     status_change_success: "状态修改成功!",
     status_change_failed: "状态修改失败, 校验不通过!",
     check_in: "校验中",
@@ -2271,8 +2232,7 @@ const zh_CN = {
     pod_thread_limit: "单POD最大线程数",
     usage: "用途",
     backend_listener: "后置监听器",
-    batch_add_resource_tips:
-      "格式：IP,Port,Monitor,最大并发数<br/>如：192.168.1.52,8082,9100,500",
+    batch_add_resource_tips: "格式：IP,Port,Monitor,最大并发数<br/>如：192.168.1.52,8082,9100,500",
     k8s_sa_tips: "使用K8S资源池需要的权限",
     k8s_sa_download_tips: "下载SA执行文件",
     k8s_deploy_type_tips: "执行接口测试需要部署 DaemonSet 或 Deployment",
@@ -2321,8 +2281,7 @@ const zh_CN = {
     input_username: "请输入用户名",
     input_url_placeholder: "请输入LDAP地址 (如 ldap://localhost:389)",
     input_ou_placeholder: "输入用户OU (使用|分隔各OU)",
-    input_filter_placeholder:
-      "输入过滤器 [可能的选项是cn或uid或sAMAccountName={0}, 如：(uid={0})]",
+    input_filter_placeholder: "输入过滤器 [可能的选项是cn或uid或sAMAccountName={0}, 如：(uid={0})]",
     input_mapping_placeholder:
       '如：{"username":"uid","name":"sn","email":"mail"}, username映射的选项可能是cn或uid或sAMAccountName',
     test_connect: "测试连接",
@@ -2357,8 +2316,7 @@ const zh_CN = {
     please_input_cron_expression: "请输入 Cron 表达式",
     generate_expression: "自动生成",
     cron_expression_format_error: "Cron 表达式格式错误",
-    cron_expression_interval_short_error:
-      "间隔时间小于 3 分钟, 请避免执行耗时过长的测试",
+    cron_expression_interval_short_error: "间隔时间小于 3 分钟, 请避免执行耗时过长的测试",
     cron_expression_interval_error: "间隔时间不能小于 1 分钟",
     cron: {
       seconds: "秒",
@@ -3109,8 +3067,7 @@ const zh_CN = {
     input_content: "输入内容",
     insert_content: "键入内容",
     append_content: "追加输入",
-    append_tip:
-      "勾选，在现有内容后面追加输入；不勾选，清空现有内容后再进行输入",
+    append_tip: "勾选，在现有内容后面追加输入；不勾选，清空现有内容后再进行输入",
     pls_input: "请输入内容",
     opt_type: "操作方式：",
     yes: "是",
@@ -3149,8 +3106,7 @@ const zh_CN = {
     click_point: "点击位置",
     x: "横坐标",
     y: "纵坐标",
-    click_tip_2:
-      "默认元素的左上角为0，0；通过设置相对位置，控制鼠标在元素上的点击位置",
+    click_tip_2: "默认元素的左上角为0，0；通过设置相对位置，控制鼠标在元素上的点击位置",
     click: "单击",
     dclick: "双击",
     press: "按下",
@@ -3170,8 +3126,7 @@ const zh_CN = {
     sf_tip: "如果是切换 frame，需要传入索引或者元素定位后再切换",
     sf_index: "frame 索引号",
     select_index: "选择当前页面的第几个 frame；",
-    select_f_tip:
-      "例：比如索引值输入 1，那么效果会切换到当前页面的第 2 个 frame(索引值从 0 开始计算)",
+    select_f_tip: "例：比如索引值输入 1，那么效果会切换到当前页面的第 2 个 frame(索引值从 0 开始计算)",
     exit_frame: "退出当前 frame(回到主页面)",
     select_frame_index: "根据 frame 索引号切换到指定 frame",
     select_by_location: "根据定位方式切换 frame",
@@ -3181,8 +3136,7 @@ const zh_CN = {
     frame_index: "网页索引号",
     window_index: "窗口网页索引号",
     select_open_window: "选择打开过的第几个网页；",
-    s_w_t1:
-      "例：比如索引值输入 3，那么效果会切换到已经打开过的第 3 个窗口(索引值从 1 开始计算)",
+    s_w_t1: "例：比如索引值输入 3，那么效果会切换到已经打开过的第 3 个窗口(索引值从 1 开始计算)",
     switch_by_id: "根据句柄 ID 切换到指定窗口",
     switch_by_index: "根据网页索引号切换到指定窗口",
     swicth_to_default: "切换到初始窗口",
@@ -3202,8 +3156,7 @@ const zh_CN = {
     wait_for_ele_not_pre: "等待元素不存在",
     wait_for_ele_edi: "等待元素可编辑",
     wait_for_ele_not_edi: "等待元素不可编辑",
-    wait_tip:
-      "针对元素的Text属性，指页面展示出来的文本内容，等待超时时间为15000ms",
+    wait_tip: "针对元素的Text属性，指页面展示出来的文本内容，等待超时时间为15000ms",
     exe_first: "先执行后判断",
     while_t_1: "先执行后判断类似 doWhile ,先执行一次循环体再判断条件",
     while_t_2: "变量请使用${var}，字符串请加单引号，如：${name} === '张三'",
@@ -3272,16 +3225,14 @@ const zh_CN = {
     relevant_file: "关联需要上传的文件",
     validate_tips: "判断实际的结果是否与期望的一致，可添加多条断言",
     instruction: "指令",
-    screen_tip:
-      "场景步骤如果触发原生弹窗（alert或prompt），或不存在页面时，截图不生效；",
+    screen_tip: "场景步骤如果触发原生弹窗（alert或prompt），或不存在页面时，截图不生效；",
     ele_css_attr: "元素CSS属性",
     ele_css_tip1: "如元素的 CSS 属性，color 属性，font-size 属性等",
     store_css_attr: "CSS属性(storeCssAttribute)",
     validate_type: "请选择断言方式",
     expect_value: "期望值",
     expect_title: "请输入期望的网页标题",
-    title_tip:
-      "断言当前窗口的标题是否跟期望值一致，完全匹配则断言成功，否则失败",
+    title_tip: "断言当前窗口的标题是否跟期望值一致，完全匹配则断言成功，否则失败",
     input_var: "请输入变量",
     input_expect: "请输入期望值",
     var_tip: "断言变量与期望值是否匹配",
@@ -3426,23 +3377,19 @@ const zh_CN = {
   },
   project_application: {
     workstation: {
-      time_tip:
-        "关闭，不设置时间范围；开启，根据设置的时间范围，进入待更新列表，超出时间范围，将自动从列表清除;",
+      time_tip: "关闭，不设置时间范围；开启，根据设置的时间范围，进入待更新列表，超出时间范围，将自动从列表清除;",
       rule_tip: "设置待更新规则，符合选择的条件，会进入待更新列表中",
       api_tip: "接口定义和受影响的接口用例都会进入待更新列表",
       case_tip: "接口用例符合条件就会进入待更新列表",
       update_rule_title: "进入待更新列表规则设置",
       no_show_setting: "不再弹出此弹窗",
-      api_receiver_tip:
-        '注意：请确认接口测试任务通知中的"API更新"已设置"站内信"消息，否则，将接收不到消息提醒。',
-      case_receiver_tip:
-        '注意：请确认接口测试任务通知中的"CASE更新"已设置"站内信"消息，否则，将接收不到消息提醒。',
+      api_receiver_tip: '注意：请确认接口测试任务通知中的"API更新"已设置"站内信"消息，否则，将接收不到消息提醒。',
+      case_receiver_tip: '注意：请确认接口测试任务通知中的"CASE更新"已设置"站内信"消息，否则，将接收不到消息提醒。',
       no_show_setting_tip:
         "勾选后，不再弹出弹窗，会默认按照设置的内容执行同步和变更通知：如果需要更改设置，可以在保存按钮旁的下拉选项中，打开设置项。",
       go_to_api_message: "接口API更新消息通知",
       go_to_case_message: "CASE更新消息通知",
-      update_case_tip:
-        "当CASE发生变化时，引用CASE的自动化场景创建人会收到站内消息提醒",
+      update_case_tip: "当CASE发生变化时，引用CASE的自动化场景创建人会收到站内消息提醒",
     },
   },
   task: {
@@ -3616,8 +3563,7 @@ const zh_CN = {
       step_info: "步骤信息",
       other_info: "其他信息",
       step_describe: "步骤描述",
-      step_describe_tip:
-        "适用于需要每一个步骤进行测试的场景，有明确的测试步骤、预期结果",
+      step_describe_tip: "适用于需要每一个步骤进行测试的场景，有明确的测试步骤、预期结果",
       text_describe: "文本描述",
       text_describe_tip: "使用于简单的测试场景，没有明确的测试步骤",
       change_type: "更改类型",
@@ -3724,8 +3670,7 @@ const zh_CN = {
       status_prepare: "未开始",
       status_running: "进行中",
       status_finished: "已完成",
-      cancel_relevance_project:
-        "取消项目关联会同时取消该项目下已关联的测试用例",
+      cancel_relevance_project: "取消项目关联会同时取消该项目下已关联的测试用例",
       img_loading_fail: "图片加载失败",
       pdf_loading_fail: "PDF加载失败",
       upload_tip: "文件大小限制[0-500MB]",
@@ -3786,8 +3731,7 @@ const zh_CN = {
         case_import_result_success_title: "用例导入成功",
         case_import_result_error_title: "用例导入失败",
         case_import_result_success_content: "成功导入 {0} 条测试用例",
-        case_import_result_error_content:
-          "成功导入测试用例 0 条, 导入失败 {0} 条",
+        case_import_result_error_content: "成功导入测试用例 0 条, 导入失败 {0} 条",
         case_import_result_error_please: "可 ",
         case_import_result_error_import_again: " , 修改后重新导入",
         click_preview_import_error_msg: "点击预览错误信息",
@@ -3884,8 +3828,7 @@ const zh_CN = {
       data_name: "数据名称",
       test_plan_batch_switch: "批量开/关定时任务",
       batch_update_schedule_enable: "更新{0}个测试计划的定时任务状态为",
-      batch_update_schedule_enable_alert:
-        "注意：只能更新已设置了定时任务的测试计划",
+      batch_update_schedule_enable_alert: "注意：只能更新已设置了定时任务的测试计划",
       next_run_time: "下次运行时间",
       schedule_enabled: "已开启",
       check_schedule_enabled: "您勾选的数据检测到有{0}条定时任务可以修改",
@@ -4050,8 +3993,7 @@ const zh_CN = {
       create_report: "创建测试报告",
       view_report: "查看测试报告",
       component_library: "组件库",
-      component_library_tip:
-        "拖拽组件库中组件，添加至右侧，预览报告效果，每个系统组件只能添加一个。",
+      component_library_tip: "拖拽组件库中组件，添加至右侧，预览报告效果，每个系统组件只能添加一个。",
       delete_component_tip: "请至少保留一个组件",
       input_template_name: "输入模版名称",
       template_special_characters: "模版名称不支持特殊字符",
@@ -4067,11 +4009,9 @@ const zh_CN = {
       share_report: "分享报告",
       no_case_relevance: "没有关联用例",
       automatically_update_status: "自动更新状态",
-      automatically_update_status_tip:
-        "当功能用例关联的接口或性能用例在测试计划执行后，自动更新功能用例的状态",
+      automatically_update_status_tip: "当功能用例关联的接口或性能用例在测试计划执行后，自动更新功能用例的状态",
       allow_associated_repetitive_cases: "允许关联重复用例",
-      allow_associated_repetitive_cases_tip:
-        "是否允许同一个测试计划中多次关联相同用例",
+      allow_associated_repetitive_cases_tip: "是否允许同一个测试计划中多次关联相同用例",
       performance_case_count: "性能测试用例数",
       running: "运行中",
       please_choose_test_case: "请选择测试用例！",
@@ -4087,8 +4027,7 @@ const zh_CN = {
       add_issue: "添加缺陷",
       issue_list: "缺陷列表",
       search_name: "根据标题搜索",
-      platform_tip:
-        "在系统设置-工作空间-服务集成中集成缺陷管理平台可以提交缺陷到指定缺陷管理平台",
+      platform_tip: "在系统设置-工作空间-服务集成中集成缺陷管理平台可以提交缺陷到指定缺陷管理平台",
       input_title: "请输入标题",
       id: "缺陷ID",
       title: "缺陷标题",

@@ -61,8 +61,7 @@ const en_US = {
     api_help_documentation: "API",
     confirm_delete: "Whether to delete",
     delete_cancelled: "Delete cancelled",
-    option_cannot_spread_pages:
-      "This options not support spread pages.Do you want continue?",
+    option_cannot_spread_pages: "This options not support spread pages.Do you want continue?",
     workspace: "Workspace",
     space: "Space",
     current_workspace: "Current Workspace",
@@ -105,8 +104,7 @@ const en_US = {
     actuator: "Actuator",
     confirm_info: "Not saved, are you sure to close?",
     prompt: "Prompt",
-    task_center_remark:
-      "The debugging history only shows the last five pieces of data",
+    task_center_remark: "The debugging history only shows the last five pieces of data",
     operating: "Operating",
     input_limit: "Within {0} and {1} characters",
     login: "Sign In",
@@ -251,8 +249,7 @@ const en_US = {
     batch_restore: "Batch restore",
     batch_gc: "Batch gc",
     check_project_tip: "Create or select the project first",
-    auth_redirect_tip:
-      "Jump to the authentication source page for authentication",
+    auth_redirect_tip: "Jump to the authentication source page for authentication",
     tag_tip: "Enter to Add Label",
     node_name_tip: "The name cannot contain'\\'",
     more_operator: "More operator",
@@ -272,15 +269,13 @@ const en_US = {
     all_module_title: "All module",
     create_user: "Creator",
     create_user_id: "Creator ID",
-    run_message:
-      "The task is being executed, please go to the task center to view the details",
+    run_message: "The task is being executed, please go to the task center to view the details",
     executor: "Executor",
     execute_history: "Execute history",
     debug_history: "Debug history",
     testing: "Testing",
     enable_scene: "Original scene environment",
-    variable_scene:
-      "The original scene variable is used first, and the current scene variable is used if there is no",
+    variable_scene: "The original scene variable is used first, and the current scene variable is used if there is no",
     reference_settings: "Reference settings",
     enable_scene_info:
       "Enable scene environment: the current step uses the original environment configuration of the scene to run",
@@ -292,8 +287,7 @@ const en_US = {
     run_completed: "Run Completed",
     run_fail: "Run Fail",
     run_warning: "Is running, please check later",
-    run_stop:
-      "The current task has been stopped and the report cannot be viewed",
+    run_stop: "The current task has been stopped and the report cannot be viewed",
     report_delete: "Report deleted",
     follow_success: "Follow Success",
     cancel_follow_success: "Cancel Follow Success",
@@ -364,8 +358,7 @@ const en_US = {
       and: "All",
       or: "any one",
       add_filter_link: "Add filter",
-      add_filter_link_tip:
-        "There are empty query conditions, please select first!",
+      add_filter_link_tip: "There are empty query conditions, please select first!",
       operators: {
         is_empty: "Is empty",
         is_not_empty: "Is not empty",
@@ -392,8 +385,7 @@ const en_US = {
     tag: "Tag",
     tag_length_tip: "The length of the tag cannot exceed {0} characters",
     append_tag: "Append Tag",
-    append_tag_tip:
-      "Checked: add a new label; unchecked: overwrite the original label;",
+    append_tag_tip: "Checked: add a new label; unchecked: overwrite the original label;",
     module: {
       select_module: "Select module",
       default_module: "Default module",
@@ -474,8 +466,7 @@ const en_US = {
       alert: {
         mail_is_exist: "E-mail is exist",
         cannot_add_more_options: "Cannot add more options",
-        end_time_cannot_over_than_start_time:
-          "End time cannot before than start time",
+        end_time_cannot_over_than_start_time: "End time cannot before than start time",
       },
     },
     no_operation_permission: "No operation permission!",
@@ -510,8 +501,7 @@ const en_US = {
     sync_other_info: "Copy other config",
     delete_current_version: "Current version",
     delete_all_version: "All versions",
-    change_password_tips:
-      "Your password is the initial system password, please change it as soon as possible",
+    change_password_tips: "Your password is the initial system password, please change it as soon as possible",
     ui: "UI TEST",
     not_eligible_for_deletion: "Not Eligible For Deletion",
     batch: "Batch",
@@ -573,8 +563,7 @@ const en_US = {
     creation_issue: "My Creation Issue",
     creation_case_tip: "No case,",
     creation_issue_tip: "No defects,",
-    delNotSame:
-      "Remove parameters in use cases that cannot correspond to API documentation",
+    delNotSame: "Remove parameters in use cases that cannot correspond to API documentation",
     apply_tip: "The workbench pending update setting is not enabled",
     table_name: {
       track_case: "Track Case",
@@ -657,8 +646,7 @@ const en_US = {
     copy_issue_template: "Copy Issue Template",
     copy_issue_template_tips1:
       "Note: The copied template will be added in the target project; this operation may affect the historical defects of the target project, it is recommended to use it only in the new project.",
-    copy_issue_template_tips2:
-      "Please operate with caution, this operation is irreversible!",
+    copy_issue_template_tips2: "Please operate with caution, this operation is irreversible!",
     copy_issue_template_model_tips1: "Copy mode",
     copy_issue_template_model_tips2:
       "(system field option values and settings for custom fields and field option values)",
@@ -675,10 +663,8 @@ const en_US = {
     system_template: "System Template",
     option_check: "Please add option values",
     option_value_check: "Please fill in the full option values",
-    sync_issue_tips:
-      "Note: The system will automatically synchronize at 00:00:00 every day",
-    case_priority_option_check_error:
-      "Use case levels need to add option values in order, for example: P",
+    sync_issue_tips: "Note: The system will automatically synchronize at 00:00:00 every day",
+    case_priority_option_check_error: "Use case levels need to add option values in order, for example: P",
     remote_search_tip: "Enter a user name to search users for you",
   },
   workspace: {
@@ -739,13 +725,11 @@ const en_US = {
       env_list: "Environment List",
       case_env: "Case environment",
       confirm: "Confirm",
-      please_select_env_for_current_scenario:
-        "please select env for current scenario",
+      please_select_env_for_current_scenario: "please select env for current scenario",
       please_select_env_for_current_plan: "please select env for current plan",
       please_select_run_within_resource_pool: "Please select a resource pool",
       lack_env: "Environment group is missing environment！",
-      lack_necessary_environment:
-        "This environment group lacks the necessary project environment！",
+      lack_necessary_environment: "This environment group lacks the necessary project environment！",
       available_group: "available",
       not_available_group: "unavailable",
       please_select_project_env: "Please select project and environment",
@@ -788,8 +772,7 @@ const en_US = {
         '2. For robots that need security verification, you can choose "custom keyword" verification, and the keyword is "Message Notification";<br/>' +
         "3. To use the @ feature, the selected recipient must be a user included in the group, the recipient’s phone number is required and should be the phone number used by Dingding.",
       message: "Event, receiver and receiving method are required\n",
-      message_webhook:
-        "Webhook is required when the receiving mode is WeChat Enterprise, Dingding, Feishu or Webhook",
+      message_webhook: "Webhook is required when the receiving mode is WeChat Enterprise, Dingding, Feishu or Webhook",
       template: "Template",
       track: "Track notification",
       api: "Api notification",
@@ -798,8 +781,7 @@ const en_US = {
       ui: "UI notification",
     },
     integration: {
-      select_defect_platform:
-        "Please select the defect management platform to be integrated:",
+      select_defect_platform: "Please select the defect management platform to be integrated:",
       basic_auth_info: "Basic Auth account information:",
       api_account: "API account",
       api_password: "API password",
@@ -815,24 +797,20 @@ const en_US = {
       input_api_account: "please enter account",
       input_api_password: "Please enter password",
       input_token: "Please enter token",
-      input_jira_url:
-        "Please enter Jira address, for example: https://metersphere.atlassian.net/",
+      input_jira_url: "Please enter Jira address, for example: https://metersphere.atlassian.net/",
       input_jira_issuetype: "Please enter the issue type",
       input_jira_storytype: "Please enter the story type",
       zentao_url: "Zentao url",
       zentao_request: "Zentao request",
       input_zentao_request: "Please enter zentao request type",
-      input_zentao_url:
-        "Please enter Zentao address, for example: http://xx.xx.xx.xx/zentao/",
+      input_zentao_url: "Please enter Zentao address, for example: http://xx.xx.xx.xx/zentao/",
       zentao_info: "Zentao Information",
       zentao_account: "Zentao Account",
       zentao_password: "Zentao Password",
       zentao_prompt_information:
         "This information is the username and password of the user who submitted the defect through ZenTao. If not filled in, the default information configured in the workspace will be used",
-      zentao_config_tip:
-        "Refer to the value of $config->requestType in the ZenTao configuration file",
-      zentao_config_path:
-        "Configuration file reference path: /opt/zbox/app/zentao/config/my.php",
+      zentao_config_tip: "Refer to the value of $config->requestType in the ZenTao configuration file",
+      zentao_config_path: "Configuration file reference path: /opt/zbox/app/zentao/config/my.php",
       use_tip: "Usage guidelines:",
       use_tip_tapd:
         'Basic Auth account information is queried in "Company Management-Security and Integration-Open Platform"',
@@ -862,8 +840,7 @@ const en_US = {
       input_azure_pat: "Please enter Personal Access Token",
       input_azure_url: "Please enter Azure Devops Url",
       input_azure_id: "Please enter Azure Organization ID",
-      use_tip_azure:
-        "Azure Devops URL+PersonalAccessTokens(User Settings-Personal Access Tokens-New Token)",
+      use_tip_azure: "Azure Devops URL+PersonalAccessTokens(User Settings-Personal Access Tokens-New Token)",
       jira_prompt_information:
         "This information is the user authentication information for submitting defects through Jira. If it is not filled in, the default information configured in the workspace will be used",
       jira_information: "Jira information",
@@ -883,8 +860,7 @@ const en_US = {
     delete_tip:
       "Deleting this project will delete all test resources under this project. Are you sure you want to delete?",
     file_delete_tip: "Deleting this project file: {0}？",
-    file_jar_message:
-      "Script execution for interface testing needs to be enabled",
+    file_jar_message: "Script execution for interface testing needs to be enabled",
     file_first: "Already the first",
     file_last: "Already the last",
     file_download: "Download",
@@ -908,12 +884,10 @@ const en_US = {
     no_data: "No Data",
     select: "Select",
     repeatable: "API URL Repeatable",
-    repeatable_info:
-      "After enabling, the interface definition repeatability check will not check the URL",
+    repeatable_info: "After enabling, the interface definition repeatability check will not check the URL",
     case_public: "Public Library",
     public: "Start Public Library",
-    public_info:
-      "You can add test cases to the public test case library by yourself",
+    public_info: "You can add test cases to the public test case library by yourself",
     upload_file_again: "Upload again",
     code_segment: {
       code_segment: "Custom Code",
@@ -961,11 +935,9 @@ const en_US = {
     group_desc: "Add user groups and global configuration",
     code_segment_desc: "Custom code snippet",
     test_case_custom_id: "Test Case Custom ID",
-    test_case_custom_id_info:
-      "The Case ID defaults to the system self incrementing ID",
+    test_case_custom_id_info: "The Case ID defaults to the system self incrementing ID",
     scenario_custom_id: "Scenario Custom ID",
-    scenario_custom_id_info:
-      "The scenario use case ID defaults to the system self-incremented ID",
+    scenario_custom_id_info: "The scenario use case ID defaults to the system self-incremented ID",
     version: {
       name: "Version",
       read: "Search",
@@ -974,8 +946,7 @@ const en_US = {
       version_closed: "Closed",
       version_open: "Open",
       re_review: "ReReview",
-      re_review_info:
-        "Use case under review changes, use case state automatically switches to reReview ",
+      re_review_info: "Use case under review changes, use case state automatically switches to reReview ",
       publish_time: "Publish time",
       start_time: "Start time",
       end_time: "End time",
@@ -985,8 +956,7 @@ const en_US = {
       enable: "Enable version management",
       latest: "Latest",
       set_latest: "Latest",
-      delete_tip:
-        "This version has associated system resources, this operation will delete the associated resources",
+      delete_tip: "This version has associated system resources, this operation will delete the associated resources",
       checkout: "Checkout",
       compare: "Compare",
       set_new: "Make latest version",
@@ -1038,8 +1008,7 @@ const en_US = {
     edit_information: "Edit Information",
     input_name: "Please enter a user name",
     input_email: "Please enter a email",
-    special_characters_are_not_supported:
-      "Special characters are not supported",
+    special_characters_are_not_supported: "Special characters are not supported",
     mobile_number_format_is_incorrect: "Mobile number format is incorrect",
     email_format_is_incorrect: "Email format is incorrect",
     password_format_is_incorrect:
@@ -1053,8 +1022,7 @@ const en_US = {
       "Removing the user from the organization will also remove permissions from all workspaces under the organization. Are you sure you want to remove the member ?",
     input_id_or_email: "Please enter user ID, or user Email",
     input_id_or_email_or_name: "Please enter User ID, Username, or User Email",
-    no_such_user:
-      "Without this user information, please enter the correct user ID or user Email!",
+    no_such_user: "Without this user information, please enter the correct user ID or user Email!",
   },
   user: {
     id: "User ID",
@@ -1065,16 +1033,13 @@ const en_US = {
     input_email: "Please enter a email",
     input_password: "Please enter a password",
     input_phone: "Please enter phone number",
-    special_characters_are_not_supported:
-      "Special characters are not supported",
-    chinese_characters_are_not_supported:
-      "Chinese characters are not supported",
+    special_characters_are_not_supported: "Special characters are not supported",
+    chinese_characters_are_not_supported: "Chinese characters are not supported",
     mobile_number_format_is_incorrect: "Phone number format is incorrect",
     email_format_is_incorrect: "Email format is incorrect",
     delete_confirm: "Are you sure you want to delete this User?",
     apikey_delete_confirm: "Are you sure you want to delete this API Key?",
-    input_id_placeholder:
-      "Please enter ID (Chinese characters are not supported)",
+    input_id_placeholder: "Please enter ID (Chinese characters are not supported)",
     source: "Source",
     button: {
       add_workspace_batch: "Batch add user to workspace",
@@ -1086,8 +1051,7 @@ const en_US = {
     add_user_group_batch: "Batch Add User Group",
     add_project_batch: "Batch Add User To Project",
     add_workspace_batch: "Batch Add User To Workspace",
-    add_project_batch_tip:
-      "Add a read-only user group for members by default (system)",
+    add_project_batch_tip: "Add a read-only user group for members by default (system)",
     import_user_tip: "User group only supports system default user group",
   },
   group: {
@@ -1122,10 +1086,8 @@ const en_US = {
     permission: "Permission",
     please_select_group: "Please Select Group",
     global: "Global",
-    unable_to_remove_current_member:
-      "Unable to remove currently logged in user!",
-    ws_admin_global:
-      "Only workspace administrators can create global user groups",
+    unable_to_remove_current_member: "Unable to remove currently logged in user!",
+    ws_admin_global: "Only workspace administrators can create global user groups",
     ws_share: "Workspace sharing",
   },
   role: {
@@ -1147,8 +1109,7 @@ const en_US = {
     report_sharing_link: "Report Sharing Link",
     recent: "My recent Report",
     search_by_name: "Search by Name",
-    batch_add_monitor_tips:
-      "Format: name, IP, Port, description<br/>such as: item 1, 192.168.1.52, 9100, test",
+    batch_add_monitor_tips: "Format: name, IP, Port, description<br/>such as: item 1, 192.168.1.52, 9100, test",
     test_name: "Test",
     test_overview: "Test Overview",
     test_request_statistics: "Test Request Statistics",
@@ -1162,10 +1123,8 @@ const en_US = {
     test_start_time: "Start Time",
     test_end_time: "End Time",
     test_stop_now: "Test Stop Now",
-    test_stop_now_confirm:
-      "Are you sure you want to stop the current test immediately?",
-    test_rerun_confirm:
-      "Are you sure you want to rerun the current test immediately?",
+    test_stop_now_confirm: "Are you sure you want to stop the current test immediately?",
+    test_rerun_confirm: "Are you sure you want to rerun the current test immediately?",
     test_stop_success: "Test stop successfully",
     downloadJtl: "Download JTL",
     downloadZipFile: "Download executable file",
@@ -1175,8 +1134,7 @@ const en_US = {
     export_jmeter_format: "Export to JMeter format",
     export_to_swagger3_format: "Export to Swagger3.0 format",
     compare: "Compare",
-    generation_error:
-      "Report generation error, unable to view, please check log details!",
+    generation_error: "Report generation error, unable to view, please check log details!",
     being_generated: "Report is being generated...",
     delete_confirm: "Confirm delete: ",
     start_status:
@@ -1186,8 +1144,7 @@ const en_US = {
     project_name: "Project Name",
     force_stop_tips:
       "<strong>Terminating</strong> the servers will immediately kill the servers and the JTL files will be lost.",
-    stop_tips:
-      "A <strong>Graceful shutdown</strong> will archive the JTL files and then stop the servers.",
+    stop_tips: "A <strong>Graceful shutdown</strong> will archive the JTL files and then stop the servers.",
     force_stop_btn: "Terminating",
     stop_btn: "Graceful shutdown",
     stop_btn_all: "All Graceful shutdown ",
@@ -1238,14 +1195,12 @@ const en_US = {
     upload_tips: "Drag files here, or <em> click to upload </em>",
     upload_type: "Only JMX/CSV/JAR files can be uploaded",
     related_file_not_found: "No related test file found!",
-    delete_file_when_uploading:
-      "The current operation may interrupt the file being uploaded!",
+    delete_file_when_uploading: "The current operation may interrupt the file being uploaded!",
     delete_file_confirm: "Confirm delete file:",
     unrelated_file_confirm: "Confirm unrelated file: ",
     file_size_out_of_bounds: "File size out of bounds, file name: ",
     file_size_limit: "The number of files exceeds the limit！",
-    delete_file:
-      "The file already exists, please delete the file with the same name first!",
+    delete_file: "The file already exists, please delete the file with the same name first!",
     thread_num: "VUs:",
     file_type_limit: "Only files in image format can be uploaded",
     input_thread_num: "Please enter the number of threads",
@@ -1295,16 +1250,13 @@ const en_US = {
     resource_pool_is_null: "Resource Pool is empty",
     download_log_file: "Download",
     user_name: "Creator",
-    special_characters_are_not_supported:
-      "Test name does not support special characters",
-    pressure_config_params_is_empty:
-      "Pressure configuration parameters cannot be empty!",
+    special_characters_are_not_supported: "Test name does not support special characters",
+    pressure_config_params_is_empty: "Pressure configuration parameters cannot be empty!",
     pressure_config_custom_error: "The sum of custom strategies must be 1",
     auto_ratio: "Automatic allocation",
     custom_ratio: "Custom",
     specify_resource: "Specify node",
-    schedule_tip:
-      "The interval must not be less than the pressure measuring time",
+    schedule_tip: "The interval must not be less than the pressure measuring time",
     delete_threadgroup_confirm: "Confirm delete scenario",
     scenario_list: "Scenario List",
     scenario_name: "Scenario Name",
@@ -1317,8 +1269,7 @@ const en_US = {
     load_exist_jmx: "Load Project JMX",
     threadgroup_at_least_one: "At least one ThreadGroup is enabled",
     load_api_automation_jmx: "Import API automation scenario",
-    project_file_exist:
-      "The file already exists in the project, please import it directly",
+    project_file_exist: "The file already exists in the project, please import it directly",
     project_file_update_type_error: "Updated file types must be consistent",
     csv_has_header: "Contains Title",
     csv_split: "CSV Split",
@@ -1389,14 +1340,12 @@ const en_US = {
       "Format: parameter name: parameter value <br/> like：Accept-Encoding:utf-8 <br/> Note: The parameter names in batch addition are repeated, and the last data is the latest data by default",
     bach_add_type_info: "Note: only constants can be added in batch",
     params_format_warning: "Incorrect data format at line {0}",
-    create_performance_test_tips:
-      "This operation cannot be completed without permission to create performance tests",
+    create_performance_test_tips: "This operation cannot be completed without permission to create performance tests",
     jar_config: {
       title: "Upload jar package",
       jar_file: "Jar Package",
       jar_manage: "JAR package management",
-      delete_tip:
-        "Deleting the plug-in requires restarting the service to take effect",
+      delete_tip: "Deleting the plug-in requires restarting the service to take effect",
       delete_confirm: "Confirm to delete the plugin",
       file_exist: "The name already exists in the project",
       upload_limit_size: "Upload file size cannot exceed 30MB!",
@@ -1460,8 +1409,7 @@ const en_US = {
       api_case_status: "Case Status",
       api_case_result: "Case Result",
       api_case_passing_rate: "Use Case Pass Rate",
-      create_tip:
-        "Note: Detailed interface information can be filled out on the edit page",
+      create_tip: "Note: Detailed interface information can be filled out on the edit page",
       api_import: "Api Import",
       check_select: "Please check the API",
       api_project: "Project",
@@ -1489,8 +1437,7 @@ const en_US = {
         case: "Case",
         responsible: "Executor",
         title: "Create api",
-        path_info:
-          "Please enter the URL of the interface, such as /api/demo/${id}, where id is the path parameter",
+        path_info: "Please enter the URL of the interface, such as /api/demo/${id}, where id is the path parameter",
         path_all_info: "Please enter the complete test address",
         fast_debug: "Fast debug",
         close_all_label: "close all label",
@@ -1530,10 +1477,8 @@ const en_US = {
         response_template: "Response template",
         console: "Console",
         status_code: "Status code",
-        query_info:
-          "Follow the address bar? The following parameters, such as updateapi?id=112",
-        rest_info:
-          "Slash/separated parameters in the address bar, such as updateapi/{id}",
+        query_info: "Follow the address bar? The following parameters, such as updateapi?id=112",
+        rest_info: "Slash/separated parameters in the address bar, such as updateapi/{id}",
         auth_config_info: "Request requires permission verification",
         pre_script: "Prescript",
         all_pre_script: "Prescript",
@@ -1556,8 +1501,7 @@ const en_US = {
         other_config: "Other Config",
         cert_alias: "Certificate Alias",
         message_template: "Message Template",
-        tcp_parameter_tip:
-          "The request parameters can be referenced in the request template ${XXX}",
+        tcp_parameter_tip: "The request parameters can be referenced in the request template ${XXX}",
         step_message: "Too many steps, whether to expand the first 30 steps？",
         esb_table: {
           name: "name",
@@ -1569,8 +1513,7 @@ const en_US = {
           not_required: "Not required",
         },
         esb_copy_confirm: "Copy this node data struct",
-        esb_title:
-          "You can use ${name} or ${parent name.child name} to generate xml struct in report template",
+        esb_title: "You can use ${name} or ${parent name.child name} to generate xml struct in report template",
       },
       document: {
         open: "Open",
@@ -1607,8 +1550,7 @@ const en_US = {
       case_reduction_error_text: "Please restore first",
     },
     automation: {
-      open_check_message:
-        "There are too many steps to check, and a maximum of 20 first-level steps can be supported.",
+      open_check_message: "There are too many steps to check, and a maximum of 20 first-level steps can be supported.",
       open_expansion: "Batch Folding Steps",
       close_expansion: "Bulk Expand Steps",
       bulk_activation_steps: "Bulk activation steps",
@@ -1689,8 +1631,7 @@ const en_US = {
         "The default is on, when there is only one request in the loop, it can be turned on/off; when there is more than one request in the loop, it can only be turned on。",
       loop_return_val: "Define variable name",
       loop_input_val: "Variable prefix",
-      loop_message:
-        "There is more than one request in the current cycle and cannot be closed",
+      loop_message: "There is more than one request in the current cycle and cannot be closed",
       env_message:
         "Please select the operating environment for the project to which this step belongs in the environment configuration",
       debug_message: "The current step is disabled and cannot be debugged",
@@ -1699,10 +1640,8 @@ const en_US = {
       request_error: "error",
       generate_report: "Generate report",
       rerun: "fail and rerun",
-      rerun_warning:
-        "The connection is abnormal, please check the environment configuration",
-      rerun_success:
-        "Rerun has already started, refresh the results later to view",
+      rerun_warning: "The connection is abnormal, please check the environment configuration",
+      rerun_success: "Rerun has already started, refresh the results later to view",
       csv_warning: "Please add csv file",
       variable_warning: "Variable name cannot be empty",
     },
@@ -1732,8 +1671,7 @@ const en_US = {
       common_config: "Common Config",
       http_config: "HTTP Config",
       advanced_setting: "Click Advanced settings to add variable values",
-      variables_delete_info:
-        "Are you sure you want to delete the selected variable",
+      variables_delete_info: "Are you sure you want to delete the selected variable",
       csv_delete: "Are you sure you want to delete the CSV file",
       delete_info: "Please select a data deletion",
       list_info: "List data is separated by ,",
@@ -1742,10 +1680,8 @@ const en_US = {
       import: "Import Environment",
       request_timeout: "Request Timeout",
       response_timeout: "Response Timeout",
-      repeat_warning:
-        "The domain name whose activation condition is'None' already exists!",
-      copy_warning:
-        "Domain names whose enabling conditions are'none' do not support copying!",
+      repeat_warning: "The domain name whose activation condition is'None' already exists!",
+      copy_warning: "Domain names whose enabling conditions are'none' do not support copying!",
       path_warning: "The path cannot be empty",
       project_warning: "project id cannot be empty",
       module_warning: "The path cannot be empty",
@@ -1776,20 +1712,16 @@ const en_US = {
       test_name: "Test Name",
       reference: "Reference",
       clone: "Copy",
-      cant_reference:
-        "Historical test files, can be referenced after re-saving",
+      cant_reference: "Historical test files, can be referenced after re-saving",
       share_cookie: "share cookie",
       module_id: "Scenario Module ID",
       level: "Level",
       version: "Scenario Version",
-      warning_context:
-        "It is not currently supported to add all scenarios to the test plan in batches!",
+      warning_context: "It is not currently supported to add all scenarios to the test plan in batches!",
       jmx_file_set: "Scenario JMX file set",
       error_report_jmx: "Failed to export JMX file",
-      scenario_warning:
-        "No other steps can be added to the referenced scenario steps and sub-steps",
-      scenario_step_warning:
-        "No other steps can be added under the current step",
+      scenario_warning: "No other steps can be added to the referenced scenario steps and sub-steps",
+      scenario_step_warning: "No other steps can be added under the current step",
       scenario_error: "Cannot reference or copy itself！",
       integrated: "Integrated",
       independent: "Independent",
@@ -1809,12 +1741,9 @@ const en_US = {
       path: "Path",
       address: "Address",
       refer_to_environment: "Use Environment",
-      please_configure_socket_in_environment:
-        "Please Configure Path In The Environment",
-      please_configure_environment_in_scenario:
-        "Please Configure Environment In The Scenario",
-      please_add_environment_to_scenario:
-        "Please Add The Environment Configuration To The Scenario First",
+      please_configure_socket_in_environment: "Please Configure Path In The Environment",
+      please_configure_environment_in_scenario: "Please Configure Environment In The Scenario",
+      please_add_environment_to_scenario: "Please Add The Environment Configuration To The Scenario First",
       url_description: "etc: https://fit2cloud.com",
       path_description: "etc：/login",
       parameters: "Query parameters",
@@ -1831,8 +1760,7 @@ const en_US = {
       parameters_advance_add_func_error: "Please select function first",
       parameters_advance_add_mock_error: "Please select mock data first",
       parameters_advance_add_param_error: "Please enter function parameters",
-      parameters_desc:
-        "Parameters will be appended to the URL e.g. https://fit2cloud.com?Name=Value&Name2=Value2",
+      parameters_desc: "Parameters will be appended to the URL e.g. https://fit2cloud.com?Name=Value&Name2=Value2",
       headers: "Headers",
       body: "Body",
       body_kv: "Key Value",
@@ -1930,10 +1858,8 @@ const en_US = {
         suggest_tip: "Click the note to add the JSONPath assertion",
         regex_info:
           'Special characters "$ () * +. [] \\ ^ {} |" need to be escaped as "\\ "+"special characters", such as "\\$"',
-        xpath_info:
-          "Select the extraction method according to the content format of the request response",
-        assert_info:
-          "According to the content format of the request response, select the assertion method",
+        xpath_info: "Select the extraction method according to the content format of the request response",
+        assert_info: "According to the content format of the request response, select the assertion method",
         regular_match: "Regular match",
         none: "Do not verify []",
         value_eq: "Value-equal to [value=]",
@@ -1950,8 +1876,7 @@ const en_US = {
         check: "Check the elements in the array",
         add_check: "Add check",
         add_subfield: "Add subfield",
-        description:
-          "Add assertion rules to check whether the response result is as expected",
+        description: "Add assertion rules to check whether the response result is as expected",
       },
       extract: {
         label: "Extract from response",
@@ -1973,8 +1898,7 @@ const en_US = {
         pre_exec_script: "PreProcessor",
         post_exec_script: "PostProcessor",
         code_template: "Code template",
-        bean_shell_processor_tip:
-          "Currently only BeanShell scripts are supported",
+        bean_shell_processor_tip: "Currently only BeanShell scripts are supported",
         code_template_get_variable: "Get Variable",
         code_template_set_variable: "Set Variable",
         code_template_get_global_variable: "Get Global Variable",
@@ -1986,8 +1910,7 @@ const en_US = {
         code_hide_report_length: "Hide report length",
         param_environment_get_global_variable: "Get run environment param",
         param_environment_set_global_variable: "Set run environment param",
-        param_environment_delete_global_variable:
-          "Delete run environment param",
+        param_environment_delete_global_variable: "Delete run environment param",
         param_environment_show_global_variable: "Show all environment params",
       },
       dubbo: {
@@ -1998,8 +1921,7 @@ const en_US = {
         get_provider_success: "get provider list to finish",
         input_registry_center: "Please enter the registry center",
         input_consumer_service: "Please enter the consumer & service",
-        check_registry_center:
-          "Can't get interface list, please check the registry center",
+        check_registry_center: "Can't get interface list, please check the registry center",
       },
       sql: {
         dataSource: "Data Source",
@@ -2044,8 +1966,7 @@ const en_US = {
       export_tip: "Export Tip",
       ms_tip: "Support for MeterSphere JSON format",
       support_format: "Support p12, jks, pfx format",
-      ms_export_tip:
-        "Export jSON-formatted files via MeterSphere website or browser plug-ins",
+      ms_export_tip: "Export jSON-formatted files via MeterSphere website or browser plug-ins",
       har_export_tip: "Export HAR files by browser dev-tool",
       esb_export_tip: "Can not export esb files now",
       swagger_tip: "Swagger 2.0 and 3.0 json files are supported",
@@ -2063,8 +1984,7 @@ const en_US = {
       optional: "（optional）",
       timing_synchronization: "Timing synchronization",
       next_synchronization_time: "Next synchronization time",
-      ms_env_import_file_limit:
-        "It only supports JSON format files exported through metersphere",
+      ms_env_import_file_limit: "It only supports JSON format files exported through metersphere",
       file_exceed_limit: "The number of files exceeds the limit",
       import_cover_tip: "Import mode: Overwrite mode description",
       file_name_to_long: "File name is too long",
@@ -2091,13 +2011,10 @@ const en_US = {
         "3. The same Scenario that already exists in the system will not be changed if the content is the same",
       cover_tip_scenario_4: "4. Add Scenario that do not exist in the system",
       no_cover_tip: "No overlay mode",
-      no_cover_tip_1:
-        "1. The same interface that already exists in the system will not be changed",
+      no_cover_tip_1: "1. The same interface that already exists in the system will not be changed",
       no_cover_tip_2: "2. Add interfaces that do not exist in the system",
-      no_cover_tip_scenario_1:
-        "1. The same Scenario that already exists in the system will not be changed",
-      no_cover_tip_scenario_2:
-        "2. Add Scenario that do not exist in the system",
+      no_cover_tip_scenario_1: "1. The same Scenario that already exists in the system will not be changed",
+      no_cover_tip_scenario_2: "2. Add Scenario that do not exist in the system",
       import_version: "Import version",
       data_update_version: "Api update version",
       data_new_version: "Api creation version",
@@ -2115,22 +2032,16 @@ const en_US = {
         completion: "Finished api / all api * 100%",
         coverage: "Apis whitch have test case / all apis * 100%",
         pass: "Scenarios whitch final execute is sucess / all scenarios * 100%",
-        api_case_pass:
-          "Api case whitch final execute is sucess / all api case *100%",
-        success:
-          "Execute success count number / all execute count number * 100%",
-        interface_coverage:
-          "Api whitch url in scenario's step / all api * 100%",
-        api_coverage:
-          "Api(URL) whitch have case or in scenario's step / all api * 100%",
+        api_case_pass: "Api case whitch final execute is sucess / all api case *100%",
+        success: "Execute success count number / all execute count number * 100%",
+        interface_coverage: "Api whitch url in scenario's step / all api * 100%",
+        api_coverage: "Api(URL) whitch have case or in scenario's step / all api * 100%",
         review: "Reviewed cases / all cases * 100%",
-        testplan_coverage:
-          "Relevance function cases / all function cases * 100%",
+        testplan_coverage: "Relevance function cases / all function cases * 100%",
         case_execute: "Executed api case / all api case * 100%",
         scenario_execute: "Executed scenario / all scenario * 100%",
         schedule_running: "Scenario count which has schedule task",
-        schedule_pass:
-          "Success schedule task / all schedule task run times * 100%",
+        schedule_pass: "Success schedule task / all schedule task run times * 100%",
       },
       api_count_card: {
         title: "API count",
@@ -2262,11 +2173,9 @@ const en_US = {
       execution_order: "Order",
       associated_scene_results: "Associated scene results",
       execute_before_step: "Execute before single",
-      execute_before_step_tip:
-        "Execute every time before each API step, such as request encryption",
+      execute_before_step_tip: "Execute every time before each API step, such as request encryption",
       execute_post_step: "Execute after single",
-      execute_post_step_tip:
-        "Execute every time after each API step, such as response decryption",
+      execute_post_step_tip: "Execute every time after each API step, such as response decryption",
       execute_before_all_steps: "Execute before all",
       execute_before_all_steps_tip:
         "Execute once before the start of all API Scenario, such as token acquisition and scene initialization",
@@ -2349,13 +2258,11 @@ const en_US = {
     cannot_remove_all_node: "Cannot delete all independent nodes",
     cannot_empty: "Resource pool cannot be empty",
     fill_the_data: "Please complete the data",
-    delete_prompt:
-      "This operation will permanently delete the resource pool, continue?",
+    delete_prompt: "This operation will permanently delete the resource pool, continue?",
     update_prompt:
       "{0}  The other tests are using this resource pool. Disabling the monitoring part that may affect the report. Do you want to continue?",
     status_change_success: "Successfully changed the status!",
-    status_change_failed:
-      "Failed to change the status, resource pool is invalid!",
+    status_change_failed: "Failed to change the status, resource pool is invalid!",
     check_in: "Check in",
     node_selector_invalid: "nodeSelector must be JSON",
     node_selector_tip: "Configure the nodeSelector of the load test Pod",
@@ -2366,8 +2273,7 @@ const en_US = {
       "Format: IP, Port, Monitor, maximum concurrent number<br/>such as: 192.168.1.52,8082,9100,500",
     k8s_sa_tips: "Permissions required to use the K8S resource pool",
     k8s_sa_download_tips: "Download SA executable file",
-    k8s_deploy_type_tips:
-      "A DaemonSet or Deployment needs to be deployed to perform interface testing",
+    k8s_deploy_type_tips: "A DaemonSet or Deployment needs to be deployed to perform interface testing",
     k8s_deploy_download_tips: "Download the YAML executable file",
   },
   system_parameter_setting: {
@@ -2412,11 +2318,9 @@ const en_US = {
     input_filter: "Please enter a user filter",
     input_mapping: "Please enter LDAP attribute mapping",
     input_username: "please enter user name",
-    input_url_placeholder:
-      "Please enter the LDAP address (eg ldap://localhost:389)",
+    input_url_placeholder: "Please enter the LDAP address (eg ldap://localhost:389)",
     input_ou_placeholder: "Enter user OU (use | to separate each OU)",
-    input_filter_placeholder:
-      "Input filter [Possible options are cn or uid or sAMAccountName={0}, eg: (uid={0})]",
+    input_filter_placeholder: "Input filter [Possible options are cn or uid or sAMAccountName={0}, eg: (uid={0})]",
     input_mapping_placeholder:
       'eg：{"username":"uid","name":"sn","email":"mail"}, The username mapping option may be cn or uid or sAMAccountName',
     test_connect: "Test Connection",
@@ -2511,8 +2415,7 @@ const en_US = {
     project: "Project",
     vum_total: "Total vum",
     vum_used: "Used vum",
-    vum_tip:
-      "vum (thread * duration): a concurrent user consumes 1 vum for one minute",
+    vum_tip: "vum (thread * duration): a concurrent user consumes 1 vum for one minute",
     clean: "Clean",
   },
   schema: {
@@ -2570,13 +2473,11 @@ const en_US = {
   },
   variables: {
     ƒ: "Only CSV files can be uploaded",
-    csv_message:
-      "500 items are displayed by default, and the complete content can be downloaded and viewed.",
+    csv_message: "500 items are displayed by default, and the complete content can be downloaded and viewed.",
     end: "end",
     start: "start",
     increment: "increment",
-    counter_info:
-      "000 produces at least three digits. user_ 000 in the form of user_ NNN",
+    counter_info: "000 produces at least three digits. user_ 000 in the form of user_ NNN",
     config: "configure",
     add_file: "Add file",
     delimiter: "Delimiter",
@@ -2585,8 +2486,7 @@ const en_US = {
     csv_download: "CSV file does not support exporting",
   },
   auth_source: {
-    delete_prompt:
-      "This operation will delete the authentication source, do you want to continue? ",
+    delete_prompt: "This operation will delete the authentication source, do you want to continue? ",
     title: "Auth Source",
     auth_name_valid: "Name does not support special characters",
   },
@@ -2661,8 +2561,7 @@ const en_US = {
     project_environment_setting: "Environment setting",
     project_file_management: "Project file management",
     project_template_management: "Project template management",
-    personal_information_personal_settings:
-      "Personal information personal settings",
+    personal_information_personal_settings: "Personal information personal settings",
     personal_information_apikeys: "Personal information API Keys",
     auth_title: "Auth",
     group_permission: "Group",
@@ -3024,8 +2923,7 @@ const en_US = {
       create_performance: "CREATE PERFORMANCE",
       create_performance_batch: "BATCH CREATE PERFORMANCE",
       batch_copy: "BATCH COPY",
-      open_url_content:
-        "According to the URL, open the specified operation page",
+      open_url_content: "According to the URL, open the specified operation page",
     },
     project_api_report: {
       name: "Report",
@@ -3114,10 +3012,8 @@ const en_US = {
     assertion: "Error code assertion",
     tips: 'Tips: Use error report in "Project Settings - Project environment-Assertions"',
     use_error_report: "Use error code",
-    use_desc:
-      "In case of conflict between error code and error assertions, it is treated as error code",
-    conflict_with_success:
-      "If request has error report and success assertion：",
+    use_desc: "In case of conflict between error code and error assertions, it is treated as error code",
+    conflict_with_success: "If request has error report and success assertion：",
     conflict_with_error: "If request has error report and error assertion：",
     option: {
       name: "Err code",
@@ -3208,8 +3104,7 @@ const en_US = {
     input_content: "Input content",
     insert_content: "Type content",
     append_content: "Append input",
-    append_tip:
-      "Check, append the input after the existing content;Uncheck, clear the existing content and then input",
+    append_tip: "Check, append the input after the existing content;Uncheck, clear the existing content and then input",
     pls_input: "Please input content",
     opt_type: "mode:",
     yes: "Yes",
@@ -3227,27 +3122,23 @@ const en_US = {
     s_value: "Value ( Value )",
     text: "Text ( Text )",
     set_itera: "Set traversal",
-    foreach_tip:
-      "Set loop iteration, support array row data, for example: [1,2,3]; you can also enter variables",
+    foreach_tip: "Set loop iteration, support array row data, for example: [1,2,3]; you can also enter variables",
     intervals: "Interval time",
     condition_type: "Condition Type",
     please_select: "Please select",
     condition_list: "Condition list: set multiple conditions by list",
     condition_list_: "Condition List",
-    condition_exp:
-      "Conditional expression: If the expression is true, then execute the steps inside",
+    condition_exp: "Conditional expression: If the expression is true, then execute the steps inside",
     condition_exp_: "Condition expression",
     expression: "expression",
-    if_tip:
-      "Please use ${var} for variables, and single quotes for strings, such as: ${name} === 'Zhangsan'",
+    if_tip: "Please use ${var} for variables, and single quotes for strings, such as: ${name} === 'Zhangsan'",
     input_c_tip:
       "'The contenteditable attribute of an editable paragraph element must be true to enable input; for example: &lt;p contenteditable=&quot;true&quot;&gt;This is an editable paragraph. Please try editing the text.&lt; /p&gt;'",
     input: "input box",
     editable_p: "Editable paragraph",
     click_type: "Click method",
     set_click_point: "Set the mouse click position",
-    click_tip_1:
-      "Check to control the click position of the mouse on the element",
+    click_tip_1: "Check to control the click position of the mouse on the element",
     element_location: "Element Location",
     click_point: "Click position",
     x: "Abscissa",
@@ -3265,24 +3156,20 @@ const en_US = {
     move_type: "Move Type",
     mouse_location: "Mouse location",
     relative_location: "relative coordinate location",
-    move_tip:
-      "Relative position, the current position coordinate of the element is 0, 0",
+    move_tip: "Relative position, the current position coordinate of the element is 0, 0",
     mouse_out_e: "Mouse out of element",
     mouse_in_e: "Mouse in element",
     mouse_e_to_c: "Mouse mouse from element to coordinate position",
     url: "Webpage address",
-    sf_tip:
-      "If you are switching frames, you need to pass in the index or element positioning before switching",
+    sf_tip: "If you are switching frames, you need to pass in the index or element positioning before switching",
     sf_index: "frame index number",
     select_index: "Select the frame of the current page;",
     select_f_tip:
       "Example: For example, if the index value is entered as 1, the effect will switch to the second frame of the current page (the index value starts from 0)",
     exit_frame: "Exit the current frame (back to the main page)",
-    select_frame_index:
-      "Switch to the specified frame according to the frame index",
+    select_frame_index: "Switch to the specified frame according to the frame index",
     select_by_location: "Switch frame according to the positioning method",
-    sw_tip1:
-      "If you switch to the specified window, you need to pass in the handle",
+    sw_tip1: "If you switch to the specified window, you need to pass in the handle",
     handle_id: "Handle ID",
     window_handle: "Window handle ID",
     frame_index: "Webpage index number",
@@ -3291,11 +3178,9 @@ const en_US = {
     s_w_t1:
       "Example: For example, if the index value is entered as 3, then the effect will switch to the third window that has been opened (the index value starts from 1)",
     switch_by_id: "Switch to the specified window according to the handle ID",
-    switch_by_index:
-      "Switch to the specified window according to the page index number",
+    switch_by_index: "Switch to the specified window according to the page index number",
     switch_to_default: "Switch to initial window",
-    ws_tip1:
-      "Specify the size, set the size of the window according to the input width and height",
+    ws_tip1: "Specify the size, set the size of the window according to the input width and height",
     size: "Size:",
     by_pixel: "in pixels",
     width: "width",
@@ -3316,8 +3201,7 @@ const en_US = {
     exe_first: "Execute first and then judge",
     while_t_1:
       "Execute first and then judge similar to doWhile , execute the loop body once and then judge the condition",
-    while_t_2:
-      "Please use ${var} for variables and single quotes for strings, such as: ${name} === 'Zhangsan'",
+    while_t_2: "Please use ${var} for variables and single quotes for strings, such as: ${name} === 'Zhangsan'",
     loop_time_out: "Loop timeout",
     operation: "Operation",
     use_pixel: "use pixel",
@@ -3369,8 +3253,7 @@ const en_US = {
     unknown_scenario: "Unknown Scenario",
     unknown_instruction: "Unknown Instruction",
     unknown_element: "Unknown Element",
-    scenario_ref_add_warning:
-      "No other steps can be added to the referenced scene/instruction steps and sub steps!",
+    scenario_ref_add_warning: "No other steps can be added to the referenced scene/instruction steps and sub steps!",
     batch_editing_steps: "Batch editing steps",
     wait_time_config: "Timeout setting",
     wait_element_timeout: "Wait element timeout",
@@ -3385,8 +3268,7 @@ const en_US = {
     screen_tip:
       "If the scene step triggers a native popup (alert or prompt), or if there is no page, the screenshot will not take effect;",
     ele_css_attr: "Element CSS attribute",
-    ele_css_tip1:
-      "Such as element CSS properties, color properties, font-size properties, etc.",
+    ele_css_tip1: "Such as element CSS properties, color properties, font-size properties, etc.",
     store_css_attr: "CSS attribute (storeCssAttribute)",
     validate_type: "Please select an assertion method",
     expect_value: "Expected value",
@@ -3400,12 +3282,9 @@ const en_US = {
     input_expect_text: "Please enter the expected popup text",
     input_window_tip:
       "Only supports the assertion of pop-up text. If yes, the confirmation button on the pop-up will be clicked after the assertion is successful. If no, no button will be clicked after the assertion is successful",
-    select_value:
-      "The value of the selected element is equal to the desired (SelectedValue)",
-    select_label:
-      "The text displayed by the drop-down box option is equal to the expected (SelectedLabel) ",
-    not_select_value:
-      "The value of the selected element is not equal to the expected (NotSelectedValue)",
+    select_value: "The value of the selected element is equal to the desired (SelectedValue)",
+    select_label: "The text displayed by the drop-down box option is equal to the expected (SelectedLabel) ",
+    not_select_value: "The value of the selected element is not equal to the expected (NotSelectedValue)",
     assert_check: "The element is checked (Checked)",
     assert_editable: "Element is editable (Editable)",
     assert_element_present: "Element Present (ElementPresent)",
@@ -3415,8 +3294,7 @@ const en_US = {
     assert_element_not_text: "Element text is not equal to expected (NotText)",
     assert_text: "Element text equals expected(Text)",
     assert_value: "The element value is equal to the expected (Value)",
-    script_tip:
-      "Only js script is supported, the set script will be executed in the browser",
+    script_tip: "Only js script is supported, the set script will be executed in the browser",
     script_type: "Script Type",
     set_var: "Set variable",
     async: "async",
@@ -3429,11 +3307,9 @@ const en_US = {
     like_string_tip2:
       "Note: If it is not a valid js object type when stored as an object type (such as illegal special characters, space effects), it may generate a report failure.",
     ele_pro: "Element Properties",
-    like_ele_tip:
-      "such as the element's name attribute, id attribute, value attribute, etc.",
+    like_ele_tip: "such as the element's name attribute, id attribute, value attribute, etc.",
     xpath_locator: "xpath path",
-    xpath_tip:
-      "Only supports element positioning in xpath mode, and returns a value",
+    xpath_tip: "Only supports element positioning in xpath mode, and returns a value",
     store: "Ordinary object (store)",
     store_text: "Element text (storeText)",
     store_value: "Element value (storeValue)",
@@ -3442,8 +3318,7 @@ const en_US = {
     store_window_handle: "Window Handle(storeWindowHandle)",
     store_title: "Web page title (storeTitle)",
     wait_time: "Wait time",
-    per_tip:
-      "After enabling the performance mode, the memory and cpu usage will be reduced",
+    per_tip: "After enabling the performance mode, the memory and cpu usage will be reduced",
     fail_over: "Failed to terminate",
     validate_tip:
       "Check means a hard assertion (assert), if the assertion fails, the program will terminate. Unchecked means a soft assertion (verify), if the assertion fails, the program will not terminate.",
@@ -3451,8 +3326,7 @@ const en_US = {
     extract_type: "Please select the extraction information type",
     input_handle_name: "Please enter the storage window handle variable name",
     extract_tip: "Save the extracted content to a variable",
-    input_window_title:
-      "Please enter the variable name to store the title of the webpage",
+    input_window_title: "Please enter the variable name to store the title of the webpage",
     revoke: "Revoke",
     is_required: "Required",
     remark: "Remark",
@@ -3478,10 +3352,8 @@ const en_US = {
     import_template: "Import Template",
     download_template: "Download Template",
     import_desc: "Import Description",
-    el_import_tip_1:
-      "1. If the imported ID already exists, update the element;",
-    el_import_tip_2:
-      "2. If the imported ID is empty or the ID does not exist, add an element;",
+    el_import_tip_1: "1. If the imported ID already exists, update the element;",
+    el_import_tip_2: "2. If the imported ID is empty or the ID does not exist, add an element;",
     el_import: "Element import",
     empty_text: "No data yet",
     confirm_del_el: "Confirm delete element",
@@ -3508,17 +3380,14 @@ const en_US = {
     confirm_del_ins: "Confirm Delete Instruction",
     confirm_del_scen: "Confirm delete scene",
     check_grid: "Connection failed, please check selenium-grid service status",
-    check_grid_ip:
-      "Connection failed, please check selenium-grid address information",
+    check_grid_ip: "Connection failed, please check selenium-grid address information",
     view_config: "View configuration information",
-    config_ip:
-      "The local ip and port information are not detected, please check",
+    config_ip: "The local ip and port information are not detected, please check",
     personal_info: "Personal Information",
     in_config: "In Settings",
     command_steps_label: "Instruction Steps",
     assert_in_text: "Element text contains expectations (InText)",
-    assert_not_in_text:
-      "Element text does not contain expectations (NotInText)",
+    assert_not_in_text: "Element text does not contain expectations (NotInText)",
     equal: "equal",
     not_equal: "not equal to",
     contain: "contains",
@@ -3556,12 +3425,9 @@ const en_US = {
     workstation: {
       time_tip:
         "Off, no time range is set; On, according to the set time range, enter the list to be updated, if the time range is exceeded, it will be automatically cleared from the list;",
-      rule_tip:
-        "Set the to-be-updated rule, if it meets the selected conditions, it will enter the to-be-updated list",
-      api_tip:
-        "Both the interface definition and the affected interface use cases will enter the to-be-updated list",
-      case_tip:
-        "If the interface use case meets the conditions, it will enter the to-be-updated list",
+      rule_tip: "Set the to-be-updated rule, if it meets the selected conditions, it will enter the to-be-updated list",
+      api_tip: "Both the interface definition and the affected interface use cases will enter the to-be-updated list",
+      case_tip: "If the interface use case meets the conditions, it will enter the to-be-updated list",
       update_rule_title: "Enter the to-be-updated list rule settings",
       no_show_setting: "Do not pop up this popup again",
       api_receiver_tip:
@@ -3754,23 +3620,18 @@ const en_US = {
       step_info: "Step Info",
       other_info: "Other Info",
       step_describe: "Step Describe",
-      step_describe_tip:
-        "Applicable to every step of the test scenario, there are clear test steps, expected results",
+      step_describe_tip: "Applicable to every step of the test scenario, there are clear test steps, expected results",
       text_describe: "Text Describe",
-      text_describe_tip:
-        "For simple test scenarios, there are no clear test steps",
+      text_describe_tip: "For simple test scenarios, there are no clear test steps",
       change_type: "Change Type",
       minder_create_tip: "failed, unable to create its parent module in minder",
       minder_issue_delete_tip: "Successfully cancel the defect association",
       check_select: "Please check the case",
       export_all_cases: "Are you sure you want to export all use cases?",
       minder_tem_node_tip: "Cannot create case {0} under the temporary node",
-      minder_is_module_tip:
-        "{0} is a module and cannot be modified as a use ca",
-      minder_not_module_tip:
-        "Module {0}, cannot be created under a non-module node",
-      minder_all_module_tip:
-        "All case are virtual modules. Please create use cases in other modules",
+      minder_is_module_tip: "{0} is a module and cannot be modified as a use ca",
+      minder_not_module_tip: "Module {0}, cannot be created under a non-module node",
+      minder_all_module_tip: "All case are virtual modules. Please create use cases in other modules",
       minder_save_confirm_title: "Please save the minder",
       minder_save_confirm_tip: "The minder is not saved. Are you sure to save?",
       minder_import_save_confirm_tip:
@@ -3784,8 +3645,7 @@ const en_US = {
       create_case: "Create",
       edit_case: "Edit case",
       view_case: "Test case",
-      no_project:
-        "There is no project in this workspace, please create the project first",
+      no_project: "There is no project in this workspace, please create the project first",
       priority: "Priority",
       type: "Type",
       method: "Method",
@@ -3816,25 +3676,20 @@ const en_US = {
       delete: "Delete case",
       batch_delete_confirm: "Confirm delete {0} case?",
       batch_delete_completely_confirm: "Confirm delete {0} case completely?",
-      batch_delete_tip:
-        "It cannot be recovered after delete, please delete carefully",
-      public_batch_delete_tip:
-        "It will be removed from public case, Carefully.",
+      batch_delete_tip: "It cannot be recovered after delete, please delete carefully",
+      public_batch_delete_tip: "It will be removed from public case, Carefully.",
       public_remove: "Remove",
       batch_delete_soft_tip: "The test case will be put into trash",
       save_create_continue: "Save and create continue",
       save_add_public: "Save and add public",
-      please_create_project:
-        "No project available, please create the project first",
+      please_create_project: "No project available, please create the project first",
       create_module_first: "Please create module first",
       relate_test: "Relate test",
       relate_issue: "Relate Issue",
       demand_name_id: "Demand ID/Name",
       please_select_relate_test: "Please select the test to associate",
-      relate_test_not_find:
-        "The associated test does not exist, please check the test case",
-      other_relate_test_not_find:
-        "Associated test name, please go to the third party platform to execute",
+      relate_test_not_find: "The associated test does not exist, please check the test case",
+      other_relate_test_not_find: "Associated test name, please go to the third party platform to execute",
       batch_handle: "Batch processing (select {0} items)",
       batch_update: "Update the attributes of {0} cases",
       select_attr: "Select attr",
@@ -3845,10 +3700,8 @@ const en_US = {
       updated_attr_value: "The updated attribute value",
       batch_operate: "Batch operation",
       please_select_attr: "Please select attributes",
-      please_input_attr_value:
-        "Please input the value corresponding to the attribute",
-      please_select_attr_value:
-        "Please select the value corresponding to the attribute",
+      please_input_attr_value: "Please input the value corresponding to the attribute",
+      please_select_attr_value: "Please select the value corresponding to the attribute",
       please_select_required_value: "Please select value",
       batch_edit_case: "Batch editing",
       batch_edit_btn: "Edit",
@@ -3862,8 +3715,7 @@ const en_US = {
       batch_link_demand_btn: "Related demand",
       public_warning: "The public library configuration is not enabled",
       generate_dependencies: "Generate graph",
-      generate_dependencies_warning:
-        "For a better experience, it is recommended to check the data below 500",
+      generate_dependencies_warning: "For a better experience, it is recommended to check the data below 500",
       batch_delete_case: "Delete",
       batch_delete_btn: "Delete",
       batch_unlink: "Batch Unlink",
@@ -3894,15 +3746,13 @@ const en_US = {
         case_export: "Export case",
         download_template: "Download template",
         click_upload: "Upload",
-        upload_limit:
-          "Only XLS/XLSX/XMIND files can be uploaded, and no more than 100M",
+        upload_limit: "Only XLS/XLSX/XMIND files can be uploaded, and no more than 100M",
         upload_xmind_format: "Only xmind",
         upload_xmind: "Only xmind files can be uploaded, and no more than 800",
         upload_limit_count: "Only one file can be uploaded at a time",
         upload_limit_format: "Upload files can only be XLS, XLSX format!",
         upload_limit_size: "Upload file size cannot exceed 100MB!",
-        upload_refresh_tips:
-          "Content has been updated, please upload the file again!",
+        upload_refresh_tips: "Content has been updated, please upload the file again!",
         upload_limit_other_size: "Upload file size cannot exceed",
         success: "Import success",
         error: "Import error",
@@ -3915,21 +3765,18 @@ const en_US = {
         continue_upload: "Continue",
         import_create: "Import Create",
         import_update: "Import Update",
-        import_tip1:
-          'ID is required when "Test Case Custom ID" switch is turned on in project settings',
+        import_tip1: 'ID is required when "Test Case Custom ID" switch is turned on in project settings',
         import_tip2: "ID is required when importing and updating",
         import_type_require_tips: "Please select the import type!",
         import_file_tips: "Please upload the file first!",
-        import_refresh_tips:
-          "Content has been updated, please reopen the edit page!",
+        import_refresh_tips: "Content has been updated, please reopen the edit page!",
         import_format: "Import Format",
         select_import_field: "Select Field",
         select_import_all_field: "Select All",
         base_field: "Base Field",
         custom_field: "Custom Field",
         other_field: "Other Field",
-        other_field_tip:
-          "Note: For other fields, import is not supported after export",
+        other_field_tip: "Note: For other fields, import is not supported after export",
         import_by_excel: "Import cases from excel",
         import_by_xmind: "Import cases from xmind",
         download_template_tips_please: "Please  ",
@@ -3941,13 +3788,10 @@ const en_US = {
         import_uploading_tips: "uploading",
         case_import_result_success_title: "Case import success",
         case_import_result_error_title: "Case import erre",
-        case_import_result_success_content:
-          "Successfully imported {0} test cases",
-        case_import_result_error_content:
-          "0 cases imported successfully and {0} failed",
+        case_import_result_success_content: "Successfully imported {0} test cases",
+        case_import_result_error_content: "0 cases imported successfully and {0} failed",
         case_import_result_error_please: "Please ",
-        case_import_result_error_import_again:
-          " , Import again after making the changes",
+        case_import_result_error_import_again: " , Import again after making the changes",
         click_preview_import_error_msg: "Click to preview the error",
       },
       export: {
@@ -3977,8 +3821,7 @@ const en_US = {
       plan_name: "Name",
       plan_project: "Project",
       related_project: "Related Project",
-      related_tip:
-        "After linking the project, you can add test cases under the linking project to the test plan list",
+      related_tip: "After linking the project, you can add test cases under the linking project to the test plan list",
       plan_stage: "Stage",
       follow_people: "Follow",
       plan_status: "Status",
@@ -4006,10 +3849,8 @@ const en_US = {
       actual_end_time: "Actual End Time",
       report_start_time: "Report Start Time",
       report_end_time: "Report End Time",
-      plan_delete_confirm:
-        "All use cases under this plan will be deleted,confirm delete test plan: ",
-      plan_delete_tip:
-        "The test plan is under way, please confirm and delete it!",
+      plan_delete_confirm: "All use cases under this plan will be deleted,confirm delete test plan: ",
+      plan_delete_tip: "The test plan is under way, please confirm and delete it!",
       plan_delete: "Delete test plan",
       api_case: "Api case",
       scenario_case: "Scenario case",
@@ -4033,27 +3874,21 @@ const en_US = {
       test_plan_api_scenario_success_count: "Scenario Case success Count",
       test_plan_api_scenario_failed_count: "Scenario Case failed Count",
       test_plan_api_scenario_un_execute_count: "Scenario Case unexecuted Count",
-      test_plan_api_scenario_error_report_count:
-        "Scenario Case error report Count",
+      test_plan_api_scenario_error_report_count: "Scenario Case error report Count",
       test_plan_ui_scenario_count: "UI Scenario Case Count",
       test_plan_ui_scenario_success_count: "UI Scenario Case success Count",
       test_plan_ui_scenario_failed_count: "UI Scenario Case failed Count",
-      test_plan_ui_scenario_un_execute_count:
-        "UI Scenario Case unexecuted Count",
+      test_plan_ui_scenario_un_execute_count: "UI Scenario Case unexecuted Count",
       test_plan_load_case_count: "Load Case Count",
       test_plan_component_case_count: "Scenario request Count",
       data_name: "Data Name",
       test_plan_batch_switch: "batch on/off scheduled tasks",
-      batch_update_schedule_enable:
-        "update the scheduled task status of {0} test plans",
-      batch_update_schedule_enable_alert:
-        "note: only test plans with scheduled tasks can be updated",
+      batch_update_schedule_enable: "update the scheduled task status of {0} test plans",
+      batch_update_schedule_enable_alert: "note: only test plans with scheduled tasks can be updated",
       next_run_time: "next running time",
       schedule_enabled: "enabled",
-      check_schedule_enabled:
-        "the data you checked has detected {0} scheduled tasks that can be modified",
-      no_check_schedule_enabled:
-        "the data you checked does not detect a scheduled task",
+      check_schedule_enabled: "the data you checked has detected {0} scheduled tasks that can be modified",
+      no_check_schedule_enabled: "the data you checked does not detect a scheduled task",
       load_case: {
         case: "Load Case",
         execution_status: "Execution result",
@@ -4062,8 +3897,7 @@ const en_US = {
         unlink_in_bulk: "Unlink in bulk",
         batch_exec_cases: "Batch execution use cases",
         exec: "Executing....",
-        error:
-          "Use case execution error, please debug this use case separately!",
+        error: "Use case execution error, please debug this use case separately!",
         report_not_found: "Report does not exist",
         content_empty: "Content empty",
       },
@@ -4099,8 +3933,7 @@ const en_US = {
       creator: "Creator",
       done: "Commented use cases",
       result_distribution: "Result Distribution",
-      deadline_cannot_early_tips:
-        "Deadline cannot be earlier than current time！",
+      deadline_cannot_early_tips: "Deadline cannot be earlier than current time！",
     },
     comment: {
       no_comment: "No Comment",
@@ -4130,8 +3963,7 @@ const en_US = {
       name: "Name",
       delete_confirm: "Confirm delete module:",
       delete_all_resource: "and all submodules and test cases under the module",
-      delete_batch_confirm:
-        "Steps to confirm batch deletion of selected scenarios？",
+      delete_batch_confirm: "Steps to confirm batch deletion of selected scenarios？",
       delete_tip: "All resources under this node will be deleted, carefully!",
       module: "Module",
       title: "Title",
@@ -4142,8 +3974,7 @@ const en_US = {
       project_name: "Project",
       input_name: "Please input name",
       success_create: "Module create successfully",
-      case_module_already_exists:
-        "The module name already exists at the same level",
+      case_module_already_exists: "The module name already exists at the same level",
     },
     home: {
       recent_test: "Recent Test",
@@ -4213,8 +4044,7 @@ const en_US = {
         "Drag and drop the component from the component library, add to the right, preview the report effect, only one can be added per system component.",
       delete_component_tip: "Please reserve at least one component",
       input_template_name: "Input template name",
-      template_special_characters:
-        "Template name does not support special characters",
+      template_special_characters: "Template name does not support special characters",
       case_count: "Case count",
       issues_count: "Issues count",
       result_statistics: "Result statistics",
@@ -4235,8 +4065,7 @@ const en_US = {
       performance_case_count: "Performance Case Count",
       running: "Running",
       please_choose_test_case: "please select a test case！",
-      execute_tip:
-        "The step execution result contains a Failed result, and the use case cannot be marked as Passed!",
+      execute_tip: "The step execution result contains a Failed result, and the use case cannot be marked as Passed!",
     },
     issue: {
       issue: "Issue",
@@ -4284,13 +4113,11 @@ const en_US = {
       update_third_party_bugs: "Update the defects of third-party platforms",
       sync_bugs: "Synchronization Issue",
       sync_complete: "Synchronization complete",
-      issue_sync_tip:
-        "The current project is synchronizing defects, please wait!",
+      issue_sync_tip: "The current project is synchronizing defects, please wait!",
       import_bugs: "Import Issue",
       export_bugs: "Export Issue",
       save_before_open_comment: "Please save issue before comment",
-      delete_third_part_tip:
-        "This operation will delete third-party platform defects synchronously",
+      delete_third_part_tip: "This operation will delete third-party platform defects synchronously",
       delete_tip: "Confirm Delete Issue：",
       batch_delete_tip: "Confirm Batch Delete Issue",
       check_id_exist: "Check",
@@ -4305,8 +4132,7 @@ const en_US = {
       tapd_status_suspended: "Suspended",
       please_choose_platform_status: "Please select platform status",
       import_type: "Import type",
-      import_file_limit_tips:
-        "Only XLS/XLSX files can be uploaded, and the size is not larger than 100 MB",
+      import_file_limit_tips: "Only XLS/XLSX files can be uploaded, and the size is not larger than 100 MB",
       check_select: "Please check issues",
       export: "Export issue",
       batch_delete_issue: "Batch delete issues",
