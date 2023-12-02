@@ -11,6 +11,9 @@ interface PROPS {
   buttonText?: string
   isPop?: boolean
   popText?: string
+  editPermission?: Array<string>
+  deletePermission?: Array<string>
+  permission?: Array<string>
 }
 
 withDefaults(defineProps<PROPS>(), {
@@ -23,6 +26,9 @@ withDefaults(defineProps<PROPS>(), {
   buttonText: "ops",
   isPop: false,
   popText: "ops",
+  editPermission: () => [],
+  deletePermission: () => [],
+  permission: () => [],
 })
 const emits = defineEmits(["exec"])
 </script>
@@ -31,6 +37,7 @@ const emits = defineEmits(["exec"])
   <n-popover v-if="isPop" trigger="hover">
     <template #trigger>
       <n-button
+        v-permissions="permission"
         :size="size"
         :type="type"
         :text="text"
@@ -47,6 +54,7 @@ const emits = defineEmits(["exec"])
   </n-popover>
   <n-button
     v-else
+    v-permissions="permission"
     :size="size"
     :type="type"
     :text="text"

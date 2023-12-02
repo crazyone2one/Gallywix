@@ -8,16 +8,9 @@ interface PROPS {
   showDelete?: boolean
   editTip?: string
   deleteTip?: string
-  type?:
-    | "default"
-    | "tertiary"
-    | "primary"
-    | "success"
-    | "info"
-    | "warning"
-    | "error"
-  // editPermission?: Array<string>
-  // deletePermission?: Array<string>
+  type?: "default" | "tertiary" | "primary" | "success" | "info" | "warning" | "error"
+  editPermission?: Array<string>
+  deletePermission?: Array<string>
 }
 withDefaults(defineProps<PROPS>(), {
   showEdit: true,
@@ -25,8 +18,8 @@ withDefaults(defineProps<PROPS>(), {
   editTip: () => i18n.t("commons.edit"),
   deleteTip: () => i18n.t("commons.delete"),
   type: "warning",
-  // editPermission: () => [],
-  // deletePermission: () => [],
+  editPermission: () => [],
+  deletePermission: () => [],
 })
 const emits = defineEmits(["editClick", "deleteClick"])
 </script>
@@ -41,6 +34,7 @@ const emits = defineEmits(["editClick", "deleteClick"])
       :type="type"
       :is-pop="true"
       :pop-text="editTip"
+      :permission="editPermission"
       @exec="emits('editClick')" />
     <slot name="middle" />
     <ga-button
@@ -51,6 +45,7 @@ const emits = defineEmits(["editClick", "deleteClick"])
       type="error"
       :is-pop="true"
       :pop-text="deleteTip"
+      :permission="deletePermission"
       @exec="emits('deleteClick')" />
     <slot name="behind" />
   </n-space>
