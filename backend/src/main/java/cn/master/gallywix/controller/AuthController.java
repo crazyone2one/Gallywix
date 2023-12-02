@@ -4,8 +4,10 @@ import cn.master.gallywix.auth.config.CustomUserDetail;
 import cn.master.gallywix.auth.config.JwtProvider;
 import cn.master.gallywix.auth.module.AuthenticationRequest;
 import cn.master.gallywix.auth.module.AuthenticationResponse;
+import cn.master.gallywix.common.config.SpringContextHolder;
 import cn.master.gallywix.common.result.ResponseResult;
 import cn.master.gallywix.entity.SystemUser;
+import cn.master.gallywix.service.ISystemUserService;
 import cn.master.gallywix.utils.JsonUtils;
 import cn.master.gallywix.utils.RedisUtils;
 import cn.master.gallywix.utils.ServletUtils;
@@ -56,7 +58,7 @@ public class AuthController {
         AuthenticationResponse response = AuthenticationResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
-                .user(principal.getSystemUser())
+                .user(SpringContextHolder.getBean(ISystemUserService.class).getUserDTO(principal.getSystemUser().getId()))
                 .roles(collect)
                 .userId(principal.getId())
                 .build();
