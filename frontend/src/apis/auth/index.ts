@@ -1,6 +1,6 @@
 import alovaInstance from ".."
 import { USER } from "../user"
-export interface LOGIN {
+export interface ILoginParam {
   username: string
   password: string
 }
@@ -16,4 +16,4 @@ export interface LoginResponse {
  * @param param 登录参数
  * @returns
  */
-export const loginFunction = (param: LOGIN) => alovaInstance.Post<LoginResponse>(`/auth/authenticate`, param)
+export const loginFunction = (param: ILoginParam) => alovaInstance.Post<LoginResponse>(`/auth/authenticate`, param)

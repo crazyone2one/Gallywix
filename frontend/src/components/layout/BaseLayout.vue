@@ -1,27 +1,61 @@
 <script setup lang="ts">
-import { NLayout, NLayoutFooter, NButton } from "naive-ui"
-import { useClientHeight } from "/@/composables/client"
-import TheHeader from "/@/components/layout/components/header/TheHeader.vue"
-// import TheAside from "/@/components/layout/components/aside/TheAside.vue"
-const { height } = useClientHeight()
-const handleTest = () => {
-  window.$message.info("test")
-}
+import {
+  ElAside,
+  ElContainer,
+  ElHeader,
+  ElIcon,
+  ElMain,
+  ElMenu,
+  ElMenuItem,
+  ElMenuItemGroup,
+  ElSubMenu,
+} from "element-plus"
+// import { useClientHeight } from "/@/composables/client"
+// const { height } = useClientHeight()
 </script>
 
 <template>
-  <n-layout :style="{ height: height + 'px' }">
-    <the-header />
-    <n-layout position="absolute" style="top: 64px; bottom: 64px" has-sider>
-      <!-- <the-aside /> -->
-      <n-layout content-style="padding: 24px;" :native-scrollbar="false">
-        <router-view />
-      </n-layout>
-    </n-layout>
-    <n-layout-footer position="absolute" style="height: 64px; padding: 24px" bordered>
-      <n-button size="small" @click="handleTest">城府路</n-button>
-    </n-layout-footer>
-  </n-layout>
+  <div class="APP">
+    <el-container>
+      <el-aside width="200px">
+        <el-menu default-active="2" class="el-menu-vertical-demo">
+          <el-sub-menu index="1">
+            <template #title>
+              <el-icon><location /></el-icon>
+              <span>Navigator One</span>
+            </template>
+            <el-menu-item-group title="Group One">
+              <el-menu-item index="1-1">item one</el-menu-item>
+              <el-menu-item index="1-2">item two</el-menu-item>
+            </el-menu-item-group>
+            <el-menu-item-group title="Group Two">
+              <el-menu-item index="1-3">item three</el-menu-item>
+            </el-menu-item-group>
+            <el-sub-menu index="1-4">
+              <template #title>item four</template>
+              <el-menu-item index="1-4-1">item one</el-menu-item>
+            </el-sub-menu>
+          </el-sub-menu>
+          <el-menu-item index="2">
+            <el-icon><icon-menu /></el-icon>
+            <span>Navigator Two</span>
+          </el-menu-item>
+          <el-menu-item index="3" disabled>
+            <el-icon><document /></el-icon>
+            <span>Navigator Three</span>
+          </el-menu-item>
+          <el-menu-item index="4">
+            <el-icon><setting /></el-icon>
+            <span>Navigator Four</span>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
+      <el-container>
+        <el-header>Header</el-header>
+        <el-main>Main</el-main>
+      </el-container>
+    </el-container>
+  </div>
 </template>
 
 <style scoped></style>
