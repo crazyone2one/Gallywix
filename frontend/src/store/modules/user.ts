@@ -29,7 +29,8 @@ export const useUserStore = defineStore(
       loginFunction(param)
         .send()
         .then((res) => {
-          console.log(`output->res`, res)
+          const { access_token } = res
+          setToken(access_token)
         })
         .catch((error) => {
           console.log(`output->error`, error)
