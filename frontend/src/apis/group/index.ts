@@ -4,7 +4,6 @@ import { IPermissionDTO } from "../permission"
 import { IProject } from "../project"
 import { USER } from "../user"
 import { IWorkspace } from "../workspace"
-import { SelectOption } from "naive-ui"
 export interface IGroupDTO {
   id: string | undefined
   name: string
@@ -21,8 +20,8 @@ export interface IGroupDTO {
   workspaces?: Array<IWorkspace>
   projects?: Array<IProject>
   ids?: Array<string>
-  workspaceOptions?: Array<SelectOption>
-  projectOptions?: Array<SelectOption>
+  workspaceOptions?: Array<object>
+  projectOptions?: Array<object>
   selects?: Array<string>
   showSearchGetMore?: boolean
 }

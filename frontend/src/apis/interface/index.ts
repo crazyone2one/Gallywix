@@ -1,8 +1,7 @@
 import { IGroupDTO } from "../group"
-import { IGroupResourceDTO } from "../permission"
+import { IGroupResourceDTO, IUserGroupPermission } from "../permission"
 import { IProject } from "../project"
 import { IWorkspace } from "../workspace"
-import { SelectOption } from "naive-ui"
 
 /**
  * 通用返回结果（根据后端定义的返回类型更改）
@@ -57,9 +56,12 @@ export interface ICustomGroup {
   workspaces?: Array<IWorkspace>
   projects?: Array<IProject>
   showSearchGetMore?: boolean
-  workspaceOptions?: Array<SelectOption>
-  projectOptions?: Array<SelectOption>
+  workspaceOptions?: Array<object>
+  projectOptions?: Array<object>
   selects?: Array<string> | undefined
+  userGroupPermissions?: Array<IUserGroupPermission>
+  group?: IGroupDTO
+  sourceId?: string
 }
 
 export interface IUserGroup {
@@ -67,8 +69,19 @@ export interface IUserGroup {
   userId: string
   groupId: string
 }
-export interface IUserGroupPermission {
-  list: Array<IGroupResourceDTO>
-  groups: Array<IGroupDTO>
-  userGroups: Array<IUserGroup>
+
+export interface IUSerDto {
+  id: string | undefined
+  username: string
+  nickname: string
+  password: string
+  status: boolean
+  email: string
+  phone: string
+  createTime?: number
+  lastProjectId: string
+  lastWorkspaceId: string
+  userGroups?: Array<ICustomGroup>
+  groupPermissions?: Array<IGroupResourceDTO>
+  groups?: Array<IGroupDTO>
 }

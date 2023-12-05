@@ -9,7 +9,7 @@ import "./style.css"
 import "virtual:uno.css"
 import "element-plus/dist/index.css"
 import debounce from "./directives/debounce"
-// import permissions from "./directives/permissions"
+import permissions from "./directives/permissions"
 import i18n from "./i18n"
 import router from "./router"
 import pinia from "./store"
@@ -20,5 +20,5 @@ setupElementPlus(app)
 // app.use(ElementPlus)
 //defining the directive
 app.directive("debounce", debounce)
-// app.directive("permission", permissions)
+app.directive("permission", permissions)
 app.mount("#app")

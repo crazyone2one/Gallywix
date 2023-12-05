@@ -1,10 +1,11 @@
-import { reactive, ref } from "vue"
+import { ref } from "vue"
 
 import { IStatus } from "/@/types/store/layout"
 
 import { getLocal, setLocal } from "/@/utils/tools"
 
-import { ILoginParam, loginFunction } from "/@/apis/auth"
+import { ILoginParam, ILoginResponse, loginFunction } from "/@/apis/auth"
+import { IUSerDto } from "/@/apis/interface"
 import router from "/@/router"
 import { defineStore } from "pinia"
 
@@ -13,11 +14,11 @@ const { ACCESS_TOKEN } = getLocal<IStatus>("token")
 export const useUserStore = defineStore(
   "user",
   () => {
-    const userInfo = reactive({
-      name: "",
-      role: [],
-    })
-
+    const userInfo = ref<IUSerDto>({} as IUSerDto)
+    const workspace_id = ref<string>()
+    const workspace_name = ref<string>()
+    const project_id = ref<string>()
+    const project_name = ref<string>()
     const status = ref<IStatus>({
       isLoading: false,
       ACCESS_TOKEN: ACCESS_TOKEN || "",
@@ -26,6 +27,43 @@ export const useUserStore = defineStore(
       status.value.ACCESS_TOKEN = token
       setLocal("token", status, 1000 * 60 * 60)
     }
+    /**
+     * 登录信息保存 cookie
+     * @param res
+     */
+    const saveSessionStorage = (res: ILoginResponse) => {
+      const { user } = res
+      userInfo.value = user
+      // 校验权限
+      user.userGroups?.forEach((ug) => {
+        user.groupPermissions?.forEach((gp) => {
+          if (gp.group.id === ug.groupId) {
+            ug.userGroupPermissions = gp.userGroupPermissions
+            ug.group = gp.group
+          }
+        })
+      })
+      // 检查当前项目有没有权限
+      const currentProjectId = project_id.value
+      if (!currentProjectId) {
+        project_id.value = user.lastProjectId
+      } else {
+        const v = user.userGroups
+          ?.filter((ug) => ug.group && ug.group.type === "PROJECT")
+          .filter((ug) => ug.sourceId === currentProjectId)
+        const index = user.groups?.findIndex((g) => g.id === "super_group")
+        if (v?.length === 0 && index === -1) {
+          project_id.value = user.lastProjectId
+        }
+      }
+      if (!workspace_id.value) {
+        workspace_id.value = user.lastWorkspaceId
+      }
+    }
+    /**
+     * 登录方法
+     * @param param 登录参数
+     */
     const login = (param: ILoginParam) => {
       const route = router.currentRoute
       loginFunction(param)
@@ -33,6 +71,7 @@ export const useUserStore = defineStore(
         .then((res) => {
           const { access_token } = res
           setToken(access_token)
+          saveSessionStorage(res)
           // 路由跳转
           if (route.value.query?.redirect) {
             router.push({
@@ -59,7 +98,19 @@ export const useUserStore = defineStore(
     const getStatus = (): IStatus => {
       return status.value
     }
-    return { menubar, userInfo, status, setToken, logout, getStatus, login }
+    return {
+      menubar,
+      userInfo,
+      status,
+      workspace_id,
+      workspace_name,
+      project_id,
+      project_name,
+      setToken,
+      logout,
+      getStatus,
+      login,
+    }
   },
   { persist: true },
 )
