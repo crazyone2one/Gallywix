@@ -16,7 +16,9 @@ export const useLayoutStore = defineStore(
       menuList: [],
       isPhone: document.body.offsetWidth < 768,
     })
-
+    const sidebar = reactive({
+      collapse: false,
+    })
     const setting = reactive({
       theme: settings.theme !== undefined ? settings.theme : 0,
       showTags: settings.showTags !== undefined ? settings.showTags : true,
@@ -43,7 +45,10 @@ export const useLayoutStore = defineStore(
       menubar.isPhone = document.body.offsetWidth < 768
       menubar.status = menubar.isPhone ? IMenubarStatus.PHN : IMenubarStatus.PCE
     }
-    return { menubar, setting, status, changeCollapsed, changeDeviceWidth }
+    const handleCollapse = (): void => {
+      sidebar.collapse = !sidebar.collapse
+    }
+    return { menubar, setting, status, sidebar, changeCollapsed, changeDeviceWidth, handleCollapse }
   },
   { persist: true },
 )

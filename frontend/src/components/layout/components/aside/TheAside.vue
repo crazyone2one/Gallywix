@@ -1,44 +1,47 @@
 <script setup lang="ts">
-import { ref, h } from "vue"
-import { NLayoutSider, MenuOption, NMenu } from "naive-ui"
-import { RouterLink } from "vue-router"
+import { useLayoutStore } from "/@/store/modules/layout"
 
-const activeKey = ref<string | null>(null)
-const menuOptions: MenuOption[] = [
-  {
-    label: "系统配置",
-    key: "pinball-1973",
-    children: [
-      {
-        label: () => h(RouterLink, { to: { name: "user" } }, { default: () => "用户管理" }),
-        key: "user",
-      },
-      {
-        label: () => h(RouterLink, { to: { name: "workspace" } }, { default: () => "工作空间" }),
-        key: "workspace",
-      },
-      {
-        label: () => h(RouterLink, { to: { name: "organization" } }, { default: () => "organization" }),
-        key: "organization",
-      },
-    ],
-  },
-  {
-    label: "demo",
-    key: "demo",
-    children: [
-      {
-        label: () => h(RouterLink, { to: { name: "upload" } }, { default: () => "upload" }),
-        key: "user",
-      },
-    ],
-  },
-]
+import { ElAside, ElIcon, ElMenu, ElMenuItem } from "element-plus"
+
+const { sidebar } = useLayoutStore()
 </script>
 <template>
-  <n-layout-sider content-style="padding: 12px;" :native-scrollbar="false" bordered>
-    <n-menu v-model:value="activeKey" :options="menuOptions" accordion />
-  </n-layout-sider>
+  <el-aside width="200px">
+    <el-menu default-active="2" class="el-menu-vertical-demo" unique-opened :collapse="sidebar.collapse">
+      <el-menu-item index="/workstation" disabled>
+        <el-icon><span class="i-my-local-workspace" /></el-icon>
+        <span>{{ $t("commons.my_workstation") }}</span>
+      </el-menu-item>
+      <el-menu-item index="/track" disabled>
+        <el-icon><span class="i-tabler:checkup-list" /></el-icon>
+        <span>{{ $t("test_track.test_track") }}</span>
+      </el-menu-item>
+      <el-menu-item index="/api" disabled>
+        <el-icon><span class="i-my-local-api" /></el-icon>
+        <span>{{ $t("commons.api") }}</span>
+      </el-menu-item>
+      <el-menu-item index="4" disabled>
+        <el-icon><span class="i-my-local-settings" /></el-icon>
+        <span>{{ $t("commons.ui") }}</span>
+      </el-menu-item>
+      <el-menu-item index="/performance" disabled>
+        <el-icon><span class="i-my-local-performance" /></el-icon>
+        <span>{{ $t("commons.performance") }}</span>
+      </el-menu-item>
+      <el-menu-item index="/report" disabled>
+        <el-icon><span class="i-tabler:report" /></el-icon>
+        <span>{{ $t("commons.report_statistics.title") }}</span>
+      </el-menu-item>
+      <el-menu-item index="/project" disabled>
+        <el-icon><span class="i-my-local-project" /></el-icon>
+        <span>{{ $t("commons.project_setting") }}</span>
+      </el-menu-item>
+      <el-menu-item index="/setting" disabled>
+        <el-icon><span class="i-my-local-settings" /></el-icon>
+        <span>{{ $t("commons.system_setting") }}</span>
+      </el-menu-item>
+    </el-menu>
+  </el-aside>
 </template>
 
 <style></style>
