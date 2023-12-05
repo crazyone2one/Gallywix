@@ -7,7 +7,7 @@ const { sidebar } = useLayoutStore()
 </script>
 <template>
   <el-aside width="200px">
-    <el-menu default-active="2" class="el-menu-vertical-demo" unique-opened :collapse="sidebar.collapse">
+    <el-menu default-active="2" class="el-menu-vertical-demo" unique-opened :collapse="sidebar.collapse" router>
       <el-menu-item index="/workstation" disabled>
         <el-icon><span class="i-my-local-workspace" /></el-icon>
         <span>{{ $t("commons.my_workstation") }}</span>
@@ -109,8 +109,7 @@ const { sidebar } = useLayoutStore()
           'WORKSPACE_PROJECT_ENVIRONMENT:READ',
           'WORKSPACE_OPERATING_LOG:READ',
         ]"
-        index="/setting"
-        disabled>
+        index="/setting">
         <el-icon><span class="i-my-local-settings" /></el-icon>
         <span>{{ $t("commons.system_setting") }}</span>
       </el-menu-item>

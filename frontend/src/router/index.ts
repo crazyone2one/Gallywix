@@ -3,13 +3,17 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router"
 import { useUserStore } from "../store/modules/user"
 
 import { i18n } from "../i18n"
+import Setting from "./modules/setting"
 // 路由信息
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     redirect: "/dashboard",
     component: () => import(`/@/components/layout/BaseLayout.vue`),
-    children: [{ path: "/dashboard", name: "dashboard", component: () => import(`/@/views/home/HomeView.vue`) }],
+    children: [
+      { path: "/dashboard", name: "dashboard", component: () => import(`/@/views/home/HomeView.vue`) },
+      ...Setting,
+    ],
   },
   {
     path: "/login",
