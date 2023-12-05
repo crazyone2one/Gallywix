@@ -6,7 +6,7 @@ import { useUserStore } from "/@/store/modules/user"
 // import { i18n } from "../i18n"
 import { createAlova } from "alova"
 import GlobalFetch from "alova/GlobalFetch"
-import { ElLoading, ElMessage, ElNotification } from "element-plus"
+import { ElLoading, ElMessage, ElMessageBox, ElNotification } from "element-plus"
 
 let loading: { close(): void }
 // For Make Log on Develop Mode
@@ -69,10 +69,21 @@ const alovaInstance = createAlova({
           ElMessage.error(json.message)
           throw new Error(json.message)
         } else {
-          const { getStatus, logout } = useUserStore()
-          if (getStatus().ACCESS_TOKEN) {
-            logout()
-          }
+          const { logout } = useUserStore()
+          ElMessageBox.confirm("proxy will permanently delete the file. Continue?", "Warning", {
+            confirmButtonText: "OK",
+            cancelButtonText: "Cancel",
+            type: "warning",
+          })
+            .then(() => {
+              logout()
+            })
+            .catch(() => {
+              ElMessage({
+                type: "info",
+                message: "Delete canceled",
+              })
+            })
           ElNotification({
             title,
             message: json.message,

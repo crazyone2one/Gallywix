@@ -9,7 +9,7 @@ export interface ILoginResponse {
   access_token: string
   refresh_token: string
   userId: string
-  roles: Array<string>
+  // roles: Array<string>
   user: IUSerDto
 }
 /**
@@ -18,3 +18,4 @@ export interface ILoginResponse {
  * @returns
  */
 export const loginFunction = (param: ILoginParam) => alovaInstance.Post<ILoginResponse>(`/auth/authenticate`, param)
+export const logOutFunction = () => alovaInstance.Post("/auth/logout")

@@ -1,6 +1,6 @@
 import alovaInstance from ".."
-import { IGroupDTO } from "../group"
-import { ICustomGroup, IPage, IUserGroupPermission, PageReq } from "../interface"
+import { IPage, PageReq } from "../interface"
+import { IUserGroupPermission } from "../permission"
 
 export interface USER {
   id: string | undefined
@@ -11,11 +11,8 @@ export interface USER {
   email: string
   phone: string
   createTime?: number
-  userGroups: Array<ICustomGroup>
-  groups: Array<IGroupDTO>
   lastProjectId: string
   lastWorkspaceId: string
-  groupPermissions: Array<{ group: IGroupDTO }>
   newPassword?: string
   confirmpassword?: string
 }
@@ -38,8 +35,6 @@ export const updateUserData = (param: USER) => alovaInstance.Put<USER>(`/system/
  * @returns
  */
 export const deleteUserData = (param: string) => alovaInstance.Delete(`/system/user/remove/${param}`)
-
-export const logOut = () => alovaInstance.Post("/auth/logout")
 
 export const getUserInfo = (id: string) => alovaInstance.Get(`/system/user/getInfo${id}`)
 

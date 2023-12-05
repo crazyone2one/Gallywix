@@ -4,12 +4,12 @@ import { IStatus } from "/@/types/store/layout"
 
 import { getLocal, setLocal } from "/@/utils/tools"
 
-import { ILoginParam, ILoginResponse, loginFunction } from "/@/apis/auth"
+import { ILoginParam, ILoginResponse, loginFunction, logOutFunction } from "/@/apis/auth"
 import { IUSerDto } from "/@/apis/interface"
 import router from "/@/router"
 import { defineStore } from "pinia"
 
-const { ACCESS_TOKEN } = getLocal<IStatus>("token")
+const { ACCESS_TOKEN } = getLocal<IStatus>("status")
 
 export const useUserStore = defineStore(
   "user",
@@ -91,9 +91,27 @@ export const useUserStore = defineStore(
         })
     }
     const logout = (): void => {
+      const route = router.currentRoute
+      logOutFunction()
+        .send()
+        .then(() => {
+          $reset()
+          // window.location.reload()
+          // (`/login?redirect=${to.path}&params=${JSON.stringify(to.query ? to.query : to.params)}`)
+          router.push(
+            `/login?redirect=${route.value.path}&params=${JSON.stringify(
+              route.value.query ? route.value.query : route.value.params,
+            )}`,
+          )
+        })
+    }
+    const $reset = (): void => {
       status.value.ACCESS_TOKEN = ""
-      localStorage.removeItem("token")
-      //   history.go(0)
+      workspace_id.value = ""
+      project_id.value = ""
+      workspace_name.value = ""
+      project_name.value = ""
+      userInfo.value = {} as IUSerDto
     }
     const getStatus = (): IStatus => {
       return status.value
@@ -110,6 +128,7 @@ export const useUserStore = defineStore(
       logout,
       getStatus,
       login,
+      $reset,
     }
   },
   { persist: true },

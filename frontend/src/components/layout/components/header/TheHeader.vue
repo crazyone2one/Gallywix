@@ -2,8 +2,18 @@
 import { ref } from "vue"
 
 import { useLayoutStore } from "/@/store/modules/layout"
+import { useUserStore } from "/@/store/modules/user"
 
-import { ElAvatar, ElDropdown, ElDropdownItem, ElDropdownMenu, ElIcon, ElTooltip } from "element-plus"
+import {
+  ElAvatar,
+  ElDropdown,
+  ElDropdownItem,
+  ElDropdownMenu,
+  ElIcon,
+  ElMessage,
+  ElMessageBox,
+  ElTooltip,
+} from "element-plus"
 
 const message: number = 2
 const username: string = "Gallywix"
@@ -12,7 +22,25 @@ const imgurl = ref("")
 const collapseChage = (): void => {
   handleCollapse()
 }
-const handleCommand = (): void => {}
+const { logout } = useUserStore()
+const handleCommand = (command: string): void => {
+  if (command === "loginout") {
+    ElMessageBox.confirm("proxy will permanently delete the file. Continue?", "Warning", {
+      confirmButtonText: "OK",
+      cancelButtonText: "Cancel",
+      type: "warning",
+    })
+      .then(() => {
+        logout()
+      })
+      .catch(() => {
+        ElMessage({
+          type: "info",
+          message: "Delete canceled",
+        })
+      })
+  }
+}
 </script>
 <template>
   <div class="header">

@@ -50,8 +50,8 @@ public class AuthController {
         val authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         SessionUtils.setAuthentication(authenticate);
         //  处理用户权限
-        Collection<? extends GrantedAuthority> authorities = authenticate.getAuthorities();
-        List<String> collect = authorities.stream().map(GrantedAuthority::getAuthority).toList();
+//        Collection<? extends GrantedAuthority> authorities = authenticate.getAuthorities();
+//        List<String> collect = authorities.stream().map(GrantedAuthority::getAuthority).toList();
         CustomUserDetail principal = (CustomUserDetail) authenticate.getPrincipal();
         val accessToken = jwtProvider.generateToken(principal);
         val refreshToken = jwtProvider.generateRefreshToken(principal);
@@ -59,7 +59,6 @@ public class AuthController {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .user(SpringContextHolder.getBean(ISystemUserService.class).getUserDTO(principal.getSystemUser().getId()))
-                .roles(collect)
                 .userId(principal.getId())
                 .build();
         // 将token存放在redis，并设置超时时间
