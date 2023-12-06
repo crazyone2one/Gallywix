@@ -2,73 +2,55 @@
 import { ref } from "vue"
 
 import { i18n } from "../i18n"
-import { NButton, NModal, NSpace } from "naive-ui"
+import { ElButton, ElDialog } from "element-plus"
 
 interface Props {
   title?: string
-  showFooter?: boolean // 是否展示底部操作按钮
-  btnText?: string
+  isShow?: boolean // 是否展示底部操作按钮
+  saveAsEditTip?: string
   modalWidth?: string
 }
 withDefaults(defineProps<Props>(), {
   title: i18n.t("commons.operating"), // modal title
-  showFooter: true, // show footer button
-  btnText: "",
+  isShow: false, // show footer button
+  saveAsEditTip: "",
   modalWidth: "", // modal width
 })
-const show = ref(false)
+const visible = ref(false)
 const emits = defineEmits(["confirm", "cancel", "saveAsEdit", "closeModal"])
 const toggleModal = () => {
-  show.value = !show.value
-  return Promise.resolve(show.value)
+  visible.value = !visible.value
+  return Promise.resolve(visible.value)
 }
 // * show modal
 const showModal = () => {
-  show.value = true
+  visible.value = true
   return Promise.resolve(true)
 }
 // * close modal
-const closeModal = () => {
-  show.value = false
+const hideModal = () => {
+  visible.value = false
   return Promise.resolve(false)
 }
 const onCancel = (): void => {
-  show.value = false
+  visible.value = false
   emits("cancel")
 }
-defineExpose({ toggleModal, showModal, closeModal })
+defineExpose({ toggleModal, showModal, hideModal })
 </script>
 <template>
-  <n-modal
-    v-model:show="show"
-    preset="dialog"
-    :title="title"
-    :show-icon="false"
-    :mask-closable="false"
-    :style="{ width: modalWidth }"
-    @close="emits('closeModal')">
-    <!-- <template #header>
-      <div>标题</div>
-    </template> -->
+  <el-dialog v-model="visible" :title="title" :close-on-click-modal="false" @close="onCancel">
     <slot name="content" />
-    <template #action>
-      <n-space v-if="showFooter" justify="end">
-        <n-button type="default" size="small" @click="onCancel">
-          {{ $t("commons.cancel") }}
-        </n-button>
-        <n-button type="primary" size="small" @click="emits('confirm')">
-          {{ $t("commons.confirm") }}
-        </n-button>
-        <n-button
-          v-if="btnText"
-          type="primary"
-          size="small"
-          @click="emits('saveAsEdit')">
-          {{ btnText }}
-        </n-button>
-      </n-space>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="hideModal">{{ $t("commons.cancel") }}</el-button>
+        <el-button type="primary" @click="emits('confirm')"> {{ $t("commons.confirm") }} </el-button>
+        <el-button v-if="isShow" v-prevent-re-click type="primary" @click="emits('saveAsEdit')" @keydown.enter.prevent>
+          {{ saveAsEditTip }}
+        </el-button>
+      </span>
     </template>
-  </n-modal>
+  </el-dialog>
 </template>
 
 <style scoped></style>
