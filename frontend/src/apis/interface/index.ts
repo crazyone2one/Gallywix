@@ -18,7 +18,7 @@ export interface IPage<T> {
   pageSize: number
   totalPage: number
   totalRow: number
-  records: T
+  records: Array<T>
 }
 /**
  * 分页结果类型
@@ -44,8 +44,8 @@ export interface PageReq {
   [key: string]: string | number | Array<number> | unknown | []
 }
 
-export interface ITableDataInfo<T> {
-  data?: T
+export interface IPaginationData<T> {
+  data?: Array<T>
   total: number
 }
 
