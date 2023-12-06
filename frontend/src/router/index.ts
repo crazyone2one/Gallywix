@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(`/@/components/layout/BaseLayout.vue`),
     children: [
       { path: "/dashboard", name: "dashboard", component: () => import(`/@/views/home/HomeView.vue`) },
-      ...Setting,
+      Setting,
     ],
   },
   {
