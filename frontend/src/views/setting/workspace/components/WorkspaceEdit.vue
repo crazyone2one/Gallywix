@@ -5,30 +5,23 @@ import ModalDialog from "/@/components/ModalDialog.vue"
 import { useForm } from "@alova/scene-vue"
 
 import { createWorkspace, IWorkspace } from "/@/apis/workspace"
-import { FormInst, FormRules, NForm, NFormItem, NInput } from "naive-ui"
+import { i18n } from "/@/i18n"
+import { ElForm, ElFormItem, ElInput, ElMessage, FormInstance } from "element-plus"
 
 const modalDialog = ref<InstanceType<typeof ModalDialog> | null>(null)
-const formRef = ref<FormInst | null>(null)
+const formRef = ref<FormInstance>()
 const emits = defineEmits(["refresh"])
-const rules: FormRules = {
-  name: [
-    { required: true, message: "请输入工作空间名称", trigger: "blur" },
-    {
-      min: 2,
-      max: 50,
-      message: "长度在 2 到 50 个字符",
-      trigger: "blur",
-    },
-  ],
+const rules = {
+  name: [{ required: true, message: i18n.t("workspace.input_name"), trigger: "blur" }],
   description: {
-    max: 250,
-    message: "长度在 2 到 250 个字符",
+    max: 50,
+    message: i18n.t("commons.input_limit", [0, 50]),
     trigger: "blur",
   },
 }
 const open = (val?: IWorkspace) => {
   if (val) {
-    window.$message.info(val.name)
+    Object.assign(formData.value, val)
   }
   modalDialog.value?.showModal()
 }
@@ -37,7 +30,6 @@ const {
   send: submit,
   // 响应式的表单数据，内容由initialForm决定
   form: formData,
-  onSuccess,
 } = useForm(
   (formData) => {
     return createWorkspace(formData)
@@ -53,40 +45,40 @@ const {
     resetAfterSubmiting: true,
   },
 )
-const handleSave = () => {
-  formRef.value?.validate((error) => {
-    if (!error) {
-      submit(formData.value)
+const handleSave = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      submit().then(() => {
+        formEl.resetFields()
+        modalDialog.value?.hideModal()
+        ElMessage.success(i18n.t("commons.save_success"))
+        emits("refresh")
+      })
+    } else {
+      console.log("error submit!", fields)
     }
   })
 }
-onSuccess(() => {
-  modalDialog.value?.closeModal()
-  window.$message.success("创建成功")
-  emits("refresh")
-})
+
 defineExpose({ open })
 </script>
 <template>
-  <modal-dialog
-    ref="modalDialog"
-    :title="$t('workspace.create')"
-    @confirm="handleSave">
+  <modal-dialog ref="modalDialog" :title="$t('workspace.create')" width="30%" @confirm="handleSave(formRef)">
     <template #content>
-      <n-form
-        ref="formRef"
-        :model="formData"
-        :rules="rules"
-        label-placement="left"
-        require-mark-placement="right-hanging">
-        <n-form-item :label="$t('commons.name')" path="name">
-          <n-input v-model:value="formData.name" />
-        </n-form-item>
-        <n-form-item :label="$t('commons.description')" path="description">
-          <n-input v-model:value="formData.description" type="textarea" />
-        </n-form-item>
-      </n-form>
+      <el-form ref="formRef" :model="formData" :rules="rules" label-position="right" label-width="100px">
+        <el-form-item :label="$t('commons.name')" prop="name">
+          <el-input v-model="formData.name" autocomplete="off" class="form-input" show-word-limit maxlength="100" />
+        </el-form-item>
+        <el-form-item :label="$t('commons.description')" prop="description">
+          <el-input v-model="formData.description" type="textarea" class="form-input"></el-input>
+        </el-form-item>
+      </el-form>
     </template>
   </modal-dialog>
 </template>
-<style></style>
+<style scoped>
+.form-input {
+  width: 80%;
+}
+</style>
