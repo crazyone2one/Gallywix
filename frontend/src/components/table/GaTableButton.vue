@@ -1,16 +1,9 @@
 <script setup lang="ts">
 interface IProps {
   content: string
-  size?: "tiny" | "small" | "medium" | "large"
+  size?: "large" | "default" | "small"
   icon?: string
-  type?:
-    | "default"
-    | "tertiary"
-    | "primary"
-    | "success"
-    | "info"
-    | "warning"
-    | "error"
+  type?: "primary" | "success" | "warning" | "danger" | "info"
 }
 withDefaults(defineProps<IProps>(), {
   size: "small",

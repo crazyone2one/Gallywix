@@ -1,54 +1,48 @@
 <script setup lang="ts">
-import GaButton from "/@/components/GaButton.vue"
+import GaTableOperatorButton from "./GaTableOperatorButton.vue"
 
 import { i18n } from "/@/i18n"
-import { NSpace } from "naive-ui"
-interface PROPS {
-  showEdit?: boolean
-  showDelete?: boolean
-  editTip?: string
-  deleteTip?: string
-  type?: "default" | "tertiary" | "primary" | "success" | "info" | "warning" | "error"
+interface IProps {
+  isShow: boolean
+  tip1?: string
+  tip2?: string
   editPermission?: Array<string>
   deletePermission?: Array<string>
+  showEdit?: boolean
+  showDelete?: boolean
 }
-withDefaults(defineProps<PROPS>(), {
+withDefaults(defineProps<IProps>(), {
   showEdit: true,
   showDelete: true,
-  editTip: () => i18n.t("commons.edit"),
-  deleteTip: () => i18n.t("commons.delete"),
-  type: "warning",
+  tip1: () => i18n.t("commons.edit"),
+  tip2: () => i18n.t("commons.delete"),
+
   editPermission: () => [],
   deletePermission: () => [],
 })
 const emits = defineEmits(["editClick", "deleteClick"])
 </script>
 <template>
-  <n-space justify="center">
+  <span>
     <slot name="front" />
-    <ga-button
+    <ga-table-operator-button
       v-if="showEdit"
-      :text="true"
-      :is-icon="true"
-      icon-class="i-tabler:edit"
-      :type="type"
-      :is-pop="true"
-      :pop-text="editTip"
-      :permission="editPermission"
+      v-permission="editPermission"
+      :tip="tip1"
+      icon="el-icon-edit"
+      :disabled="isShow"
       @exec="emits('editClick')" />
     <slot name="middle" />
-    <ga-button
+    <ga-table-operator-button
       v-if="showDelete"
-      :text="true"
-      :is-icon="true"
-      icon-class="i-tabler:trash"
-      type="error"
-      :is-pop="true"
-      :pop-text="deleteTip"
-      :permission="deletePermission"
+      v-permission="deletePermission"
+      :tip="tip2"
+      icon="el-icon-delete"
+      :disabled="isShow"
+      type="danger"
       @exec="emits('deleteClick')" />
     <slot name="behind" />
-  </n-space>
+  </span>
 </template>
 
 <style></style>
