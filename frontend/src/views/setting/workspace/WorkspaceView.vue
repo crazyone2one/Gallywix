@@ -10,11 +10,7 @@ import GaPagination from "/@/components/table/GaPagination.vue"
 import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
-import {
-  delWorkspaceSpecial,
-  IWorkspace,
-  loadWorkspaceData,
-} from "/@/apis/workspace"
+import { delWorkspaceSpecial, IWorkspaceItem, loadWorkspaceData } from "/@/apis/workspace"
 import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
 import { DataTableColumns, NButton, NDataTable, NSkeleton } from "naive-ui"
@@ -22,7 +18,7 @@ import { DataTableColumns, NButton, NDataTable, NSkeleton } from "naive-ui"
 const workspaceEdit = ref<InstanceType<typeof WorkspaceEdit> | null>(null)
 const deleteConfirm = ref<InstanceType<typeof GaDeleteConfirm> | null>(null)
 const workspaceMember = ref<InstanceType<typeof WorkspaceMember> | null>(null)
-const columns: DataTableColumns<IWorkspace> = [
+const columns: DataTableColumns<IWorkspaceItem> = [
   {
     type: "selection",
     align: "center",
@@ -63,6 +59,8 @@ const columns: DataTableColumns<IWorkspace> = [
         {
           onEditClick: () => handleEdit(rowData),
           onDeleteClick: () => handleDelete(rowData),
+          editPermission: ["SYSTEM_WORKSPACE:READ+EDIT"],
+          deletePermission: ["SYSTEM_WORKSPACE:READ+DELETE"],
         },
         {},
       )
@@ -75,37 +73,31 @@ const condition = ref<PageReq>({
   pageNumber: 1,
   pageSize: 10,
 })
-const tableInfo = ref<ITableDataInfo<IWorkspace[]>>({
+const tableInfo = ref<ITableDataInfo<IWorkspaceItem[]>>({
   data: [],
   total: 0,
 })
-const rowKey = (row: IWorkspace) => row.id as unknown as string
+const rowKey = (row: IWorkspaceItem) => row.id as unknown as string
 const handleAdd = () => {
   workspaceEdit.value?.open()
 }
-const { loading, send, onSuccess } = useRequest(
-  loadWorkspaceData(condition.value),
-  {
-    immediate: false,
-  },
-)
+const { loading, send, onSuccess } = useRequest(loadWorkspaceData(condition.value), {
+  immediate: false,
+})
 onMounted(() => {
   send()
 })
-const handleEdit = (val: IWorkspace) => {
+const handleEdit = (val: IWorkspaceItem) => {
   window.$message.info(val.name)
 }
-const { send: deleteWs, onSuccess: deleteWsSuccess } = useRequest(
-  (wsId) => delWorkspaceSpecial(wsId),
-  {
-    immediate: false,
-  },
-)
+const { send: deleteWs, onSuccess: deleteWsSuccess } = useRequest((wsId) => delWorkspaceSpecial(wsId), {
+  immediate: false,
+})
 // 删除功能
-const handleDelete = (val: IWorkspace) => {
+const handleDelete = (val: IWorkspaceItem) => {
   deleteConfirm.value?.open(val)
 }
-const _deleteWorkspace = (val: IWorkspace) => {
+const _deleteWorkspace = (val: IWorkspaceItem) => {
   window.$dialog.warning({
     title: "",
     maskClosable: false,
@@ -128,7 +120,7 @@ onSuccess((resp) => {
   tableInfo.value.data = resp.data.records
 })
 // 单击成员事件
-const cellClick = (val: IWorkspace) => {
+const cellClick = (val: IWorkspaceItem) => {
   workspaceMember.value?.open(val)
 }
 </script>
@@ -143,11 +135,7 @@ const cellClick = (val: IWorkspace) => {
     </template>
     <template #content>
       <n-skeleton v-if="loading" :sharp="false" height="550px" />
-      <n-data-table
-        v-else
-        :columns="columns"
-        :data="tableInfo.data"
-        :row-key="rowKey" />
+      <n-data-table v-else :columns="columns" :data="tableInfo.data" :row-key="rowKey" />
       <ga-pagination :condition="condition" />
     </template>
   </base-card>

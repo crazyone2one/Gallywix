@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue"
 
-import { useAuthStore } from "/@/store/auth-store"
+import { useUserStore } from "/@/store/modules/user-store"
 
 import { loadOptionList, switchWorkspace } from "/@/apis/workspace/index"
 import { useRequest } from "alova"
 import { NPopselect, SelectOption } from "naive-ui"
 
-const authStore = useAuthStore()
+const authStore = useUserStore()
 const currentWorkspaceName = ref(authStore.workspace_name)
 const workspaceListOptions = ref<Array<SelectOption>>([])
 

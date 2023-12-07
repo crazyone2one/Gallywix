@@ -2,18 +2,18 @@
 import { computed, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 
-import { useAuthStore } from "/@/store/auth-store"
+import { useUserStore } from "/@/store/modules/user-store"
 
-import { LOGIN, loginFunction } from "/@/apis/auth"
+import { ILoginParamItem, loginFunction } from "/@/apis/auth"
 import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
 import { NButton, NCard, NForm, NFormItemRow, NH1, NInput } from "naive-ui"
 
-const model = ref<LOGIN>({
+const model = ref<ILoginParamItem>({
   username: "",
   password: "",
 })
-const store = useAuthStore()
+const store = useUserStore()
 const rules = {
   username: {
     required: true,
@@ -38,13 +38,13 @@ const { loading, send } = useRequest(loginFunction(model.value), {
 const handleLogin = () => {
   send()
     .then((res) => {
-      const { access_token, refresh_token, roles, userId, user } = res
+      const { access_token, refresh_token, user } = res
       store.accessToken = access_token
       store.refreshToken = refresh_token
-      store.roles = roles
+      // store.roles = roles
       store.userInfo = user
-      store.userId = userId
-      store.saveSessionStorage()
+      // store.userId = userId
+      store.saveSessionStorage(res)
       // 路由跳转
       if (route.query?.redirect) {
         router.push({

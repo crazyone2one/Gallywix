@@ -2,7 +2,7 @@
 import { computed, onMounted, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 
-import { useAuthStore } from "../store/auth-store"
+import { useUserStore } from "/@/store/modules/user-store"
 
 import { getUserProjectList } from "../apis/project"
 import { updateUserData } from "../apis/user"
@@ -11,7 +11,7 @@ import { useRequest } from "alova"
 import { NPopselect, SelectOption } from "naive-ui"
 
 const route = useRoute()
-const store = useAuthStore()
+const store = useUserStore()
 const value = ref("")
 const currentProject = ref("")
 const router = useRouter()

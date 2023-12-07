@@ -3,7 +3,7 @@ import { IPage, PageReq } from "../interface"
 import { IPermissionDTO } from "../permission"
 import { IProject } from "../project"
 import { USER } from "../user"
-import { IWorkspace } from "../workspace"
+import { IWorkspaceItem } from "../workspace"
 import { SelectOption } from "naive-ui"
 export interface IGroupDTO {
   id: string | undefined
@@ -18,7 +18,7 @@ export interface IGroupDTO {
   createTime?: number
   creator?: string
   memberSize?: number
-  workspaces?: Array<IWorkspace>
+  workspaces?: Array<IWorkspaceItem>
   projects?: Array<IProject>
   ids?: Array<string>
   workspaceOptions?: Array<SelectOption>

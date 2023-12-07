@@ -1,19 +1,21 @@
 import alovaInstance from ".."
-import { USER } from "../user"
-export interface LOGIN {
+import { IUSerDtoItem } from "../interface"
+
+export interface ILoginParamItem {
   username: string
   password: string
 }
-export interface LoginResponse {
+export interface ILoginRespItem {
   access_token: string
   refresh_token: string
   userId: string
   roles: Array<string>
-  user: USER
+  user: IUSerDtoItem
 }
 /**
  * 登录
  * @param param 登录参数
  * @returns
  */
-export const loginFunction = (param: LOGIN) => alovaInstance.Post<LoginResponse>(`/auth/authenticate`, param)
+export const loginFunction = (param: ILoginParamItem) => alovaInstance.Post<ILoginRespItem>(`/auth/authenticate`, param)
+export const logOutFunction = () => alovaInstance.Post("/auth/logout")

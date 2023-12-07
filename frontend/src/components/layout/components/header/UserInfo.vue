@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { h } from "vue"
-import { NAvatar, NButton, NDropdown, NText } from "naive-ui"
-import { useRequest } from "alova"
-import { logOut } from "/@/apis/user"
-import { useAuthStore } from "/@/store/auth-store"
-import { useDate } from "/@/composables/use-date"
 
-const store = useAuthStore()
+import { useUserStore } from "/@/store/modules/user-store"
+
+import { useDate } from "/@/composables/use-date"
+import { NAvatar, NButton, NDropdown, NText } from "naive-ui"
+
+const { logout } = useUserStore()
 const { year, week } = useDate()
 function renderCustomHeader() {
   return h(
@@ -52,7 +52,7 @@ const options = [
     key: "stmt3",
   },
 ]
-const { send, onSuccess } = useRequest(logOut(), { immediate: false })
+
 const handleSelect = (key: string | number) => {
   if (key === "stmt3") {
     window.$dialog.warning({
@@ -62,15 +62,11 @@ const handleSelect = (key: string | number) => {
       positiveText: "确定",
       negativeText: "不确定",
       onPositiveClick() {
-        send()
+        logout()
       },
     })
   }
 }
-onSuccess(() => {
-  store.restAuthStore()
-  window.location.reload()
-})
 </script>
 <template>
   <n-dropdown trigger="hover" :options="options" @select="handleSelect">

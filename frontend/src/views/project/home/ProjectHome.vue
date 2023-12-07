@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue"
 
-import { useAuthStore } from "/@/store/auth-store"
+import { useUserStore } from "/@/store/modules/user-store"
+
+import { hasPermission } from "/@/utils/permission"
 
 import { getProject, IProject } from "/@/apis/project"
 import { useRequest } from "alova"
@@ -10,11 +12,18 @@ import { NCard, NGi, NGrid } from "naive-ui"
 const loading = ref(false)
 const project = ref({} as IProject)
 const projectId = computed(() => {
-  return useAuthStore().project_id
+  return useUserStore().project_id
 })
 const { send } = useRequest((val) => getProject(val), { immediate: false })
 
 const click = (str: string, permissions: Array<string>) => {
+  for (let permission of permissions) {
+    if (hasPermission(permission)) {
+      // this.$router.push(str);
+      console.log(`output->str`, str)
+      return
+    }
+  }
   window.$message.warning("无操作权限！")
 }
 onMounted(() => {

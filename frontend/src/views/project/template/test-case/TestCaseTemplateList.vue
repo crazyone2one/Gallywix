@@ -6,7 +6,7 @@ import BaseCard from "/@/components/BaseCard.vue"
 import BaseSearch from "/@/components/BaseSearch.vue"
 import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 
-import { useAuthStore } from "/@/store/auth-store"
+import { useUserStore } from "/@/store/modules/user-store"
 
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
 import { getCaseFieldTemplatePages, ITestCaseTemplate } from "/@/apis/template/test-case-template"
@@ -116,7 +116,7 @@ const handleCreate = () => {
   testCaseTemplateEdit.value?.open()
 }
 onMounted(() => {
-  condition.value.projectId = useAuthStore().project_id
+  condition.value.projectId = useUserStore().project_id
   send().then((res) => {
     tableInfo.value.data = res.records
     tableInfo.value.total = res.totalRow

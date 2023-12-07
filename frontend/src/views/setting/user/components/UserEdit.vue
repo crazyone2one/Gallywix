@@ -7,27 +7,13 @@ import { useForm } from "@alova/scene-vue"
 import { GROUP_TYPE } from "/@/utils/constants"
 import { list2SelectOption } from "/@/utils/list-2-select"
 
-import {
-  getAllUserGroupByType,
-  getUserAllGroups,
-  IGroupDTO,
-} from "/@/apis/group"
-import { ICustomGroup } from "/@/apis/interface"
+import { getAllUserGroupByType, getUserAllGroups, IGroupDTO } from "/@/apis/group"
 import { IProject } from "/@/apis/project"
 import { saveUserData, updateUserData, USER } from "/@/apis/user"
-import { getGroupResource, IWorkspace } from "/@/apis/workspace/index"
+import { getGroupResource, IWorkspaceItem } from "/@/apis/workspace/index"
 import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
-import {
-  FormInst,
-  FormItemRule,
-  FormRules,
-  NForm,
-  NFormItem,
-  NInput,
-  NSwitch,
-  SelectOption,
-} from "naive-ui"
+import { FormInst, FormItemRule, FormRules, NForm, NFormItem, NInput, NSwitch, SelectOption } from "naive-ui"
 
 const modalDialog = ref<InstanceType<typeof ModalDialog> | null>(null)
 const formRef = ref<FormInst | null>(null)
@@ -117,18 +103,16 @@ saveUserDataError((error) => {
   window.$message.error(error.error.message)
 })
 // 获取group数据
-const { send: loadGroup, onSuccess: loadGroupSuccess } = useRequest(
-  (val) => getAllUserGroupByType(val),
-  { immediate: false },
-)
+const { send: loadGroup, onSuccess: loadGroupSuccess } = useRequest((val) => getAllUserGroupByType(val), {
+  immediate: false,
+})
 loadGroupSuccess((resp) => {
   userGroup.value = resp.data
 })
 // getUserAllGroups
-const { send: loadUserGroup, onSuccess: loadUserGroupSuccess } = useRequest(
-  (val) => getUserAllGroups(val),
-  { immediate: false },
-)
+const { send: loadUserGroup, onSuccess: loadUserGroupSuccess } = useRequest((val) => getUserAllGroups(val), {
+  immediate: false,
+})
 loadUserGroupSuccess((resp) => {
   const _data = resp.data
   formData.value.groups = _data
@@ -137,10 +121,7 @@ loadUserGroupSuccess((resp) => {
     handleProjectOption(group, group.projects)
   }
 })
-const handleWorkspaceOption = (
-  group: ICustomGroup,
-  workspaces?: IWorkspace[],
-) => {
+const handleWorkspaceOption = (group: IGroupDTO, workspaces?: IWorkspaceItem[]) => {
   if (!workspaces) {
     return
   }
@@ -160,7 +141,7 @@ const handleWorkspaceOption = (
   }
   group.workspaceOptions = list2SelectOption(options)
 }
-const handleProjectOption = (group: ICustomGroup, projects?: IProject[]) => {
+const handleProjectOption = (group: IGroupDTO, projects?: IProject[]) => {
   if (!projects) {
     return
   }
@@ -195,7 +176,7 @@ const getLabel = (index: number) => {
   let a = index + 1
   return i18n.t("commons.group") + a
 }
-const activeGroup = (group: ICustomGroup) => {
+const activeGroup = (group: IGroupDTO) => {
   const tmp = userGroup.value.filter((ug) => {
     if (!group.selects) {
       return true
@@ -221,12 +202,9 @@ const activeGroup = (group: ICustomGroup) => {
   }
   return options
 }
-const { send: loadGroupRes } = useRequest(
-  (id, type) => getGroupResource(id, type),
-  {
-    immediate: false,
-  },
-)
+const { send: loadGroupRes } = useRequest((id, type) => getGroupResource(id, type), {
+  immediate: false,
+})
 
 const getResource = (value: string, option: SelectOption) => {
   if (!value) {
@@ -235,8 +213,10 @@ const getResource = (value: string, option: SelectOption) => {
   let id = value.split("+")[0]
   let type = value.split("+")[1]
   const index = option.index as number
-  if (index > 0 && formData.value.groups[index].ids.length > 0) {
-    return
+  if (formData.value.groups[index].ids) {
+    if (index > 0 && formData.value.groups[index].ids.length > 0) {
+      return
+    }
   }
   let isHaveWorkspace = false
   if (type === GROUP_TYPE.PROJECT) {
@@ -262,7 +242,7 @@ const getResource = (value: string, option: SelectOption) => {
     }
   })
 }
-const _setResource = (data: ICustomGroup, index: number, type: string) => {
+const _setResource = (data: IGroupDTO, index: number, type: string) => {
   switch (type) {
     case GROUP_TYPE.WORKSPACE: {
       const _group = formData.value.groups[index]
@@ -313,13 +293,13 @@ const addWorkspaceGroup = (id: string, index: number) => {
       } else {
         roleInfo.ids = []
       }
-      formData.value.groups.push(roleInfo)
+      formData.value.groups.push(roleInfo as IGroupDTO)
       currentWSGroupIndex.value = index + 1
       _setResource(data, index + 1, GROUP_TYPE.WORKSPACE)
     }
   })
 }
-const removeGroup = (item: ICustomGroup) => {
+const removeGroup = (item: IGroupDTO) => {
   if (formData.value.groups.length === 1) {
     window.$message.info(i18n.t("system_user.remove_group_tip"))
     return
@@ -340,7 +320,7 @@ const removeGroup = (item: ICustomGroup) => {
     }
   }
 }
-const checkRemove = (item: ICustomGroup, index: number | undefined) => {
+const checkRemove = (item: IGroupDTO, index: number | undefined) => {
   if (!item.type) {
     return true
   }
@@ -394,11 +374,7 @@ const setWorkSpaceIds = (value: string, option: SelectOption) => {
 defineExpose({ open })
 </script>
 <template>
-  <modal-dialog
-    ref="modalDialog"
-    :title="title"
-    modal-with="50%"
-    @confirm="handleSave">
+  <modal-dialog ref="modalDialog" :title="title" modal-with="50%" @confirm="handleSave">
     <template #content>
       <n-form
         ref="formRef"
@@ -419,10 +395,7 @@ defineExpose({ open })
         <n-form-item :label="$t('commons.phone')" path="phone">
           <n-input v-model:value="formData.phone" />
         </n-form-item>
-        <n-form-item
-          v-if="type === 'Add'"
-          :label="$t('commons.password')"
-          path="password">
+        <n-form-item v-if="type === 'Add'" :label="$t('commons.password')" path="password">
           <n-input
             v-model:value="formData.password"
             :placeholder="$t('user.input_password')"
@@ -431,10 +404,7 @@ defineExpose({ open })
         </n-form-item>
         <div v-for="(group, index) in formData.groups" :key="index">
           <n-form-item :label="getLabel(index)">
-            <n-select
-              v-model:value="group.type"
-              :options="activeGroup(group)"
-              @update:value="getResource" />
+            <n-select v-model:value="group.type" :options="activeGroup(group)" @update:value="getResource" />
             <n-button style="margin-left: 20px" @click="removeGroup(group)">
               {{ $t("commons.delete") }}
             </n-button>

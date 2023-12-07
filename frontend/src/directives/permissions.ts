@@ -1,6 +1,6 @@
 import { DirectiveBinding } from "vue"
 
-import { hasPermission } from "../utils/permission"
+import { hasPermissions } from "../utils/permission"
 
 interface ElType extends HTMLElement {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -9,14 +9,10 @@ interface ElType extends HTMLElement {
 
 const checkPermission = (el: ElType, binding: DirectiveBinding) => {
   const { value } = binding
-  if (value && value instanceof Array) {
-    if (value.length > 0) {
-      const elRoles = value
-      elRoles.forEach((role) => {
-        if (!hasPermission(role)) {
-          el.parentNode && el.parentNode.removeChild(el)
-        }
-      })
+  if (value && value instanceof Array && value.length > 0) {
+    const _hasPermission = hasPermissions(...value)
+    if (!_hasPermission) {
+      el.parentNode && el.parentNode.removeChild(el)
     }
   } else {
     throw new Error(`need a array like ['role1', 'role2']`)

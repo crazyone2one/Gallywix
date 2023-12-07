@@ -1,6 +1,6 @@
 import VueHook from "alova/vue"
 
-import { useAuthStore } from "../store/auth-store"
+import { useUserStore } from "/@/store/modules/user-store"
 
 import { i18n } from "../i18n"
 import { createAlova } from "alova"
@@ -22,7 +22,7 @@ const alovaInstance = createAlova({
   //   设置全局请求拦截器
   beforeRequest(method) {
     // 添加token到请求头
-    const accessToken = useAuthStore().accessToken
+    const accessToken = useUserStore().accessToken
     if (accessToken) {
       method.config.headers.Authorization = `Bearer ${accessToken}`
     }
@@ -52,11 +52,11 @@ const alovaInstance = createAlova({
           window.$dialog.warning({
             title: json.message,
             maskClosable: false,
-            content: () => i18n.t("commoms.tips"),
+            content: i18n.t("commons.tips"),
             positiveText: "确定",
             negativeText: "不确定",
             onPositiveClick() {
-              useAuthStore().restAuthStore()
+              useUserStore().$reset()
               window.location.reload()
             },
           })

@@ -11,6 +11,7 @@ import {
   NFormItem,
   NIcon,
   NInput,
+  NPopover,
   NSelect,
   NSkeleton,
   NSpace,
@@ -36,6 +37,7 @@ const naive = create({
     NCheckboxGroup,
     NSkeleton,
     NSpin,
+    NPopover,
   ],
 })
 

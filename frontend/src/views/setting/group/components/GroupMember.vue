@@ -6,26 +6,14 @@ import BaseSearch from "/@/components/BaseSearch.vue"
 import ModalDialog from "/@/components/ModalDialog.vue"
 import { useForm } from "@alova/scene-vue"
 
-import {
-  GROUP_PROJECT,
-  GROUP_SYSTEM,
-  GROUP_WORKSPACE,
-} from "/@/utils/constants"
-import {
-  list2SelectOption,
-  userList2SelectOption,
-} from "/@/utils/list-2-select"
+import { GROUP_PROJECT, GROUP_SYSTEM, GROUP_WORKSPACE } from "/@/utils/constants"
+import { list2SelectOption, userList2SelectOption } from "/@/utils/list-2-select"
 
-import {
-  addUser2Group,
-  getUserGroup,
-  IGroupDTO,
-  IUser2Group,
-} from "/@/apis/group"
+import { addUser2Group, getUserGroup, IGroupDTO, IUser2Group } from "/@/apis/group"
 import { ICustomGroup, ITableDataInfo, PageReq } from "/@/apis/interface"
 import { IProject } from "/@/apis/project"
 import { getUserList, USER } from "/@/apis/user"
-import { getGroupResource, IWorkspace } from "/@/apis/workspace"
+import { getGroupResource, IWorkspaceItem } from "/@/apis/workspace"
 import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
 import { DataTableColumns, FormInst, SelectOption } from "naive-ui"
@@ -107,14 +95,8 @@ const typeLabel = computed(() => {
   }
   return ""
 })
-const openModal = (
-  _group: IGroupDTO,
-  _initUserGroupUrl?: string,
-  _initUserUrl?: string,
-) => {
-  initUserGroupUrl.value = _initUserGroupUrl
-    ? _initUserGroupUrl
-    : "/system/group/user"
+const openModal = (_group: IGroupDTO, _initUserGroupUrl?: string, _initUserUrl?: string) => {
+  initUserGroupUrl.value = _initUserGroupUrl ? _initUserGroupUrl : "/system/group/user"
   initUserUrl.value = _initUserUrl ? _initUserUrl : "/user/list"
   group.value = _group
   modalDialog.value?.showModal()
@@ -133,15 +115,12 @@ const init = () => {
 // get user
 const { send: loadUserList } = useRequest(getUserList(), { immediate: false })
 // get group resource
-const { send: loadGroupResource } = useRequest(
-  (v1, v2) => getGroupResource(v1, v2),
-  {
-    immediate: false,
-  },
-)
+const { send: loadGroupResource } = useRequest((v1, v2) => getGroupResource(v1, v2), {
+  immediate: false,
+})
 const _sourceData = ref<Array<SelectOption>>([])
-const sourceData = ref<Array<IWorkspace> | Array<IProject> | undefined>([])
-const sourceDataCopy = ref<Array<IWorkspace> | Array<IProject> | undefined>([])
+const sourceData = ref<Array<IWorkspaceItem> | Array<IProject> | undefined>([])
+const sourceDataCopy = ref<Array<IWorkspaceItem> | Array<IProject> | undefined>([])
 const getResource = () => {
   loadGroupResource(group.value.code, group.value.type).then((res) => {
     let data = res
@@ -151,9 +130,7 @@ const getResource = () => {
     }
   })
 }
-const handleResourceOption = (
-  resources: Array<IWorkspace> | Array<IProject> | undefined,
-) => {
+const handleResourceOption = (resources: Array<IWorkspaceItem> | Array<IProject> | undefined) => {
   if (!resources) {
     return
   }
@@ -163,11 +140,7 @@ const handleResourceOption = (
   if (!formData.value.sourceIds || formData.value.sourceIds.length === 0) {
     return
   }
-  _handleSelectOption(
-    formData.value.sourceIds,
-    sourceData.value,
-    sourceDataCopy.value,
-  )
+  _handleSelectOption(formData.value.sourceIds, sourceData.value, sourceDataCopy.value)
 }
 const _setResource = (type: string, data: ICustomGroup) => {
   switch (type) {
@@ -208,15 +181,13 @@ const handleUserOption = (_users: USER[]) => {
 }
 const _handleSelectOption = (
   ids: Array<string>,
-  options: Array<USER> | Array<IWorkspace> | Array<IProject>,
-  origins: Array<USER> | Array<IWorkspace> | Array<IProject>,
+  options: Array<USER> | Array<IWorkspaceItem> | Array<IProject>,
+  origins: Array<USER> | Array<IWorkspaceItem> | Array<IProject>,
 ) => {
   for (let id of ids) {
     let index = options.findIndex((o) => o.id === id)
     if (index <= -1) {
-      let obj: USER | IWorkspace | IProject | undefined = origins.find(
-        (d) => d.id === id,
-      )
+      let obj: USER | IWorkspaceItem | IProject | undefined = origins.find((d) => d.id === id)
       if (obj) {
         options.unshift(obj)
       }
@@ -271,25 +242,15 @@ defineExpose({ openModal })
     <template #content>
       <base-card>
         <template #header>
-          <base-search
-            :condition="condition"
-            :create-tip="$t('member.create')"
-            @create="addMemberBtn" />
+          <base-search :condition="condition" :create-tip="$t('member.create')" @create="addMemberBtn" />
         </template>
         <template #content>
-          <n-data-table
-            :data="tableInfo.data"
-            :columns="columns"
-            :row-key="rowKey" />
+          <n-data-table :data="tableInfo.data" :columns="columns" :row-key="rowKey" />
         </template>
       </base-card>
     </template>
   </modal-dialog>
-  <modal-dialog
-    ref="memberVisible"
-    :title="title"
-    modal-width="45%"
-    @confirm="handleSave">
+  <modal-dialog ref="memberVisible" :title="title" modal-width="45%" @confirm="handleSave">
     <template #content>
       <n-form
         ref="formRef"

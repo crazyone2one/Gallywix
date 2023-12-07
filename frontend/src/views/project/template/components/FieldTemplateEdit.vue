@@ -6,7 +6,7 @@ import TemplateComponentEditHeader from "./TemplateComponentEditHeader.vue"
 import GaFormDivider from "/@/components/GaFormDivider.vue"
 import { useForm } from "@alova/scene-vue"
 
-import { useAuthStore } from "/@/store/auth-store"
+import { useUserStore } from "/@/store/modules/user-store"
 
 import { generateTableHeaderKey, getCustomFieldsKeys } from "/@/utils/table-util"
 
@@ -74,7 +74,7 @@ const getRelateFields = () => {
 
 const appendDefaultFiled = () => {
   let condition = {
-    projectId: useAuthStore().project_id,
+    projectId: useUserStore().project_id,
     scene: props.scene,
   }
   loadDefaultCustomField(condition).then((res) => {
@@ -147,7 +147,7 @@ const handleSave = () => {
         param.value.steps = _form.value.steps
       }
       // param.options = JSON.stringify(_form.value.options)
-      param.value.projectId = useAuthStore().project_id as string
+      param.value.projectId = useUserStore().project_id as string
       const customFields = relateFields.value
       if (customFields) {
         let keys = getCustomFieldsKeys(customFields)

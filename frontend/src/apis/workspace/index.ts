@@ -6,18 +6,19 @@ import { IPage, PageReq } from "../interface"
 import { USER } from "../user"
 import { SelectOption } from "naive-ui"
 
-export interface IWorkspace {
-  id: string | undefined
+export interface IWorkspaceItem {
+  id: string
   name: string
   description: string
   organizationId?: string
   memberSize?: number
 }
 
-export const loadWorkspaceData = (param: PageReq) => alovaInstance.Post<IPage<IWorkspace[]>>(`/workspace/page`, param)
+export const loadWorkspaceData = (param: PageReq) =>
+  alovaInstance.Post<IPage<IWorkspaceItem[]>>(`/workspace/page`, param)
 
-export const createWorkspace = (param: IWorkspace) => alovaInstance.Post<IWorkspace>(`/workspace/save`, param)
-export const loadList = () => alovaInstance.Get<IWorkspace[]>(`/workspace/list`)
+export const createWorkspace = (param: IWorkspaceItem) => alovaInstance.Post<IWorkspaceItem>(`/workspace/save`, param)
+export const loadList = () => alovaInstance.Get<IWorkspaceItem[]>(`/workspace/list`)
 /**
  * 查询workspace数据
  * @returns select option
@@ -25,7 +26,7 @@ export const loadList = () => alovaInstance.Get<IWorkspace[]>(`/workspace/list`)
 export const loadOptionList = () =>
   alovaInstance.Get<SelectOption[]>(`/workspace/list`, {
     transformData(data) {
-      return list2SelectOption(data as Array<IWorkspace>)
+      return list2SelectOption(data as Array<IWorkspaceItem>)
     },
   })
 /**

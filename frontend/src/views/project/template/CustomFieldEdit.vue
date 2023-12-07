@@ -5,7 +5,7 @@ import GaSingleHandleDrag from "/@/components/GaSingleHandleDrag.vue"
 import ModalDialog from "/@/components/ModalDialog.vue"
 import { useForm } from "@alova/scene-vue"
 
-import { useAuthStore } from "/@/store/auth-store"
+import { useUserStore } from "/@/store/modules/user-store"
 
 import { CUSTOM_FIELD_TYPE_OPTION, SYSTEM_FIELD_NAME_MAP } from "/@/utils/table-constants"
 
@@ -117,7 +117,7 @@ const handleSave = () => {
         }
       }
       Object.assign(param, formData.value)
-      param.projectId = useAuthStore().project_id as string
+      param.projectId = useUserStore().project_id as string
       if (["select", "multipleSelect", "radio", "checkbox"].indexOf(param.type) > -1) {
         if (param.options) {
           if (param.options.length < 1) {

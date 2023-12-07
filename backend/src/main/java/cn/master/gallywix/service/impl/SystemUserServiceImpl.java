@@ -180,7 +180,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
                         wrapper.select(SYSTEM_USER.ALL_COLUMNS)
                                 .from(USER_GROUP).join(SYSTEM_USER).on(USER_GROUP.USER_ID.eq(SYSTEM_USER.ID))
                                 .where(USER_GROUP.SOURCE_ID.eq(request.getProjectId()))
-                                .orderBy(USER_GROUP.UPDATE_TIME.desc())
+                                .orderBy(SYSTEM_USER.UPDATE_TIME.desc())
                 ).as("temp");
         return mapper.paginate(request, query);
     }
@@ -236,7 +236,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         }
         permissionDTO.setUserGroups(userGroups);
         List<String> groupList = userGroups.stream().map(UserGroup::getGroupId).toList();
-        List<SystemGroup> groups = systemGroupMapper.selectListByQuery(QueryChain.of(SystemGroup.class).where(SYSTEM_GROUP.ID.in(groupList)));
+        List<SystemGroup> groups = systemGroupMapper.selectListByQuery(QueryChain.of(SystemGroup.class).where(SYSTEM_GROUP.CODE.in(groupList)));
         permissionDTO.setGroups(groups);
         groups.forEach(gp -> {
             GroupResourceDTO dto = new GroupResourceDTO();

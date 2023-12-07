@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import GaButton from "/@/components/GaButton.vue"
+import GaTableOperatorButton from "./GaTableOperatorButton.vue"
 
 import { i18n } from "/@/i18n"
 import { NSpace } from "naive-ui"
@@ -11,6 +11,7 @@ interface PROPS {
   type?: "default" | "tertiary" | "primary" | "success" | "info" | "warning" | "error"
   editPermission?: Array<string>
   deletePermission?: Array<string>
+  isShow?: boolean
 }
 withDefaults(defineProps<PROPS>(), {
   showEdit: true,
@@ -20,32 +21,29 @@ withDefaults(defineProps<PROPS>(), {
   type: "warning",
   editPermission: () => [],
   deletePermission: () => [],
+  isShow: false,
 })
 const emits = defineEmits(["editClick", "deleteClick"])
 </script>
 <template>
   <n-space justify="center">
     <slot name="front" />
-    <ga-button
+    <ga-table-operator-button
       v-if="showEdit"
-      :text="true"
-      :is-icon="true"
-      icon-class="i-tabler:edit"
+      icon="i-tabler:edit"
       :type="type"
-      :is-pop="true"
-      :pop-text="editTip"
+      :tip="editTip"
       :permission="editPermission"
+      :disabled="isShow"
       @exec="emits('editClick')" />
     <slot name="middle" />
-    <ga-button
+    <ga-table-operator-button
       v-if="showDelete"
-      :text="true"
-      :is-icon="true"
-      icon-class="i-tabler:trash"
+      icon="i-tabler:trash"
       type="error"
-      :is-pop="true"
-      :pop-text="deleteTip"
+      :tip="deleteTip"
       :permission="deletePermission"
+      :disabled="isShow"
       @exec="emits('deleteClick')" />
     <slot name="behind" />
   </n-space>

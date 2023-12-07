@@ -4,7 +4,7 @@ import { ref } from "vue"
 import ModalDialog from "/@/components/ModalDialog.vue"
 import { useForm } from "@alova/scene-vue"
 
-import { createWorkspace, IWorkspace } from "/@/apis/workspace"
+import { createWorkspace, IWorkspaceItem } from "/@/apis/workspace"
 import { FormInst, FormRules, NForm, NFormItem, NInput } from "naive-ui"
 
 const modalDialog = ref<InstanceType<typeof ModalDialog> | null>(null)
@@ -26,7 +26,7 @@ const rules: FormRules = {
     trigger: "blur",
   },
 }
-const open = (val?: IWorkspace) => {
+const open = (val?: IWorkspaceItem) => {
   if (val) {
     window.$message.info(val.name)
   }
@@ -68,10 +68,7 @@ onSuccess(() => {
 defineExpose({ open })
 </script>
 <template>
-  <modal-dialog
-    ref="modalDialog"
-    :title="$t('workspace.create')"
-    @confirm="handleSave">
+  <modal-dialog ref="modalDialog" :title="$t('workspace.create')" @confirm="handleSave">
     <template #content>
       <n-form
         ref="formRef"

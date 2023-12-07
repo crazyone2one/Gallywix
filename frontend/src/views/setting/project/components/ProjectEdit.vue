@@ -5,7 +5,7 @@ import TemplateSelect from "./TemplateSelect.vue"
 import ModalDialog from "/@/components/ModalDialog.vue"
 import { useForm } from "@alova/scene-vue"
 
-import { useAuthStore } from "/@/store/auth-store"
+import { useUserStore } from "/@/store/modules/user-store"
 
 import { IProject, saveData, updateData } from "/@/apis/project"
 import { i18n } from "/@/i18n"
@@ -64,7 +64,7 @@ const {
 const handleSave = () => {
   formRef.value?.validate((error) => {
     if (!error) {
-      formData.value.workspaceId = useAuthStore().workspace_id as string
+      formData.value.workspaceId = useUserStore().workspace_id as string
       submit(formData.value)
     }
   })

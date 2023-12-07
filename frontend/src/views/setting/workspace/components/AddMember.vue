@@ -3,12 +3,9 @@ import { ref } from "vue"
 
 import ModalDialog from "/@/components/ModalDialog.vue"
 
-import { useAuthStore } from "/@/store/auth-store"
+import { useUserStore } from "/@/store/modules/user-store"
 
-import {
-  list2SelectOption,
-  userList2SelectOption,
-} from "/@/utils/list-2-select"
+import { list2SelectOption, userList2SelectOption } from "/@/utils/list-2-select"
 
 import { getGroupsByType } from "/@/apis/group"
 import { addWorkspaceMemberSpecial, getUserList, USER } from "/@/apis/user"
@@ -75,10 +72,7 @@ const handleUserOption = (users: Array<USER>) => {
   }
   _handleSelectOption(model.value.userIds, userList.value)
 }
-const _handleSelectOption = (
-  userIds: Array<string>,
-  options: Array<SelectOption>,
-) => {
+const _handleSelectOption = (userIds: Array<string>, options: Array<SelectOption>) => {
   for (let id of userIds) {
     let index = options.findIndex((o) => o.key === id)
     if (index <= -1) {
@@ -101,18 +95,15 @@ const open = () => {
     projectId: "",
   }
   if (props.groupType === "PROJECT") {
-    param.projectId = props.projectId || (useAuthStore().project_id as string)
+    param.projectId = props.projectId || (useUserStore().project_id as string)
   }
   loadGroupsByType(param).then((resp) => {
     model.value.groups = list2SelectOption(resp)
   })
 }
-const { send: addWsMember } = useRequest(
-  (val) => addWorkspaceMemberSpecial(val),
-  {
-    immediate: false,
-  },
-)
+const { send: addWsMember } = useRequest((val) => addWorkspaceMemberSpecial(val), {
+  immediate: false,
+})
 const handleSave = () => {
   let param = {
     userIds: model.value.userIds,

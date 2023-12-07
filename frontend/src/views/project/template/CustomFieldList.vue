@@ -6,7 +6,7 @@ import BaseCard from "/@/components/BaseCard.vue"
 import BaseSearch from "/@/components/BaseSearch.vue"
 import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 
-import { useAuthStore } from "/@/store/auth-store"
+import { useUserStore } from "/@/store/modules/user-store"
 
 import { FIELD_TYPE_MAP, SCENE_MAP, SYSTEM_FIELD_NAME_MAP } from "/@/utils/table-constants"
 
@@ -120,7 +120,7 @@ const handleEdit = (rowData: ICustomField) => {
   customFieldEdit.value?.open(i18n.t("custom_field.update"), rowData)
 }
 const loadData = () => {
-  condition.value.projectId = useAuthStore().project_id
+  condition.value.projectId = useUserStore().project_id
   loadTableData(condition.value).then((res) => {
     const { records, totalRow } = res
     tableInfo.value.data = records

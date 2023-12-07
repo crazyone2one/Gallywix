@@ -3,22 +3,24 @@ import { h, onMounted, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 
 import ProjectEdit from "./components/ProjectEdit.vue"
+import ProjectMember from "./components/ProjectMember.vue"
 import BaseCard from "/@/components/BaseCard.vue"
 import BaseSearch from "/@/components/BaseSearch.vue"
 import GaDeleteConfirm from "/@/components/GaDeleteConfirm.vue"
 import GaTableOperation from "/@/components/table/GaTableOperation.vue"
 
-import { useAuthStore } from "/@/store/auth-store"
+import { useUserStore } from "/@/store/modules/user-store"
 
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
 import { deleteData, IProject, loadData } from "/@/apis/project"
 import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
-import { DataTableColumns, NDataTable, NSkeleton } from "naive-ui"
+import { DataTableColumns, NButton, NDataTable, NSkeleton } from "naive-ui"
 
 const route = useRoute()
 const router = useRouter()
 const projectEdit = ref<InstanceType<typeof ProjectEdit> | null>(null)
+const projectMember = ref<InstanceType<typeof ProjectMember> | null>(null)
 const deleteConfirm = ref<InstanceType<typeof GaDeleteConfirm> | null>(null)
 const columns: DataTableColumns<IProject> = [
   {
@@ -39,6 +41,15 @@ const columns: DataTableColumns<IProject> = [
     title: i18n.t("commons.member"),
     key: "memberSize",
     align: "center",
+    render(rowData) {
+      return h(
+        NButton,
+        { text: true, type: "primary", onClick: () => cellClick(rowData) },
+        {
+          default: () => rowData.memberSize,
+        },
+      )
+    },
   },
   {
     title: "创建时间",
@@ -83,7 +94,7 @@ onSuccess((resp) => {
   tableInfo.value.data = resp.data.records
 })
 const handleAdd = () => {
-  const workspaceId = useAuthStore().workspace_id
+  const workspaceId = useUserStore().workspace_id
   if (!workspaceId) {
     window.$message.warning(i18n.t("project.please_choose_workspace"))
     return false
@@ -116,8 +127,12 @@ deleteSuccess(() => {
   send()
   // todo 删除项目后更新用户信息，若删除的是当前用户的项目，则更新当前用户的lastproject 为空
 })
+
+const cellClick = (val: IProject) => {
+  projectMember.value?.open(val)
+}
 onMounted(() => {
-  condition.value.workspaceId = useAuthStore().workspace_id
+  condition.value.workspaceId = useUserStore().workspace_id
   send()
   const tmpPath = route.path.split("/")[2]
   if (tmpPath === "create") {
@@ -143,6 +158,7 @@ onMounted(() => {
     </template>
   </base-card>
   <project-edit ref="projectEdit" @refresh="send()" />
+  <project-member ref="projectMember" />
   <ga-delete-confirm ref="deleteConfirm" @delete="_handleDelete" />
 </template>
 

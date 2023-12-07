@@ -11,7 +11,7 @@ import { GROUP_TYPE } from "/@/utils/constants"
 
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
 import { getWorkspaceMemberListSpecial, USER } from "/@/apis/user"
-import { IWorkspace } from "/@/apis/workspace"
+import { IWorkspaceItem } from "/@/apis/workspace"
 import { i18n } from "/@/i18n"
 import { useRequest } from "alova"
 import { DataTableColumns, NDataTable } from "naive-ui"
@@ -75,7 +75,7 @@ const { send: loadWsMember, onSuccess: loadWsMemberSucccess } = useRequest(
     immediate: false,
   },
 )
-const open = (val: IWorkspace) => {
+const open = (val: IWorkspaceItem) => {
   modalDialog.value?.showModal()
   condition.value.workspaceId = val.id
   loadWsMember(condition.value)
@@ -101,24 +101,15 @@ defineExpose({ open })
     <template #content>
       <base-card>
         <template #header>
-          <base-search
-            :condition="condition"
-            :create-tip="$t('member.create')"
-            @create="handleOpenAdd" />
+          <base-search :condition="condition" :create-tip="$t('member.create')" @create="handleOpenAdd" />
         </template>
         <template #content>
-          <n-data-table
-            :columns="columns"
-            :data="tableInfo.data"
-            :row-key="rowKey" />
+          <n-data-table :columns="columns" :data="tableInfo.data" :row-key="rowKey" />
         </template>
       </base-card>
     </template>
   </modal-dialog>
-  <add-member
-    ref="addMember"
-    :group-type="GROUP_TYPE.WORKSPACE"
-    :group-scope-id="groupScopeId" />
+  <add-member ref="addMember" :group-type="GROUP_TYPE.WORKSPACE" :group-scope-id="groupScopeId" />
 </template>
 
 <style></style>

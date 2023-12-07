@@ -43,10 +43,7 @@ const columns: DataTableColumns<IGroupDTO> = [
         "span",
         {},
         {
-          default: () =>
-            userGroupType.value[row.type]
-              ? i18n.t(userGroupType.value[row.type])
-              : row.type,
+          default: () => (userGroupType.value[row.type] ? i18n.t(userGroupType.value[row.type]) : row.type),
         },
       )
     },
@@ -103,39 +100,28 @@ const columns: DataTableColumns<IGroupDTO> = [
     fixed: "right",
     align: "center",
     render(rowData) {
-      if (rowData.code === SUPER_GROUP) {
-        return h(
-          GaTableOperation,
-          { onEditClick: () => handleEdit(rowData) },
-          {
-            middle: () => {
-              return h(
-                GaTableOperatorButton,
-                { tip: i18n.t("group.set_permission") },
-                {},
-              )
-            },
+      return h(
+        GaTableOperation,
+        {
+          isShow: rowData.code === SUPER_GROUP,
+          onEditClick: () => handleEdit(rowData),
+          editPermission: ["SYSTEM_GROUP:READ+EDIT"],
+          deletePermission: ["SYSTEM_GROUP:READ+DELETE"],
+        },
+        {
+          middle: () => {
+            return h(
+              GaTableOperatorButton,
+              {
+                tip: i18n.t("group.set_permission"),
+                icon: "i-tabler:settings",
+                permission: ["SYSTEM_GROUP:READ+SETTING_PERMISSION"],
+              },
+              {},
+            )
           },
-        )
-      } else {
-        return h(
-          GaTableOperation,
-          { onEditClick: () => handleEdit(rowData) },
-          {
-            middle: () => {
-              return h(
-                GaTableOperatorButton,
-                {
-                  tip: i18n.t("group.set_permission"),
-                  iconText: "i-tabler:settings",
-                  onExec: () => setPermission(rowData),
-                },
-                {},
-              )
-            },
-          },
-        )
-      }
+        },
+      )
     },
   },
 ]
@@ -150,12 +136,9 @@ const tableInfo = ref<ITableDataInfo<IGroupDTO[]>>({
   total: 0,
 })
 const rowKey = (row: IGroupDTO) => row.id as unknown as string
-const { loading, send, onSuccess } = useRequest(
-  loadTableData(condition.value),
-  {
-    immediate: false,
-  },
-)
+const { loading, send, onSuccess } = useRequest(loadTableData(condition.value), {
+  immediate: false,
+})
 onSuccess((resp) => {
   loading.value = false
   tableInfo.value.data = resp.data.records
@@ -187,15 +170,12 @@ onMounted(() => {
       <base-search
         :condition="condition"
         :create-tip="$t('group.create')"
+        :create-permission="['SYSTEM_GROUP:READ+CREATE']"
         @create="handleAdd" />
     </template>
     <template #content>
       <n-skeleton v-if="loading" :sharp="false" height="550px" />
-      <n-data-table
-        v-else
-        :columns="columns"
-        :data="tableInfo.data"
-        :row-key="rowKey" />
+      <n-data-table v-else :columns="columns" :data="tableInfo.data" :row-key="rowKey" />
     </template>
   </base-card>
   <edit-user-group ref="editUserGroup" @refresh="send" />

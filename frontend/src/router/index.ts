@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router"
 
-import { useAuthStore } from "../store/auth-store"
+import { useUserStore } from "../store/modules/user-store"
 
 import { i18n } from "../i18n"
 import Project from "./modules/project"
@@ -54,13 +54,13 @@ const router = createRouter({
 })
 
 router.beforeEach((to, _from, next) => {
-  const store = useAuthStore()
+  const store = useUserStore()
   const isAuthenticated = store.accessToken || ""
   if (to.path === "/login") {
     isAuthenticated ? next("/") : next()
   } else {
     if (!isAuthenticated) {
-      store.restAuthStore()
+      store.$reset()
       next(`/login?redirect=${to.path}&params=${JSON.stringify(to.query ? to.query : to.params)}`)
     } else if (isAuthenticated && to.path === "login") {
       next("/")
