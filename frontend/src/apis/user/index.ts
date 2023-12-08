@@ -14,6 +14,7 @@ export interface USER {
   createTime?: number
   userGroups: Array<ICustomGroup>
   groups: Array<IGroupDTO>
+  groupList?: Array<IGroupDTO>
   lastProjectId: string
   lastWorkspaceId: string
   groupPermissions: Array<{ group: IGroupDTO }>
@@ -49,8 +50,11 @@ export const switchUserRole = (sign: string, sourceId: string) =>
  * 获取workspace关联的用户数据
  * @param param 查询参数
  */
-export const getWorkspaceMemberListSpecial = (param: PageReq) =>
-  alovaInstance.Post<IPage<USER[]>>(`/system/user/special/ws/member/page`, param)
+export const getWorkspaceMemberListSpecial = (page: number, pageSize: number, param: PageReq) => {
+  param.pageNumber = page
+  param.pageSize = pageSize
+  return alovaInstance.Post<IPage<USER[]>>(`/system/user/special/ws/member/page`, param)
+}
 
 export const getUserList = () => alovaInstance.Get<USER[]>(`/system/user/list`)
 

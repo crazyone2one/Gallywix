@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { h, onMounted, ref } from "vue"
+import { computed, h, onMounted, ref } from "vue"
 
 import WorkspaceEdit from "./components/WorkspaceEdit.vue"
 import WorkspaceMember from "./components/WorkspaceMember.vue"
@@ -8,6 +8,8 @@ import BaseSearch from "/@/components/BaseSearch.vue"
 import GaDeleteConfirm from "/@/components/GaDeleteConfirm.vue"
 import GaPagination from "/@/components/table/GaPagination.vue"
 import GaTableOperation from "/@/components/table/GaTableOperation.vue"
+
+import { getCurrentWorkspaceId } from "/@/utils/token"
 
 import { ITableDataInfo, PageReq } from "/@/apis/interface"
 import { delWorkspaceSpecial, IWorkspaceItem, loadWorkspaceData } from "/@/apis/workspace"
@@ -61,6 +63,7 @@ const columns: DataTableColumns<IWorkspaceItem> = [
           onDeleteClick: () => handleDelete(rowData),
           editPermission: ["SYSTEM_WORKSPACE:READ+EDIT"],
           deletePermission: ["SYSTEM_WORKSPACE:READ+DELETE"],
+          showDelete: workspaceId.value != rowData.id,
         },
         {},
       )
@@ -77,6 +80,9 @@ const tableInfo = ref<ITableDataInfo<IWorkspaceItem[]>>({
   data: [],
   total: 0,
 })
+const workspaceId = computed(() => {
+  return getCurrentWorkspaceId()
+})
 const rowKey = (row: IWorkspaceItem) => row.id as unknown as string
 const handleAdd = () => {
   workspaceEdit.value?.open()
@@ -88,7 +94,7 @@ onMounted(() => {
   send()
 })
 const handleEdit = (val: IWorkspaceItem) => {
-  window.$message.info(val.name)
+  workspaceEdit.value?.open(val)
 }
 const { send: deleteWs, onSuccess: deleteWsSuccess } = useRequest((wsId) => delWorkspaceSpecial(wsId), {
   immediate: false,

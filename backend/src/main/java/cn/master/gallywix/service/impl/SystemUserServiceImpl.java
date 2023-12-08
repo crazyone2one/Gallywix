@@ -18,6 +18,7 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.update.UpdateChain;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -31,6 +32,7 @@ import java.util.*;
 import static cn.master.gallywix.entity.table.SystemGroupTableDef.SYSTEM_GROUP;
 import static cn.master.gallywix.entity.table.SystemProjectTableDef.SYSTEM_PROJECT;
 import static cn.master.gallywix.entity.table.SystemUserTableDef.SYSTEM_USER;
+import static cn.master.gallywix.entity.table.SystemWorkspaceTableDef.SYSTEM_WORKSPACE;
 import static cn.master.gallywix.entity.table.UserGroupPermissionTableDef.USER_GROUP_PERMISSION;
 import static cn.master.gallywix.entity.table.UserGroupTableDef.USER_GROUP;
 import static cn.master.gallywix.entity.table.UserRoleTableDef.USER_ROLE;
@@ -169,7 +171,20 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
                                 .and(SYSTEM_USER.USERNAME.like(page.getName()))
                                 .orderBy(USER_GROUP.UPDATE_TIME.desc())
                 ).as("temp");
-        return mapper.paginate(page, query);
+        val paginate = mapper.paginate(Page.of(page.getPageNumber(), page.getPageSize()), query);
+        val records = paginate.getRecords();
+        if (CollectionUtils.isNotEmpty(records)) {
+            records.forEach(r -> {
+                QueryWrapper group = QueryWrapper.create()
+                        .select(SYSTEM_GROUP.ID.as("id"), SYSTEM_GROUP.CODE, SYSTEM_GROUP.NAME.as("name"), SYSTEM_GROUP.TYPE)
+                        .from(SYSTEM_WORKSPACE)
+                        .join(USER_GROUP).on(USER_GROUP.SOURCE_ID.eq(SYSTEM_WORKSPACE.ID))
+                        .join(SYSTEM_GROUP).on(SYSTEM_GROUP.CODE.eq(USER_GROUP.GROUP_ID))
+                        .where(SYSTEM_WORKSPACE.ID.eq(page.getWorkspaceId()).and(USER_GROUP.USER_ID.eq(r.getId())));
+                r.setGroupList(systemGroupMapper.selectListByQuery(group));
+            });
+        }
+        return paginate;
     }
 
     @Override
@@ -182,7 +197,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
                                 .where(USER_GROUP.SOURCE_ID.eq(request.getProjectId()))
                                 .orderBy(SYSTEM_USER.UPDATE_TIME.desc())
                 ).as("temp");
-        return mapper.paginate(request, query);
+        return mapper.paginate(Page.of(request.getPageNumber(), request.getPageSize()), query);
     }
 
     @Override

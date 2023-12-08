@@ -126,4 +126,9 @@ public class SystemGroupController {
     public ResponseResult<String> addGroupUser(@RequestBody EditGroupUserRequest request) {
         return ResponseResult.success(iSystemGroupService.addGroupUser(request));
     }
+
+    @GetMapping("/list/ws/{workspaceId}/{userId}")
+    public List<SystemGroup> getWorkspaceMemberGroups(@PathVariable String workspaceId, @PathVariable String userId) {
+        return iSystemGroupService.getWorkspaceMemberGroups(workspaceId, userId);
+    }
 }

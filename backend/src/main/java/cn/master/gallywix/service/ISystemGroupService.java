@@ -45,4 +45,6 @@ public interface ISystemGroupService extends IService<SystemGroup> {
     Page<SystemUser> getGroupUser(UserPageReqVO request);
 
     String addGroupUser(EditGroupUserRequest request);
+
+    List<SystemGroup> getWorkspaceMemberGroups(String workspaceId, String userId);
 }

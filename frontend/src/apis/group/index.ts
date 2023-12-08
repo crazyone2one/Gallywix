@@ -56,3 +56,11 @@ export const getUserGroup = (param: { userGroupId: string }) =>
   alovaInstance.Post<IPage<USER[]>>(`/system/group/user`, param)
 
 export const addUser2Group = (param: IUser2Group) => alovaInstance.Post("/system/group/add/member", param)
+/**
+ * 查询用户所属group数据
+ * @param workspaceId workspace id
+ * @param userId user id
+ * @returns
+ */
+export const getWorkspaceMemberGroup = (workspaceId: string, userId: string) =>
+  alovaInstance.Get<Array<IGroupDTO>>(`/system/group/list/ws/${workspaceId}/${userId}`)

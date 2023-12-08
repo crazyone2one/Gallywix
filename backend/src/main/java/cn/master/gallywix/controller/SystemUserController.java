@@ -90,17 +90,20 @@ public class SystemUserController {
      * @return 分页对象
      */
     @PostMapping("page")
-    public ResponseResult<Page<SystemUser>> page(UserPageReqVO page) {
+    public ResponseResult<Page<SystemUser>> page(@RequestBody UserPageReqVO page) {
         return ResponseResult.success(iSystemUserService.findDataByPage(page));
     }
+
     @PostMapping("/special/ws/member/page")
-    public ResponseResult<Page<SystemUser>> getWsMemberUserPage(UserPageReqVO page) {
+    public ResponseResult<Page<SystemUser>> getWsMemberUserPage(@RequestBody UserPageReqVO page) {
         return ResponseResult.success(iSystemUserService.findWsMemberByPage(page));
     }
+
     @PostMapping("/orgmember/add")
     public void addOrganizationMember(@RequestBody AddOrgMemberRequestVO request) {
         iSystemUserService.addOrganizationMember(request);
     }
+
     @GetMapping("/orgmember/delete/{organizationId}/{userId}")
     public void delOrganizationMember(@PathVariable String organizationId, @PathVariable String userId) {
         iSystemUserService.delOrganizationMember(organizationId, userId);
@@ -118,13 +121,15 @@ public class SystemUserController {
     }
 
     @PostMapping("/ws/project/member/list")
-    public ResponseResult<Page<SystemUser>> getProjectMemberListForWorkspace( @RequestBody UserPageReqVO request) {
+    public ResponseResult<Page<SystemUser>> getProjectMemberListForWorkspace(@RequestBody UserPageReqVO request) {
         return ResponseResult.success(iSystemUserService.getProjectMemberList(request));
     }
+
     @GetMapping("/special/user/group/{userId}")
     public ResponseResult<UserGroupPermissionDTO> getUserGroup(@PathVariable("userId") String userId) {
         return ResponseResult.success(iSystemUserService.getUserGroup(userId));
     }
+
     @PostMapping("/special/password")
     public Boolean updatePassword(@RequestBody UserPasswordVO request) {
         return iSystemUserService.updateUserPassword(request);

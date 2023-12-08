@@ -13,6 +13,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 用户信息表 实体类。
@@ -96,5 +97,7 @@ public class SystemUser implements Serializable {
      * Phone number of user
      */
     private String phone;
+    @Column(ignore = true)
+    private List<SystemGroup> groupList;
 
 }

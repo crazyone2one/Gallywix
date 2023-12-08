@@ -42,6 +42,7 @@ import java.util.*;
 
 import static cn.master.gallywix.entity.table.SystemGroupTableDef.SYSTEM_GROUP;
 import static cn.master.gallywix.entity.table.SystemUserTableDef.SYSTEM_USER;
+import static cn.master.gallywix.entity.table.SystemWorkspaceTableDef.SYSTEM_WORKSPACE;
 import static cn.master.gallywix.entity.table.UserGroupPermissionTableDef.USER_GROUP_PERMISSION;
 import static cn.master.gallywix.entity.table.UserGroupTableDef.USER_GROUP;
 
@@ -236,7 +237,7 @@ public class SystemGroupServiceImpl extends ServiceImpl<SystemGroupMapper, Syste
 
     @Override
     public Page<SystemUser> getGroupUser(UserPageReqVO request) {
-        return systemUserMapper.paginate(request, QueryChain.of(SystemUser.class)
+        return systemUserMapper.paginate(request.getPageNumber(),request.getPageSize(), QueryChain.of(SystemUser.class)
                 .select("DISTINCT `tb_system_user`.`id`,\n" +
                         "       `tb_system_user`.`username`,\n" +
                         "       `tb_system_user`.`email`,\n" +
@@ -274,6 +275,16 @@ public class SystemGroupServiceImpl extends ServiceImpl<SystemGroupMapper, Syste
             }
         }
         return "success";
+    }
+
+    @Override
+    public List<SystemGroup> getWorkspaceMemberGroups(String workspaceId, String userId) {
+        QueryWrapper wrapper = QueryWrapper.create()
+                .select(SYSTEM_GROUP.ID.as("id"), SYSTEM_GROUP.CODE, SYSTEM_GROUP.NAME.as("name"), SYSTEM_GROUP.TYPE)
+                .from(SYSTEM_WORKSPACE)
+                .join(USER_GROUP).on(USER_GROUP.SOURCE_ID.eq(SYSTEM_WORKSPACE.ID))
+                .join(SYSTEM_GROUP).on(SYSTEM_GROUP.CODE.eq(USER_GROUP.GROUP_ID));
+        return mapper.selectListByQuery(wrapper);
     }
 
     private void addNotSystemGroupUser(SystemGroup group, List<String> userIds, List<String> sourceIds) {

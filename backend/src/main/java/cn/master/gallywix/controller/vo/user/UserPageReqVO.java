@@ -1,7 +1,5 @@
 package cn.master.gallywix.controller.vo.user;
 
-import cn.master.gallywix.entity.SystemUser;
-import com.mybatisflex.core.paginate.Page;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,9 +9,11 @@ import lombok.Setter;
  **/
 @Setter
 @Getter
-public class UserPageReqVO extends Page<SystemUser> {
+public class UserPageReqVO  {
     private String name;
     private String workspaceId;
     private String projectId;
     private String userGroupId;
+    private long pageNumber;
+    private long pageSize;
 }
