@@ -1,40 +1,35 @@
 <script setup lang="ts">
-import { computed } from "vue"
-
-import { PageReq } from "/@/apis/interface"
 import { NPagination } from "naive-ui"
 
 interface IProps {
-  condition: PageReq
-  itemCount?: number
+  page?: number
+  total?: number
+  pageSize?: number
 }
-const props = withDefaults(defineProps<IProps>(), {
-  itemCount: 0,
+withDefaults(defineProps<IProps>(), {
+  total: 0,
+  page: 1,
+  pageSize: 10,
 })
-const emits = defineEmits(["update:condition", "updatePage", "updatePageSize"])
-const condition = computed({
-  get: () => props.condition,
-  set: (val) => {
-    emits("update:condition", val)
-  },
-})
+const emits = defineEmits(["update:page", "update:page-size"])
+
 // * 翻页
 const handleUpdatePage = (page: number) => {
-  emits("updatePage", page)
+  emits("update:page", page)
 }
 // * 改变每页显示数量
 const handleUpdatePageSize = (pageSize: number) => {
-  emits("updatePageSize", pageSize)
+  emits("update:page-size", pageSize)
 }
 </script>
 <template>
   <div mt-5>
     <n-pagination
-      v-model:page="condition.pageNumber"
-      v-model:page-size="condition.pageSize"
-      :page-sizes="[10, 20, 30, 40]"
+      :page="page"
+      :page-size="pageSize"
+      :page-sizes="[10, 20, 30, 40, 100]"
       show-size-picker
-      :item-count="itemCount"
+      :item-count="total"
       class="justify-end"
       @update-page="handleUpdatePage"
       @update-page-size="handleUpdatePageSize" />
